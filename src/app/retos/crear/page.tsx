@@ -1,3 +1,4 @@
+import { PenLine } from "lucide-react";
 import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { FormRetoPersonalizado } from "@/components/retos/FormRetoPersonalizado";
@@ -9,7 +10,7 @@ export const metadata = {
 
 export default function CrearRetoPage() {
   return (
-    <main style={{ backgroundColor: "#0A0A0A", minHeight: "100vh" }}>
+    <main style={{ backgroundColor: "#F5F0E8", minHeight: "100vh" }}>
       <Navbar />
 
       <div className="pt-24 pb-16 px-4">
@@ -24,15 +25,15 @@ export default function CrearRetoPage() {
             </a>
 
             <div className="mt-6">
-              <div className="text-6xl mb-4">✍️</div>
+              <PenLine className="w-14 h-14 mb-4" style={{ color: "#F26430" }} />
               <h1
                 className="text-6xl sm:text-7xl uppercase leading-none mb-3"
-                style={{ fontFamily: "var(--font-bebas)", color: "#FFFFFF" }}
+                style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
               >
                 Crea tu reto
               </h1>
               <p
-                className="text-gray-400"
+                className="text-gray-600"
                 style={{ fontFamily: "var(--font-dm-sans)" }}
               >
                 Definí las reglas, el objetivo y las condiciones. Solo vos y
@@ -43,7 +44,7 @@ export default function CrearRetoPage() {
 
           <div
             className="rounded-xl p-6"
-            style={{ backgroundColor: "#111111", border: "1px solid #222222" }}
+            style={{ backgroundColor: "#FFFFFF", border: "1px solid #DDD6C8" }}
           >
             <FormRetoPersonalizado />
           </div>

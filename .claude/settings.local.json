@@ -8,7 +8,8 @@
       "Bash(ls /c/Users/nelso/Documents/PMC/pactados/ && cd /c/Users/nelso/Documents/PMC/pactados && npm install @supabase/supabase-js resend react-hook-form @hookform/resolvers zod 2>&1)",
       "Bash(cd /c/Users/nelso/Documents/PMC/pactados && npx shadcn@latest init --yes 2>&1)",
       "Bash(tail:*)",
-      "Bash(cd /c/Users/nelso/Documents/PMC/pactados && npm run build 2>&1)"
+      "Bash(cd /c/Users/nelso/Documents/PMC/pactados && npm run build 2>&1)",
+      "Bash(cd /c/Users/nelso/Documents/PMC/pactados && npx tsc --noEmit 2>&1)"
     ]
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Rocket } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -27,13 +28,13 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const inputClass =
-  "w-full px-4 py-3 rounded-lg text-white placeholder-gray-600 outline-none focus:ring-2 focus:ring-[#F5E642] transition-all";
+  "w-full px-4 py-3 rounded-lg text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#F26430] transition-all";
 const inputStyle = {
-  backgroundColor: "#1A1A1A",
-  border: "1px solid #2A2A2A",
+  backgroundColor: "#FFFFFF",
+  border: "1px solid #DDD6C8",
   fontFamily: "var(--font-dm-sans)",
 };
-const labelClass = "block text-sm font-medium mb-2 text-gray-300";
+const labelClass = "block text-sm font-medium mb-2 text-gray-700";
 
 export function FormRetoPersonalizado() {
   const [estado, setEstado] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -87,10 +88,12 @@ export function FormRetoPersonalizado() {
   if (estado === "success") {
     return (
       <div className="text-center py-8">
-        <div className="text-5xl mb-4">🚀</div>
+        <div className="flex justify-center mb-4">
+          <Rocket className="w-14 h-14" style={{ color: "#1A1A1A" }} />
+        </div>
         <h3
           className="text-3xl uppercase mb-3"
-          style={{ fontFamily: "var(--font-bebas)", color: "#F5E642" }}
+          style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
         >
           ¡Reto creado!
         </h3>
@@ -99,7 +102,7 @@ export function FormRetoPersonalizado() {
           style={{ fontFamily: "var(--font-dm-sans)" }}
         >
           En las próximas horas te contactamos para crear el grupo de WhatsApp
-          con tus reglas. 💪
+          con tus reglas.
         </p>
       </div>
     );
@@ -211,7 +214,7 @@ export function FormRetoPersonalizado() {
       </div>
 
       {/* Divider */}
-      <div style={{ borderTop: "1px solid #222222" }} />
+      <div style={{ borderTop: "1px solid #DDD6C8" }} />
 
       {/* ── SECCIÓN 2: Tus datos ── */}
       <div>
@@ -337,8 +340,8 @@ export function FormRetoPersonalizado() {
         disabled={estado === "loading"}
         className="w-full py-4 text-lg font-bold rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
         style={{
-          backgroundColor: "#F5E642",
-          color: "#0A0A0A",
+          background: "linear-gradient(135deg, #F26430, #E03228)",
+          color: "#FFFFFF",
           fontFamily: "var(--font-dm-sans)",
         }}
       >

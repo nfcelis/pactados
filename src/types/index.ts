@@ -4,7 +4,7 @@ export type Dificultad = "facil" | "medio" | "dificil";
 export interface Reto {
   slug: string;
   titulo: string;
-  emoji: string;
+  iconName: string;
   categoria: Categoria;
   duracion_dias: number;
   meta_diaria: string;

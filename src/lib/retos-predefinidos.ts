@@ -4,7 +4,7 @@ export const RETOS: Reto[] = [
   {
     slug: "correr-30-dias",
     titulo: "30 días corriendo",
-    emoji: "🏃",
+    iconName: "Activity",
     categoria: "fitness",
     duracion_dias: 30,
     meta_diaria: "Correr mínimo 2km cada día",
@@ -15,7 +15,7 @@ export const RETOS: Reto[] = [
   {
     slug: "leer-un-libro",
     titulo: "Leer 1 libro en 21 días",
-    emoji: "📚",
+    iconName: "BookOpen",
     categoria: "lectura",
     duracion_dias: 21,
     meta_diaria: "Leer mínimo 20 páginas al día",
@@ -26,7 +26,7 @@ export const RETOS: Reto[] = [
   {
     slug: "estudiar-diario",
     titulo: "Estudiar 1 hora por 30 días",
-    emoji: "📖",
+    iconName: "GraduationCap",
     categoria: "estudio",
     duracion_dias: 30,
     meta_diaria: "1 hora de estudio enfocado sin distracciones",
@@ -37,7 +37,7 @@ export const RETOS: Reto[] = [
   {
     slug: "sin-redes-sociales",
     titulo: "7 días sin redes sociales",
-    emoji: "📵",
+    iconName: "WifiOff",
     categoria: "habitos",
     duracion_dias: 7,
     meta_diaria: "Cero Instagram, TikTok, Twitter/X",

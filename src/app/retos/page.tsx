@@ -1,18 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { Dumbbell, BookOpen, GraduationCap, Brain, PenLine, type LucideIcon } from "lucide-react";
 import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { RetoCard } from "@/components/retos/RetoCard";
 import { RETOS } from "@/lib/retos-predefinidos";
 import { Categoria } from "@/types";
 
-const categorias: { valor: Categoria | "todos"; label: string }[] = [
+const categorias: { valor: Categoria | "todos"; label: string; icon?: LucideIcon }[] = [
   { valor: "todos", label: "Todos" },
-  { valor: "fitness", label: "💪 Fitness" },
-  { valor: "lectura", label: "📚 Lectura" },
-  { valor: "estudio", label: "📖 Estudio" },
-  { valor: "habitos", label: "🧠 Hábitos" },
+  { valor: "fitness", label: "Fitness", icon: Dumbbell },
+  { valor: "lectura", label: "Lectura", icon: BookOpen },
+  { valor: "estudio", label: "Estudio", icon: GraduationCap },
+  { valor: "habitos", label: "Hábitos", icon: Brain },
 ];
 
 export default function RetosPage() {
@@ -24,7 +25,7 @@ export default function RetosPage() {
       : RETOS.filter((r) => r.categoria === categoriaActiva);
 
   return (
-    <main style={{ backgroundColor: "#0A0A0A", minHeight: "100vh" }}>
+    <main style={{ backgroundColor: "#F5F0E8", minHeight: "100vh" }}>
       <Navbar />
 
       <div className="pt-24 pb-16 px-4">
@@ -33,13 +34,13 @@ export default function RetosPage() {
           <div className="text-center mb-12">
             <p
               className="text-sm font-medium mb-3 uppercase tracking-widest"
-              style={{ color: "#F5E642", fontFamily: "var(--font-dm-sans)" }}
+              style={{ color: "#F26430", fontFamily: "var(--font-dm-sans)" }}
             >
               Elige tu desafío
             </p>
             <h1
               className="text-6xl sm:text-7xl md:text-8xl uppercase mb-4"
-              style={{ fontFamily: "var(--font-bebas)", color: "#FFFFFF" }}
+              style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
             >
               Todos los retos
             </h1>
@@ -57,16 +58,17 @@ export default function RetosPage() {
               <button
                 key={cat.valor}
                 onClick={() => setCategoriaActiva(cat.valor)}
-                className="px-5 py-2 rounded-full text-sm font-medium transition-all duration-200"
+                className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition-all duration-200"
                 style={{
                   backgroundColor:
-                    categoriaActiva === cat.valor ? "#F5E642" : "#1A1A1A",
+                    categoriaActiva === cat.valor ? "#E03228" : "#FFFFFF",
                   color:
-                    categoriaActiva === cat.valor ? "#0A0A0A" : "#888888",
-                  border: `1px solid ${categoriaActiva === cat.valor ? "#F5E642" : "#2A2A2A"}`,
+                    categoriaActiva === cat.valor ? "#FFFFFF" : "#7A6F65",
+                  border: `1px solid ${categoriaActiva === cat.valor ? "#E03228" : "#DDD6C8"}`,
                   fontFamily: "var(--font-dm-sans)",
                 }}
               >
+                {cat.icon && <cat.icon className="w-4 h-4" />}
                 {cat.label}
               </button>
             ))}
@@ -81,15 +83,15 @@ export default function RetosPage() {
             {/* Card: Crea tu reto (siempre visible) */}
             <a
               href="/retos/crear"
-              className="relative p-6 rounded-xl border-2 border-dashed flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-[#F5E642] hover:-translate-y-1 group min-h-[280px]"
-              style={{ borderColor: "#2A2A2A", backgroundColor: "#0D0D0D" }}
+              className="relative p-6 rounded-xl border-2 border-dashed flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-[#F26430] hover:-translate-y-1 group min-h-[280px]"
+              style={{ borderColor: "#DDD6C8", backgroundColor: "#FDFAF5" }}
             >
-              <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-200">
-                ✍️
+              <div className="mb-4 group-hover:scale-110 transition-transform duration-200">
+                <PenLine className="w-12 h-12 mx-auto" style={{ color: "#F5E642" }} />
               </div>
               <h3
                 className="text-2xl uppercase mb-2"
-                style={{ fontFamily: "var(--font-bebas)", color: "#FFFFFF" }}
+                style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
               >
                 Crea tu reto
               </h3>
@@ -100,8 +102,8 @@ export default function RetosPage() {
                 Definí tus propias reglas, objetivos y consecuencias.
               </p>
               <span
-                className="text-sm font-medium group-hover:text-[#F5E642] transition-colors"
-                style={{ color: "#555555", fontFamily: "var(--font-dm-sans)" }}
+                className="text-sm font-medium group-hover:text-[#F26430] transition-colors"
+                style={{ color: "#7A6F65", fontFamily: "var(--font-dm-sans)" }}
               >
                 Personalizar →
               </span>

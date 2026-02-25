@@ -1,9 +1,17 @@
 import Link from "next/link";
+import { Activity, BookOpen, GraduationCap, WifiOff, type LucideIcon } from "lucide-react";
 import { Reto, Dificultad } from "@/types";
+
+const RETO_ICONS: Record<string, LucideIcon> = {
+  Activity,
+  BookOpen,
+  GraduationCap,
+  WifiOff,
+};
 
 const dificultadColor: Record<Dificultad, string> = {
   facil: "#22c55e",
-  medio: "#F5E642",
+  medio: "#F7A04B",
   dificil: "#ef4444",
 };
 
@@ -18,13 +26,14 @@ interface RetoCardProps {
 }
 
 export function RetoCard({ reto }: RetoCardProps) {
+  const Icon = RETO_ICONS[reto.iconName] ?? Activity;
   return (
     <div
-      className="relative p-6 rounded-xl border transition-all duration-300 hover:border-[#F5E642] hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(245,230,66,0.08)] flex flex-col"
-      style={{ backgroundColor: "#111111", borderColor: "#222222" }}
+      className="relative p-6 rounded-xl border transition-all duration-300 hover:border-[#F26430] hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(242,100,48,0.12)] flex flex-col"
+      style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}
     >
       <div className="flex items-start justify-between mb-4">
-        <span className="text-4xl">{reto.emoji}</span>
+        <Icon className="w-10 h-10" style={{ color: "#F26430" }} />
         <span
           className="text-xs font-bold px-3 py-1 rounded-full"
           style={{
@@ -39,7 +48,7 @@ export function RetoCard({ reto }: RetoCardProps) {
 
       <h3
         className="text-2xl uppercase mb-1"
-        style={{ fontFamily: "var(--font-bebas)", color: "#FFFFFF" }}
+        style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
       >
         {reto.titulo}
       </h3>
@@ -52,7 +61,7 @@ export function RetoCard({ reto }: RetoCardProps) {
       </p>
 
       <p
-        className="text-sm text-gray-400 mb-6 flex-1 leading-relaxed"
+        className="text-sm text-gray-600 mb-6 flex-1 leading-relaxed"
         style={{ fontFamily: "var(--font-dm-sans)" }}
       >
         {reto.descripcion}
@@ -60,10 +69,9 @@ export function RetoCard({ reto }: RetoCardProps) {
 
       <Link
         href={`/retos/${reto.slug}`}
-        className="w-full inline-flex items-center justify-center py-3 text-sm font-bold rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-95"
+        className="w-full inline-flex items-center justify-center py-3 text-sm font-bold rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-95 text-white"
         style={{
-          backgroundColor: "#F5E642",
-          color: "#0A0A0A",
+          background: "linear-gradient(135deg, #F26430, #E03228)",
           fontFamily: "var(--font-dm-sans)",
         }}
       >

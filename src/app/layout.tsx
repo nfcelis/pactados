@@ -31,10 +31,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" style={{ backgroundColor: "#0A0A0A" }}>
+    <html lang="es" style={{ backgroundColor: "#F5F0E8" }}>
       <body
         className={`${bebasNeue.variable} ${dmSans.variable} antialiased`}
-        style={{ backgroundColor: "#0A0A0A", color: "#FFFFFF" }}
+        style={{ backgroundColor: "#F5F0E8", color: "#1A1A1A" }}
       >
         {children}
       </body>

@@ -49,32 +49,32 @@
 
 :root {
   --radius: 0.5rem;
-  --background: #0A0A0A;
-  --foreground: #FFFFFF;
-  --card: #111111;
-  --card-foreground: #FFFFFF;
-  --popover: #111111;
-  --popover-foreground: #FFFFFF;
-  --primary: #F5E642;
-  --primary-foreground: #0A0A0A;
-  --secondary: #1A1A1A;
-  --secondary-foreground: #FFFFFF;
-  --muted: #1A1A1A;
-  --muted-foreground: #888888;
-  --accent: #F5E642;
-  --accent-foreground: #0A0A0A;
+  --background: #F5F0E8;
+  --foreground: #1A1A1A;
+  --card: #FFFFFF;
+  --card-foreground: #1A1A1A;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1A1A;
+  --primary: #F26430;
+  --primary-foreground: #FFFFFF;
+  --secondary: #EDE8DF;
+  --secondary-foreground: #1A1A1A;
+  --muted: #EDE8DF;
+  --muted-foreground: #7A6F65;
+  --accent: #1A1A1A;
+  --accent-foreground: #FFFFFF;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #222222;
-  --input: #1A1A1A;
-  --ring: #F5E642;
-  --sidebar: #111111;
-  --sidebar-foreground: #FFFFFF;
-  --sidebar-primary: #F5E642;
-  --sidebar-primary-foreground: #0A0A0A;
-  --sidebar-accent: #1A1A1A;
-  --sidebar-accent-foreground: #FFFFFF;
-  --sidebar-border: #222222;
-  --sidebar-ring: #F5E642;
+  --border: #DDD6C8;
+  --input: #FFFFFF;
+  --ring: #F26430;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1A1A1A;
+  --sidebar-primary: #F26430;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EDE8DF;
+  --sidebar-accent-foreground: #1A1A1A;
+  --sidebar-border: #DDD6C8;
+  --sidebar-ring: #F26430;
 }
 
 @layer base {
@@ -83,7 +83,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-color: #0A0A0A;
+    background-color: #F5F0E8;
   }
 }
 

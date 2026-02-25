@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Rocket } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -69,12 +70,14 @@ export function FormRegistro({ reto }: FormRegistroProps) {
     return (
       <div
         className="rounded-xl p-8 text-center"
-        style={{ backgroundColor: "#111111", border: "1px solid #F5E642" }}
+        style={{ backgroundColor: "#FFFFFF", border: "2px solid #1A1A1A" }}
       >
-        <div className="text-5xl mb-4">🚀</div>
+        <div className="flex justify-center mb-4">
+          <Rocket className="w-14 h-14" style={{ color: "#1A1A1A" }} />
+        </div>
         <h3
           className="text-3xl uppercase mb-3"
-          style={{ fontFamily: "var(--font-bebas)", color: "#F5E642" }}
+          style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
         >
           ¡Estás dentro!
         </h3>
@@ -83,7 +86,7 @@ export function FormRegistro({ reto }: FormRegistroProps) {
           style={{ fontFamily: "var(--font-dm-sans)" }}
         >
           ¡Listo! En las próximas horas recibirás una invitación a tu grupo de
-          WhatsApp. Prepárate para el reto. 💪
+          WhatsApp. Prepárate para el reto.
         </p>
       </div>
     );
@@ -98,7 +101,7 @@ export function FormRegistro({ reto }: FormRegistroProps) {
       {/* Nombre */}
       <div>
         <label
-          className="block text-sm font-medium mb-2 text-gray-300"
+          className="block text-sm font-medium mb-2 text-gray-700"
           style={{ fontFamily: "var(--font-dm-sans)" }}
         >
           Nombre completo *
@@ -106,10 +109,10 @@ export function FormRegistro({ reto }: FormRegistroProps) {
         <input
           {...register("nombre")}
           placeholder="Tu nombre"
-          className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-600 outline-none focus:ring-2 focus:ring-[#F5E642] transition-all"
+          className="w-full px-4 py-3 rounded-lg text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#F26430] transition-all"
           style={{
-            backgroundColor: "#1A1A1A",
-            border: "1px solid #2A2A2A",
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #DDD6C8",
             fontFamily: "var(--font-dm-sans)",
           }}
         />
@@ -123,7 +126,7 @@ export function FormRegistro({ reto }: FormRegistroProps) {
       {/* Email */}
       <div>
         <label
-          className="block text-sm font-medium mb-2 text-gray-300"
+          className="block text-sm font-medium mb-2 text-gray-700"
           style={{ fontFamily: "var(--font-dm-sans)" }}
         >
           Email *
@@ -132,10 +135,10 @@ export function FormRegistro({ reto }: FormRegistroProps) {
           {...register("email")}
           type="email"
           placeholder="tu@email.com"
-          className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-600 outline-none focus:ring-2 focus:ring-[#F5E642] transition-all"
+          className="w-full px-4 py-3 rounded-lg text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#F26430] transition-all"
           style={{
-            backgroundColor: "#1A1A1A",
-            border: "1px solid #2A2A2A",
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #DDD6C8",
             fontFamily: "var(--font-dm-sans)",
           }}
         />
@@ -149,7 +152,7 @@ export function FormRegistro({ reto }: FormRegistroProps) {
       {/* Teléfono */}
       <div>
         <label
-          className="block text-sm font-medium mb-2 text-gray-300"
+          className="block text-sm font-medium mb-2 text-gray-700"
           style={{ fontFamily: "var(--font-dm-sans)" }}
         >
           Número de WhatsApp *
@@ -158,10 +161,10 @@ export function FormRegistro({ reto }: FormRegistroProps) {
           {...register("telefono")}
           type="tel"
           placeholder="+54 9 11 1234-5678"
-          className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-600 outline-none focus:ring-2 focus:ring-[#F5E642] transition-all"
+          className="w-full px-4 py-3 rounded-lg text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#F26430] transition-all"
           style={{
-            backgroundColor: "#1A1A1A",
-            border: "1px solid #2A2A2A",
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #DDD6C8",
             fontFamily: "var(--font-dm-sans)",
           }}
         />
@@ -175,17 +178,17 @@ export function FormRegistro({ reto }: FormRegistroProps) {
       {/* Número de participantes */}
       <div>
         <label
-          className="block text-sm font-medium mb-2 text-gray-300"
+          className="block text-sm font-medium mb-2 text-gray-700"
           style={{ fontFamily: "var(--font-dm-sans)" }}
         >
           ¿Cuántas personas participarán contigo? *
         </label>
         <select
           {...register("num_participantes", { valueAsNumber: true })}
-          className="w-full px-4 py-3 rounded-lg text-white outline-none focus:ring-2 focus:ring-[#F5E642] transition-all"
+          className="w-full px-4 py-3 rounded-lg text-white outline-none focus:ring-2 focus:ring-[#F26430] transition-all"
           style={{
-            backgroundColor: "#1A1A1A",
-            border: "1px solid #2A2A2A",
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #DDD6C8",
             fontFamily: "var(--font-dm-sans)",
           }}
         >
@@ -200,7 +203,7 @@ export function FormRegistro({ reto }: FormRegistroProps) {
       {/* Nombres de amigos */}
       <div>
         <label
-          className="block text-sm font-medium mb-2 text-gray-300"
+          className="block text-sm font-medium mb-2 text-gray-700"
           style={{ fontFamily: "var(--font-dm-sans)" }}
         >
           Nombres y números de tus compañeros{" "}
@@ -210,10 +213,10 @@ export function FormRegistro({ reto }: FormRegistroProps) {
           {...register("nombres_amigos")}
           placeholder="Ej: Juan +54 9 11 0000-0000, María +54 9 11 1111-1111"
           rows={3}
-          className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-600 outline-none focus:ring-2 focus:ring-[#F5E642] transition-all resize-none"
+          className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-600 outline-none focus:ring-2 focus:ring-[#F26430] transition-all resize-none"
           style={{
-            backgroundColor: "#1A1A1A",
-            border: "1px solid #2A2A2A",
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #DDD6C8",
             fontFamily: "var(--font-dm-sans)",
           }}
         />
@@ -222,7 +225,7 @@ export function FormRegistro({ reto }: FormRegistroProps) {
       {/* Condiciones */}
       <div>
         <label
-          className="block text-sm font-medium mb-2 text-gray-300"
+          className="block text-sm font-medium mb-2 text-gray-700"
           style={{ fontFamily: "var(--font-dm-sans)" }}
         >
           ¿Quieres personalizar alguna condición?{" "}
@@ -231,10 +234,10 @@ export function FormRegistro({ reto }: FormRegistroProps) {
         <input
           {...register("condiciones")}
           placeholder="Ej: Si fallo, pago $500 a cada participante"
-          className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-600 outline-none focus:ring-2 focus:ring-[#F5E642] transition-all"
+          className="w-full px-4 py-3 rounded-lg text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#F26430] transition-all"
           style={{
-            backgroundColor: "#1A1A1A",
-            border: "1px solid #2A2A2A",
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #DDD6C8",
             fontFamily: "var(--font-dm-sans)",
           }}
         />
@@ -243,7 +246,7 @@ export function FormRegistro({ reto }: FormRegistroProps) {
       {/* Motivación */}
       <div>
         <label
-          className="block text-sm font-medium mb-2 text-gray-300"
+          className="block text-sm font-medium mb-2 text-gray-700"
           style={{ fontFamily: "var(--font-dm-sans)" }}
         >
           ¿Por qué quieres hacer este reto?{" "}
@@ -253,10 +256,10 @@ export function FormRegistro({ reto }: FormRegistroProps) {
           {...register("mensaje")}
           placeholder="Tu motivación..."
           rows={3}
-          className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-600 outline-none focus:ring-2 focus:ring-[#F5E642] transition-all resize-none"
+          className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-600 outline-none focus:ring-2 focus:ring-[#F26430] transition-all resize-none"
           style={{
-            backgroundColor: "#1A1A1A",
-            border: "1px solid #2A2A2A",
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #DDD6C8",
             fontFamily: "var(--font-dm-sans)",
           }}
         />
@@ -276,8 +279,8 @@ export function FormRegistro({ reto }: FormRegistroProps) {
         disabled={estado === "loading"}
         className="w-full py-4 text-lg font-bold rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
         style={{
-          backgroundColor: "#F5E642",
-          color: "#0A0A0A",
+          background: "linear-gradient(135deg, #F26430, #E03228)",
+          color: "#FFFFFF",
           fontFamily: "var(--font-dm-sans)",
         }}
       >
