@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Dumbbell, BookOpen, GraduationCap, Brain, PenLine, type LucideIcon } from "lucide-react";
+import Link from "next/link";
+import { Dumbbell, BookOpen, GraduationCap, Brain, PenLine, Sparkles, type LucideIcon } from "lucide-react";
 import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { RetoCard } from "@/components/retos/RetoCard";
@@ -13,7 +14,7 @@ const categorias: { valor: Categoria | "todos"; label: string; icon?: LucideIcon
   { valor: "fitness", label: "Fitness", icon: Dumbbell },
   { valor: "lectura", label: "Lectura", icon: BookOpen },
   { valor: "estudio", label: "Estudio", icon: GraduationCap },
-  { valor: "habitos", label: "Hábitos", icon: Brain },
+  { valor: "habitos", label: "Habitos", icon: Brain },
 ];
 
 export default function RetosPage() {
@@ -25,98 +26,98 @@ export default function RetosPage() {
       : RETOS.filter((r) => r.categoria === categoriaActiva);
 
   return (
-    <main style={{ backgroundColor: "#F5F0E8", minHeight: "100vh" }}>
+    <main className="relative min-h-screen overflow-hidden" style={{ backgroundColor: "#F5F0E8" }}>
       <Navbar />
 
-      <div className="pt-24 pb-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <p
-              className="text-sm font-medium mb-3 uppercase tracking-widest"
-              style={{ color: "#F26430", fontFamily: "var(--font-dm-sans)" }}
-            >
-              Elige tu desafío
-            </p>
+      <div
+        className="pointer-events-none absolute -left-20 top-20 h-72 w-72 rounded-full blur-3xl"
+        style={{ backgroundColor: "rgba(242,100,48,0.14)" }}
+      />
+      <div
+        className="pointer-events-none absolute -right-20 top-56 h-72 w-72 rounded-full blur-3xl"
+        style={{ backgroundColor: "rgba(245,230,66,0.15)" }}
+      />
+
+      <div className="relative px-4 pb-16 pt-24">
+        <div className="mx-auto max-w-6xl">
+          <section
+            className="mb-10 rounded-3xl border px-6 py-10 sm:px-10"
+            style={{
+              background: "linear-gradient(160deg, rgba(255,255,255,0.9), rgba(253,250,245,0.85))",
+              borderColor: "#E6DCCB",
+            }}
+          >
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wider"
+              style={{ borderColor: "#E4D7C4", color: "#7A6F65", fontFamily: "var(--font-dm-sans)" }}>
+              <Sparkles className="h-3.5 w-3.5" />
+              Elige tu siguiente compromiso
+            </div>
+
             <h1
-              className="text-6xl sm:text-7xl md:text-8xl uppercase mb-4"
+              className="text-5xl uppercase leading-none sm:text-7xl md:text-8xl"
               style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
             >
               Todos los retos
             </h1>
             <p
-              className="text-gray-500 max-w-lg mx-auto"
+              className="mt-4 max-w-2xl text-base text-gray-600 sm:text-lg"
               style={{ fontFamily: "var(--font-dm-sans)" }}
             >
-              Elige el que más te asuste. Ese es el que necesitas.
+              Escoge el reto que mas te incomoda. Ese suele ser el que mas te cambia.
             </p>
-          </div>
+          </section>
 
-          {/* Filtros */}
-          <div className="flex flex-wrap gap-3 justify-center mb-12">
-            {categorias.map((cat) => (
-              <button
-                key={cat.valor}
-                onClick={() => setCategoriaActiva(cat.valor)}
-                className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition-all duration-200"
-                style={{
-                  backgroundColor:
-                    categoriaActiva === cat.valor ? "#E03228" : "#FFFFFF",
-                  color:
-                    categoriaActiva === cat.valor ? "#FFFFFF" : "#7A6F65",
-                  border: `1px solid ${categoriaActiva === cat.valor ? "#E03228" : "#DDD6C8"}`,
-                  fontFamily: "var(--font-dm-sans)",
-                }}
-              >
-                {cat.icon && <cat.icon className="w-4 h-4" />}
-                {cat.label}
-              </button>
-            ))}
-          </div>
+          <section className="mb-10 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-wrap gap-3">
+              {categorias.map((cat) => (
+                <button
+                  key={cat.valor}
+                  onClick={() => setCategoriaActiva(cat.valor)}
+                  className="inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
+                  style={{
+                    backgroundColor: categoriaActiva === cat.valor ? "#1A1A1A" : "#FFFFFF",
+                    color: categoriaActiva === cat.valor ? "#FFFFFF" : "#7A6F65",
+                    border: `1px solid ${categoriaActiva === cat.valor ? "#1A1A1A" : "#DDD6C8"}`,
+                    fontFamily: "var(--font-dm-sans)",
+                    boxShadow:
+                      categoriaActiva === cat.valor
+                        ? "0 10px 24px rgba(26,26,26,0.2)"
+                        : "0 8px 18px rgba(80,60,20,0.06)",
+                  }}
+                >
+                  {cat.icon && <cat.icon className="h-4 w-4" />}
+                  {cat.label}
+                </button>
+              ))}
+            </div>
 
-          {/* Grid de retos */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Link
+              href="/retos/crear"
+              className="inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-semibold text-white transition-all duration-200 hover:scale-105"
+              style={{
+                background: "linear-gradient(135deg, #F26430, #E03228)",
+                fontFamily: "var(--font-dm-sans)",
+                boxShadow: "0 14px 24px rgba(224,50,40,0.28)",
+              }}
+            >
+              <PenLine className="h-4 w-4" />
+              Crear reto personalizado
+            </Link>
+          </section>
+
+          <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {retosFiltrados.map((reto) => (
               <RetoCard key={reto.slug} reto={reto} />
             ))}
-
-            {/* Card: Crea tu reto (siempre visible) */}
-            <a
-              href="/retos/crear"
-              className="relative p-6 rounded-xl border-2 border-dashed flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-[#F26430] hover:-translate-y-1 group min-h-[280px]"
-              style={{ borderColor: "#DDD6C8", backgroundColor: "#FDFAF5" }}
-            >
-              <div className="mb-4 group-hover:scale-110 transition-transform duration-200">
-                <PenLine className="w-12 h-12 mx-auto" style={{ color: "#F5E642" }} />
-              </div>
-              <h3
-                className="text-2xl uppercase mb-2"
-                style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
-              >
-                Crea tu reto
-              </h3>
-              <p
-                className="text-sm text-gray-500 mb-4"
-                style={{ fontFamily: "var(--font-dm-sans)" }}
-              >
-                Definí tus propias reglas, objetivos y consecuencias.
-              </p>
-              <span
-                className="text-sm font-medium group-hover:text-[#F26430] transition-colors"
-                style={{ color: "#7A6F65", fontFamily: "var(--font-dm-sans)" }}
-              >
-                Personalizar →
-              </span>
-            </a>
-          </div>
+          </section>
 
           {retosFiltrados.length === 0 && (
-            <div className="text-center py-20">
-              <p
-                className="text-gray-600"
-                style={{ fontFamily: "var(--font-dm-sans)" }}
-              >
-                No hay retos en esta categoría todavía.
+            <div
+              className="mt-8 rounded-2xl border px-6 py-14 text-center"
+              style={{ backgroundColor: "#FFFFFF", borderColor: "#DDD6C8" }}
+            >
+              <p className="text-gray-600" style={{ fontFamily: "var(--font-dm-sans)" }}>
+                Todavia no hay retos en esta categoria.
               </p>
             </div>
           )}

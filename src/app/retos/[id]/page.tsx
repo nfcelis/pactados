@@ -1,7 +1,8 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   Activity, BookOpen, GraduationCap, WifiOff,
-  Zap, Check, type LucideIcon,
+  Zap, Check, Flame, Clock3, type LucideIcon,
 } from "lucide-react";
 import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
@@ -18,9 +19,9 @@ const RETO_ICONS: Record<string, LucideIcon> = {
 };
 
 const dificultadLabel: Record<Dificultad, string> = {
-  facil: "Fácil",
+  facil: "Facil",
   medio: "Medio",
-  dificil: "Difícil",
+  dificil: "Dificil",
 };
 
 const dificultadColor: Record<Dificultad, string> = {
@@ -42,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const reto = getRetoPorSlug(id);
   if (!reto) return {};
   return {
-    title: `${reto.titulo} – Pactados`,
+    title: `${reto.titulo} - Pactados`,
     description: reto.descripcion,
   };
 }
@@ -53,29 +54,47 @@ export default async function RetoDetallePage({ params }: Props) {
 
   if (!reto) notFound();
 
+  const Icon = RETO_ICONS[reto.iconName] ?? Activity;
+
   return (
-    <main style={{ backgroundColor: "#F5F0E8", minHeight: "100vh" }}>
+    <main className="relative min-h-screen overflow-hidden" style={{ backgroundColor: "#F5F0E8" }}>
       <Navbar />
 
-      <div className="pt-24 pb-16 px-4">
-        <div className="max-w-5xl mx-auto">
-          {/* Hero del reto */}
-          <div className="mb-12">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
-                <a href="/retos" style={{ fontFamily: "var(--font-dm-sans)" }}>
-                  ← Todos los retos
-                </a>
-              </span>
-            </div>
+      <div
+        className="pointer-events-none absolute -left-16 top-24 h-72 w-72 rounded-full blur-3xl"
+        style={{ backgroundColor: "rgba(242,100,48,0.12)" }}
+      />
+      <div
+        className="pointer-events-none absolute -right-16 top-64 h-72 w-72 rounded-full blur-3xl"
+        style={{ backgroundColor: "rgba(245,230,66,0.15)" }}
+      />
 
-            <div className="mb-6">
-              {(() => { const Icon = RETO_ICONS[reto.iconName] ?? Activity; return <Icon className="w-20 h-20" style={{ color: "#F26430" }} />; })()}
-            </div>
+      <div className="relative px-4 pb-16 pt-24">
+        <div className="mx-auto max-w-6xl">
+          <Link
+            href="/retos"
+            className="mb-6 inline-flex items-center gap-2 text-sm text-gray-600 transition-colors hover:text-gray-900"
+            style={{ fontFamily: "var(--font-dm-sans)" }}
+          >
+            &larr; Todos los retos
+          </Link>
 
-            <div className="flex flex-wrap items-center gap-3 mb-4">
+          <section
+            className="mb-10 rounded-3xl border p-6 sm:p-9"
+            style={{
+              background: "linear-gradient(160deg, rgba(255,255,255,0.9), rgba(253,250,245,0.85))",
+              borderColor: "#E5DAC8",
+            }}
+          >
+            <div className="flex flex-wrap items-center gap-4">
+              <div
+                className="rounded-2xl p-3"
+                style={{ backgroundColor: "#FFF5EF", border: "1px solid #F8DCCF" }}
+              >
+                <Icon className="h-9 w-9" style={{ color: "#F26430" }} />
+              </div>
               <span
-                className="text-sm font-bold px-4 py-1.5 rounded-full"
+                className="rounded-full px-4 py-1.5 text-sm font-semibold"
                 style={{
                   color: dificultadColor[reto.dificultad],
                   backgroundColor: `${dificultadColor[reto.dificultad]}20`,
@@ -84,137 +103,126 @@ export default async function RetoDetallePage({ params }: Props) {
               >
                 {dificultadLabel[reto.dificultad]}
               </span>
-              <span
-                className="text-sm text-gray-500"
-                style={{ fontFamily: "var(--font-dm-sans)" }}
-              >
-                {reto.duracion_dias} días
-              </span>
             </div>
 
             <h1
-              className="text-6xl sm:text-7xl md:text-8xl uppercase leading-none mb-6"
+              className="mt-5 text-5xl uppercase leading-none sm:text-7xl"
               style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
             >
               {reto.titulo}
             </h1>
-
             <p
-              className="text-xl text-gray-600 max-w-2xl leading-relaxed mb-8"
+              className="mt-4 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg"
               style={{ fontFamily: "var(--font-dm-sans)" }}
             >
               {reto.descripcion}
             </p>
 
-            {/* Meta diaria */}
-            <div
-              className="inline-flex items-center gap-3 px-6 py-4 rounded-xl"
-              style={{ backgroundColor: "#FFFFFF", border: "1px solid #DDD6C8" }}
-            >
-              <Zap className="w-6 h-6 shrink-0" style={{ color: "#F26430" }} />
-              <div>
-                <p
-                  className="text-xs text-gray-500 uppercase tracking-widest mb-0.5"
-                  style={{ fontFamily: "var(--font-dm-sans)" }}
-                >
+            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div className="rounded-xl border px-4 py-3" style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}>
+                <p className="mb-1 text-xs uppercase tracking-wider text-gray-500" style={{ fontFamily: "var(--font-dm-sans)" }}>
+                  Duracion
+                </p>
+                <p className="inline-flex items-center gap-2 text-sm font-semibold text-gray-700" style={{ fontFamily: "var(--font-dm-sans)" }}>
+                  <Clock3 className="h-4 w-4" />
+                  {reto.duracion_dias} dias
+                </p>
+              </div>
+
+              <div className="rounded-xl border px-4 py-3" style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}>
+                <p className="mb-1 text-xs uppercase tracking-wider text-gray-500" style={{ fontFamily: "var(--font-dm-sans)" }}>
                   Meta diaria
                 </p>
-                <p
-                  className="font-medium"
-                  style={{ color: "#1A1A1A", fontFamily: "var(--font-dm-sans)" }}
-                >
+                <p className="inline-flex items-center gap-2 text-sm font-semibold text-gray-700" style={{ fontFamily: "var(--font-dm-sans)" }}>
+                  <Zap className="h-4 w-4" />
                   {reto.meta_diaria}
                 </p>
               </div>
-            </div>
-          </div>
 
-          {/* Layout: detalle + formulario */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Columna izquierda: info adicional */}
-            <div>
+              <div className="rounded-xl border px-4 py-3" style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}>
+                <p className="mb-1 text-xs uppercase tracking-wider text-gray-500" style={{ fontFamily: "var(--font-dm-sans)" }}>
+                  Intensidad
+                </p>
+                <p className="inline-flex items-center gap-2 text-sm font-semibold text-gray-700" style={{ fontFamily: "var(--font-dm-sans)" }}>
+                  <Flame className="h-4 w-4" />
+                  Compromiso diario
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+            <div className="space-y-5">
               <div
-                className="rounded-xl p-6 mb-6"
-                style={{ backgroundColor: "#FFFFFF", border: "1px solid #DDD6C8" }}
+                className="rounded-2xl border p-6"
+                style={{ backgroundColor: "#FFFFFF", borderColor: "#DDD6C8" }}
               >
                 <h2
-                  className="text-2xl uppercase mb-4"
-                  style={{ fontFamily: "var(--font-bebas)", color: "#F26430" }}
+                  className="mb-4 text-3xl uppercase"
+                  style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
                 >
-                  ¿En qué consiste?
+                  Como funciona
                 </h2>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 shrink-0 mt-0.5" style={{ color: "#1A1A1A" }} />
-                    <span
-                      className="text-gray-600 text-sm"
-                      style={{ fontFamily: "var(--font-dm-sans)" }}
-                    >
-                      {reto.meta_diaria} durante {reto.duracion_dias} días
-                      consecutivos
+                    <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: "#F26430" }} />
+                    <span className="text-sm text-gray-600" style={{ fontFamily: "var(--font-dm-sans)" }}>
+                      Cumples la meta durante {reto.duracion_dias} dias seguidos.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 shrink-0 mt-0.5" style={{ color: "#1A1A1A" }} />
-                    <span
-                      className="text-gray-600 text-sm"
-                      style={{ fontFamily: "var(--font-dm-sans)" }}
-                    >
-                      Grupo de WhatsApp con seguimiento diario
+                    <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: "#F26430" }} />
+                    <span className="text-sm text-gray-600" style={{ fontFamily: "var(--font-dm-sans)" }}>
+                      Tu avance se reporta en un grupo de WhatsApp.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 shrink-0 mt-0.5" style={{ color: "#1A1A1A" }} />
-                    <span
-                      className="text-gray-600 text-sm"
-                      style={{ fontFamily: "var(--font-dm-sans)" }}
-                    >
-                      Accountability con tus amigos y compañeros
+                    <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: "#F26430" }} />
+                    <span className="text-sm text-gray-600" style={{ fontFamily: "var(--font-dm-sans)" }}>
+                      Puedes sumar amigos para reforzar el compromiso.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <Check className="w-4 h-4 shrink-0 mt-0.5" style={{ color: "#1A1A1A" }} />
-                    <span
-                      className="text-gray-600 text-sm"
-                      style={{ fontFamily: "var(--font-dm-sans)" }}
-                    >
-                      Define tu propia consecuencia si fallas
+                    <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: "#F26430" }} />
+                    <span className="text-sm text-gray-600" style={{ fontFamily: "var(--font-dm-sans)" }}>
+                      Si quieres, defines consecuencias concretas al fallar.
                     </span>
                   </li>
                 </ul>
               </div>
 
               <div
-                className="rounded-xl p-6"
-                style={{ backgroundColor: "#1A1A1A", border: "1px solid #1A1A1A" }}
+                className="rounded-2xl border p-6"
+                style={{ backgroundColor: "#1A1A1A", borderColor: "#1A1A1A" }}
               >
                 <p
-                  className="text-2xl uppercase text-center"
+                  className="text-center text-3xl uppercase leading-none"
                   style={{ fontFamily: "var(--font-bebas)", color: "#FFFFFF" }}
                 >
-                  Sin excusas. Sin atajos.
+                  No es motivacion.
                   <br />
-                  <span style={{ color: "#F9D67A" }}>Solo resultados.</span>
+                  Es estructura.
                 </p>
               </div>
             </div>
 
-            {/* Columna derecha: formulario */}
-            <div>
-              <div
-                className="rounded-xl p-6"
-                style={{ backgroundColor: "#FFFFFF", border: "1px solid #DDD6C8" }}
+            <div
+              className="rounded-2xl border p-6 sm:p-8"
+              style={{
+                backgroundColor: "#FFFFFF",
+                borderColor: "#DDD6C8",
+                boxShadow: "0 22px 44px rgba(26,26,26,0.08)",
+              }}
+            >
+              <h2
+                className="mb-5 text-4xl uppercase"
+                style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
               >
-                <h2
-                  className="text-3xl uppercase mb-6"
-                  style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
-                >
-                  Registrarme en este reto
-                </h2>
-                <FormRegistro reto={reto} />
-              </div>
+                Unirme al reto
+              </h2>
+              <FormRegistro reto={reto} />
             </div>
-          </div>
+          </section>
         </div>
       </div>
 

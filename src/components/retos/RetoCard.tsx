@@ -16,9 +16,9 @@ const dificultadColor: Record<Dificultad, string> = {
 };
 
 const dificultadLabel: Record<Dificultad, string> = {
-  facil: "Fácil",
+  facil: "Facil",
   medio: "Medio",
-  dificil: "Difícil",
+  dificil: "Dificil",
 };
 
 interface RetoCardProps {
@@ -27,15 +27,26 @@ interface RetoCardProps {
 
 export function RetoCard({ reto }: RetoCardProps) {
   const Icon = RETO_ICONS[reto.iconName] ?? Activity;
+
   return (
     <div
-      className="relative p-6 rounded-xl border transition-all duration-300 hover:border-[#F26430] hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(242,100,48,0.12)] flex flex-col"
+      className="group relative overflow-hidden rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_45px_rgba(26,26,26,0.12)]"
       style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}
     >
-      <div className="flex items-start justify-between mb-4">
-        <Icon className="w-10 h-10" style={{ color: "#F26430" }} />
+      <div
+        className="absolute left-0 right-0 top-0 h-1.5"
+        style={{ background: "linear-gradient(90deg, #F26430, #F7A04B, #E03228)" }}
+      />
+
+      <div className="mb-5 flex items-start justify-between">
+        <div
+          className="rounded-xl p-2.5"
+          style={{ backgroundColor: "#FFF5EF", border: "1px solid #F8DCCF" }}
+        >
+          <Icon className="h-6 w-6" style={{ color: "#F26430" }} />
+        </div>
         <span
-          className="text-xs font-bold px-3 py-1 rounded-full"
+          className="rounded-full px-3 py-1 text-xs font-bold"
           style={{
             color: dificultadColor[reto.dificultad],
             backgroundColor: `${dificultadColor[reto.dificultad]}20`,
@@ -47,35 +58,39 @@ export function RetoCard({ reto }: RetoCardProps) {
       </div>
 
       <h3
-        className="text-2xl uppercase mb-1"
+        className="mb-2 text-2xl uppercase leading-none"
         style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
       >
         {reto.titulo}
       </h3>
 
-      <p
-        className="text-xs text-gray-600 mb-3"
-        style={{ fontFamily: "var(--font-dm-sans)" }}
-      >
-        {reto.duracion_dias} días · {reto.meta_diaria}
+      <p className="mb-4 text-xs text-gray-600" style={{ fontFamily: "var(--font-dm-sans)" }}>
+        {reto.duracion_dias} dias
       </p>
 
       <p
-        className="text-sm text-gray-600 mb-6 flex-1 leading-relaxed"
+        className="mb-6 min-h-20 text-sm leading-relaxed text-gray-600"
         style={{ fontFamily: "var(--font-dm-sans)" }}
       >
         {reto.descripcion}
       </p>
 
+      <div
+        className="mb-4 rounded-lg px-3 py-2 text-xs"
+        style={{ backgroundColor: "#F8F3EA", color: "#6A5E54", fontFamily: "var(--font-dm-sans)" }}
+      >
+        Meta diaria: <span className="font-semibold">{reto.meta_diaria}</span>
+      </div>
+
       <Link
         href={`/retos/${reto.slug}`}
-        className="w-full inline-flex items-center justify-center py-3 text-sm font-bold rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-95 text-white"
+        className="inline-flex w-full items-center justify-center rounded-lg py-3 text-sm font-bold text-white transition-all duration-200 hover:scale-[1.02] active:scale-95 group-hover:shadow-[0_12px_24px_rgba(224,50,40,0.28)]"
         style={{
           background: "linear-gradient(135deg, #F26430, #E03228)",
           fontFamily: "var(--font-dm-sans)",
         }}
       >
-        Quiero este reto →
+        Quiero este reto &rarr;
       </Link>
     </div>
   );

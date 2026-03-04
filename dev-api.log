@@ -1,0 +1,24 @@
+
+> pmc-app@0.1.0 dev
+> next dev --webpack
+
+▲ Next.js 16.1.6 (webpack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.192.1:3000
+- Environments: .env.local
+
+✓ Starting...
+✓ Ready in 3.6s
+○ Compiling /retos/[id] ...
+ GET /retos/leer-un-libro 200 in 7.4s (compile: 6.4s, generate-params: 1178ms, render: 1018ms)
+Supabase no configurado. Se omitira guardado en Supabase.
+ POST /api/registrar-participante 200 in 9.3s (compile: 1622ms, render: 7.7s)
+ GET /retos/leer-un-libro 200 in 491ms (compile: 76ms, generate-params: 15ms, render: 415ms)
+Supabase no configurado. Se omitira guardado en Supabase.
+ POST /api/registrar-participante 200 in 6.3s (compile: 6ms, render: 6.3s)
+ GET /retos/leer-un-libro 200 in 166ms (compile: 54ms, generate-params: 25ms, render: 112ms)
+ GET /retos/leer-un-libro 200 in 151ms (compile: 17ms, generate-params: 11ms, render: 134ms)
+Supabase no configurado. Se omitira guardado en Supabase.
+ POST /api/registrar-participante 200 in 1101ms (compile: 7ms, render: 1095ms)
+ GET /retos/leer-un-libro 200 in 171ms (compile: 44ms, generate-params: 22ms, render: 128ms)
+ GET /retos/leer-un-libro 200 in 2.0s (compile: 859ms, generate-params: 39ms, render: 1144ms)
