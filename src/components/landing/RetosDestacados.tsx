@@ -28,7 +28,7 @@ export function RetosDestacados() {
   return (
     <section
       className="py-24 px-4"
-      style={{ backgroundColor: "#FDFAF5", borderTop: "1px solid #E8E0D0" }}
+      style={{ backgroundColor: "rgba(253,250,245, 0.6)", borderTop: "1px solid #E8E0D0" }}
     >
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 gap-4">
@@ -62,7 +62,7 @@ export function RetosDestacados() {
             <Link
               key={reto.slug}
               href={`/retos/${reto.slug}`}
-              className="group relative p-6 rounded-xl border transition-all duration-300 hover:border-[#F26430] hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(242,100,48,0.12)]"
+              className="group relative p-6 rounded-xl border transition-all duration-300 hover:border-[#F26430] hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(242,100,48,0.35)]"
               style={{
                 backgroundColor: "#FFFFFF",
                 borderColor: "#E8E0D0",

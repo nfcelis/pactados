@@ -30,13 +30,10 @@ export function RetoCard({ reto }: RetoCardProps) {
 
   return (
     <div
-      className="group relative overflow-hidden rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_45px_rgba(26,26,26,0.12)]"
+      className="group relative overflow-hidden rounded-2xl border p-6 transition-all duration-300 hover:border-[#F26430] hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(242,100,48,0.35)]"
       style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}
     >
-      <div
-        className="absolute left-0 right-0 top-0 h-1.5"
-        style={{ background: "linear-gradient(90deg, #F26430, #F7A04B, #E03228)" }}
-      />
+      
 
       <div className="mb-5 flex items-start justify-between">
         <div

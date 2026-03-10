@@ -119,7 +119,7 @@ export default async function RetoDetallePage({ params }: Props) {
             </p>
 
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="rounded-xl border px-4 py-3" style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}>
+              <div className="rounded-xl border px-4 py-3 hover:border-[#F26430] hover:shadow-[0_0_30px_rgba(242,100,48,0.35)]" style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}>
                 <p className="mb-1 text-xs uppercase tracking-wider text-gray-500" style={{ fontFamily: "var(--font-dm-sans)" }}>
                   Duracion
                 </p>
@@ -129,7 +129,7 @@ export default async function RetoDetallePage({ params }: Props) {
                 </p>
               </div>
 
-              <div className="rounded-xl border px-4 py-3" style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}>
+              <div className="rounded-xl border px-4 py-3 hover:border-[#F26430] hover:shadow-[0_0_30px_rgba(242,100,48,0.35)]" style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}>
                 <p className="mb-1 text-xs uppercase tracking-wider text-gray-500" style={{ fontFamily: "var(--font-dm-sans)" }}>
                   Meta diaria
                 </p>
@@ -139,7 +139,7 @@ export default async function RetoDetallePage({ params }: Props) {
                 </p>
               </div>
 
-              <div className="rounded-xl border px-4 py-3" style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}>
+              <div className="rounded-xl border px-4 py-3 hover:border-[#F26430] hover:shadow-[0_0_30px_rgba(242,100,48,0.35)]" style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}>
                 <p className="mb-1 text-xs uppercase tracking-wider text-gray-500" style={{ fontFamily: "var(--font-dm-sans)" }}>
                   Intensidad
                 </p>

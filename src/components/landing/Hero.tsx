@@ -5,8 +5,8 @@ import Link from "next/link";
 export function Hero() {
   return (
     <section
-      className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden"
-      style={{ backgroundColor: "#F5F0E8" }}
+      className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden pt-30"
+      
     >
       {/* Background texture */}
       <div
@@ -24,14 +24,6 @@ export function Hero() {
       />
 
       <div className="relative z-10 text-center max-w-4xl mx-auto">
-        {/* Badge */}
-        <div
-          className="animate-fade-in-up inline-flex items-center gap-2 px-4 py-2 rounded-full border mb-8 text-sm font-medium"
-          style={{ borderColor: "#1A1A1A", color: "#1A1A1A", fontFamily: "var(--font-dm-sans)" }}
-        >
-          <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: "#1A1A1A" }} />
-          Retos activos disponibles
-        </div>
 
         {/* Headline */}
         <h1
@@ -68,13 +60,7 @@ export function Hero() {
           </Link>
         </div>
 
-        {/* Social proof */}
-        <p
-          className="animate-fade-in-up delay-400 mt-8 text-sm text-gray-500"
-          style={{ fontFamily: "var(--font-dm-sans)" }}
-        >
-          Sin pagos. Sin complicaciones. Solo compromisos reales.
-        </p>
+        
       </div>
 
       {/* Scroll indicator */}

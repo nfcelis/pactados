@@ -204,7 +204,7 @@ export function FormRetoPersonalizado() {
         </div>
       </section>
 
-      <section className="rounded-2xl border p-4 sm:p-6" style={{ borderColor: "#E9E1D4", backgroundColor: "#FFFFFF" }}>
+      <section className="rounded-2xl border p-4 sm:p-6" style={{ borderColor: "#E9E1D4", backgroundColor: "#FFFCF8" }}>
         <h2 className="mb-4 text-3xl uppercase" style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}>
           2. Participantes y apuesta
         </h2>

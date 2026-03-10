@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, DM_Sans } from "next/font/google";
 import "./globals.css";
+import DoodleBackground from "@/components/DoodleBackground";
 
 const bebasNeue = Bebas_Neue({
   weight: "400",
@@ -31,12 +32,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" style={{ backgroundColor: "#F5F0E8" }}>
+    <html lang="es">
       <body
         className={`${bebasNeue.variable} ${dmSans.variable} antialiased`}
         style={{ backgroundColor: "#F5F0E8", color: "#1A1A1A" }}
       >
-        {children}
+        <DoodleBackground bgColor="#F5F0E8" doodleColor="#110f0f">
+          {children}
+        </DoodleBackground>
       </body>
     </html>
   );

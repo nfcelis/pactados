@@ -8,7 +8,7 @@ import { Footer } from "@/components/landing/Footer";
 
 export default function HomePage() {
   return (
-    <main style={{ backgroundColor: "#F5F0E8" }}>
+    <main>
       <Navbar />
       <Hero />
       <ComoFunciona />

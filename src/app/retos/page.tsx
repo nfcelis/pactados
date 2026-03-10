@@ -8,6 +8,8 @@ import { Footer } from "@/components/landing/Footer";
 import { RetoCard } from "@/components/retos/RetoCard";
 import { RETOS } from "@/lib/retos-predefinidos";
 import { Categoria } from "@/types";
+import DoodleBackground from "@/components/DoodleBackground";
+
 
 const categorias: { valor: Categoria | "todos"; label: string; icon?: LucideIcon }[] = [
   { valor: "todos", label: "Todos" },
@@ -28,7 +30,7 @@ export default function RetosPage() {
   return (
     <main className="relative min-h-screen overflow-hidden" style={{ backgroundColor: "#F5F0E8" }}>
       <Navbar />
-
+      <DoodleBackground bgColor="#F5F0E8" doodleColor="#110f0f">
       <div
         className="pointer-events-none absolute -left-20 top-20 h-72 w-72 rounded-full blur-3xl"
         style={{ backgroundColor: "rgba(242,100,48,0.14)" }}
@@ -123,7 +125,7 @@ export default function RetosPage() {
           )}
         </div>
       </div>
-
+      </DoodleBackground>
       <Footer />
     </main>
   );

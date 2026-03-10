@@ -26,7 +26,7 @@ const pasos: { numero: string; icon: LucideIcon; titulo: string; descripcion: st
 
 export function ComoFunciona() {
   return (
-    <section className="py-24 px-4" style={{ backgroundColor: "#F5F0E8" }}>
+    <section className="py-24 px-4" style={{ backgroundColor: "rgba(237, 232, 223,0.6)" }} >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <p

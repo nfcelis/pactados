@@ -163,7 +163,7 @@ export function FormRegistro({ reto }: FormRegistroProps) {
     return (
       <div
         className="rounded-2xl border p-8 text-center"
-        style={{ backgroundColor: "#FFFDF9", borderColor: "#E8DCCA" }}
+        style={{ backgroundColor: "#e49800", borderColor: "#E8DCCA" }}
       >
         <div className="mb-4 flex justify-center">
           <div className="rounded-2xl p-3" style={{ backgroundColor: "#FCEDE6" }}>
@@ -228,7 +228,7 @@ export function FormRegistro({ reto }: FormRegistroProps) {
         </div>
       </div>
 
-      <div className="rounded-2xl border p-4 sm:p-5" style={{ borderColor: "#E9E1D4", backgroundColor: "#FFFFFF" }}>
+      <div className="rounded-2xl border p-4 sm:p-5" style={{ borderColor: "#E9E1D4", backgroundColor: "#FFFCF8" }}>
         <h3 className="mb-4 text-xl uppercase" style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}>
           Datos del grupo
         </h3>

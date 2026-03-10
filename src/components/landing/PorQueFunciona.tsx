@@ -23,7 +23,7 @@ const razones: { icon: LucideIcon; titulo: string; descripcion: string }[] = [
 
 export function PorQueFunciona() {
   return (
-    <section className="py-24 px-4" style={{ backgroundColor: "#EDE8DF" }}>
+    <section className="py-24 px-4" style={{ backgroundColor: "rgba(237, 232, 223,0.6)" }}>
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <p
