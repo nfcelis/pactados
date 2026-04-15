@@ -77,6 +77,7 @@ export function ComoFunciona() {
   const desktopSceneRef = useRef<HTMLDivElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const circleRef = useRef<HTMLDivElement>(null);
+  const introTitleRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -84,9 +85,10 @@ export function ComoFunciona() {
     const desktopScene = desktopSceneRef.current;
     const pin = pinRef.current;
     const circle = circleRef.current;
+    const introTitle = introTitleRef.current;
     const content = contentRef.current;
 
-    if (!section || !desktopScene || !pin || !circle || !content) {
+    if (!section || !desktopScene || !pin || !circle || !introTitle || !content) {
       return;
     }
 
@@ -96,6 +98,9 @@ export function ComoFunciona() {
       mm.add("(min-width: 768px)", () => {
         const headingBits = gsap.utils.toArray<HTMLElement>(
           content.querySelectorAll("[data-system-copy]")
+        );
+        const introWords = gsap.utils.toArray<HTMLElement>(
+          introTitle.querySelectorAll("[data-system-word]")
         );
         const cards = gsap.utils.toArray<HTMLElement>(
           content.querySelectorAll("[data-system-card]")
@@ -107,9 +112,24 @@ export function ComoFunciona() {
           transformOrigin: "50% 50%",
           force3D: true,
         });
+        gsap.set(introTitle, {
+          autoAlpha: 1,
+          scale: 1,
+          y: 0,
+          transformOrigin: "50% 50%",
+          force3D: true,
+        });
+        gsap.set(introWords, {
+          autoAlpha: 0,
+          y: 22,
+          scale: 0.94,
+          filter: "blur(20px)",
+          force3D: true,
+        });
         gsap.set(headingBits, {
           autoAlpha: 0,
           y: 42,
+          filter: "blur(20px)",
           force3D: true,
         });
         gsap.set(cards, {
@@ -121,9 +141,9 @@ export function ComoFunciona() {
         const preOpenTimeline = gsap.timeline({
           defaults: { ease: "none" },
           scrollTrigger: {
-            trigger: section,
+            trigger: desktopScene,
             start: "top bottom",
-            end: "top 72%",
+            end: "top top",
             scrub: 1,
             invalidateOnRefresh: true,
           },
@@ -135,6 +155,19 @@ export function ComoFunciona() {
           duration: 1,
           ease: "power2.out",
         });
+        preOpenTimeline.to(
+          introWords,
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 0.16,
+            stagger: 0.16,
+            ease: "power2.out",
+          },
+          0.08
+        );
 
         const timeline = gsap.timeline({
           defaults: { ease: "none" },
@@ -161,15 +194,40 @@ export function ComoFunciona() {
             0
           )
           .to(
+            introTitle,
+            {
+              autoAlpha: 0,
+              scale: 0.78,
+              y: -18,
+              duration: 0.26,
+              ease: "power2.out",
+            },
+            0.16
+          )
+          .to(
+            introWords,
+            {
+              autoAlpha: 0,
+              y: -10,
+              scale: 0.94,
+              filter: "blur(20px)",
+              duration: 0.22,
+              stagger: 0.03,
+              ease: "power2.out",
+            },
+            0.16
+          )
+          .to(
             headingBits,
             {
               autoAlpha: 1,
               y: 0,
+              filter: "blur(0px)",
               duration: 0.48,
               stagger: 0.06,
               ease: "power2.out",
             },
-            0.28
+            0.24
           )
           .to(
             cards,
@@ -180,7 +238,7 @@ export function ComoFunciona() {
               stagger: 0.1,
               ease: "power2.out",
             },
-            0.22
+            0.36
           )
           .to(
             circle,
@@ -204,7 +262,7 @@ export function ComoFunciona() {
     <section
       ref={sectionRef}
       id="sistema"
-      className="relative overflow-visible px-6 pb-14 pt-10 md:-mt-[4.5rem] md:px-10 md:pb-[4.5rem] md:pt-[4.5rem] lg:-mt-24 lg:px-14 lg:pt-24"
+      className="relative overflow-visible px-6 pb-14 pt-10 md:-mt-[10rem] md:px-10 md:pb-[4.5rem] md:pt-2 lg:-mt-[12rem] lg:px-14 lg:pt-4"
     >
       <div className="absolute left-[10%] top-8 h-20 w-20 rounded-full bg-white/8 blur-3xl" />
       <div className="absolute right-[12%] top-16 h-24 w-24 rounded-full bg-[#ffb35f]/14 blur-3xl" />
@@ -215,7 +273,7 @@ export function ComoFunciona() {
             El sistema
           </p>
           <h2 className="font-display text-3xl uppercase tracking-wide text-[#fff7ef]">
-            Compromiso que se ve
+            ¿Cómo funciona el sistema?
           </h2>
           <div className="h-[2px] w-24 rounded-full bg-[#ffd8bb]/45" />
         </div>
@@ -232,7 +290,7 @@ export function ComoFunciona() {
           <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
             <div
               ref={circleRef}
-              className="absolute left-1/2 top-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full shadow-[0_24px_120px_rgba(132,45,17,0.14)]"
+              className="absolute left-1/2 top-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full shadow-[0_24px_120px_rgba(132,45,17,0.14)]"
               style={{
                 width: "min(calc(100% - 2rem), 1080px)",
               }}
@@ -261,6 +319,36 @@ export function ComoFunciona() {
                 centerY={0}
                 zoom={0.92}
               />
+              <div
+                ref={introTitleRef}
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-[16%] z-10 flex flex-wrap content-center items-center justify-center gap-x-4 gap-y-2 text-center"
+              >
+                <span
+                  data-system-word
+                  className="font-display text-[clamp(2.15rem,4.8vw,4.6rem)] uppercase leading-[0.9] tracking-wide text-[#fff7ef] [text-shadow:0_10px_40px_rgba(97,31,10,0.2)]"
+                >
+                  ¿Cómo
+                </span>
+                <span
+                  data-system-word
+                  className="font-display text-[clamp(2.15rem,4.8vw,4.6rem)] uppercase leading-[0.9] tracking-wide text-[#fff7ef] [text-shadow:0_10px_40px_rgba(97,31,10,0.2)]"
+                >
+                  funciona
+                </span>
+                <span
+                  data-system-word
+                  className="font-display text-[clamp(2.15rem,4.8vw,4.6rem)] uppercase leading-[0.9] tracking-wide text-[#fff7ef] [text-shadow:0_10px_40px_rgba(97,31,10,0.2)]"
+                >
+                  el
+                </span>
+                <span
+                  data-system-word
+                  className="font-display text-[clamp(2.15rem,4.8vw,4.6rem)] uppercase leading-[0.9] tracking-wide text-[#fff7ef] [text-shadow:0_10px_40px_rgba(97,31,10,0.2)]"
+                >
+                  sistema?
+                </span>
+              </div>
             </div>
 
             <div
@@ -288,7 +376,7 @@ export function ComoFunciona() {
                 data-system-copy
                 className="font-display text-4xl uppercase tracking-wide text-[#fff7ef]"
               >
-                Compromiso que se ve
+                ¿Cómo funciona el sistema?
               </h2>
               <div
                 data-system-copy
