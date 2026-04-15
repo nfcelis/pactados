@@ -33,7 +33,7 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
 
   const handleFocus = () => {
     setIsFocused(true);
-    setOpacity(0.6);
+    setOpacity(0.92);
   };
 
   const handleBlur = () => {
@@ -42,7 +42,7 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
   };
 
   const handleMouseEnter = () => {
-    setOpacity(0.6);
+    setOpacity(0.92);
   };
 
   const handleMouseLeave = () => {
@@ -64,7 +64,10 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out"
         style={{
           opacity,
-          background: `radial-gradient(circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 80%)`,
+          background: `
+            radial-gradient(circle at ${position.x}px ${position.y}px, ${spotlightColor} 0%, transparent 44%),
+            radial-gradient(circle at ${position.x}px ${position.y}px, rgba(255,255,255,0.16) 0%, transparent 18%)
+          `,
         }}
       />
       {children}

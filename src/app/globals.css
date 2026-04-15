@@ -483,6 +483,38 @@
     0 0 12px rgba(164, 63, 23, 0.12);
 }
 
+.system-circle-line {
+  text-shadow:
+    0 10px 40px rgba(97, 31, 10, 0.2),
+    0 2px 10px rgba(255, 244, 223, 0.12);
+}
+
+@keyframes system-neon-pulse {
+  0%,
+  100% {
+    text-shadow:
+      0 0 6px rgba(255, 225, 140, 0.28),
+      0 0 16px rgba(244, 181, 62, 0.28),
+      0 0 28px rgba(207, 121, 28, 0.22),
+      0 10px 34px rgba(97, 31, 10, 0.18);
+    filter: saturate(1) brightness(1);
+  }
+
+  50% {
+    text-shadow:
+      0 0 10px rgba(255, 236, 174, 0.58),
+      0 0 22px rgba(255, 198, 78, 0.5),
+      0 0 38px rgba(227, 150, 36, 0.4),
+      0 0 56px rgba(182, 96, 14, 0.24),
+      0 12px 42px rgba(97, 31, 10, 0.24);
+    filter: saturate(1.08) brightness(1.06);
+  }
+}
+
+.system-circle-neon {
+  animation: system-neon-pulse 2.8s ease-in-out infinite;
+}
+
 .landing-orb {
   position: absolute;
   border-radius: 999px;

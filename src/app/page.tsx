@@ -1,11 +1,12 @@
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { ComoFunciona } from "@/components/landing/ComoFunciona";
+import { CienciaDetras } from "@/components/landing/CienciaDetras";
 import { Footer } from "@/components/landing/Footer";
 
 export default function HomePage() {
   return (
-    <main className="landing-stage px-4 py-6 md:px-6 lg:px-8">
+    <main className="landing-stage overflow-hidden px-4 pb-0 pt-6 md:px-6 lg:px-8">
       <div className="landing-orb landing-orb-left" aria-hidden="true" />
       <div className="landing-orb landing-orb-right" aria-hidden="true" />
 
@@ -14,6 +15,7 @@ export default function HomePage() {
           <Navbar />
           <Hero />
           <ComoFunciona />
+          <CienciaDetras />
           <Footer />
         </section>
       </div>
