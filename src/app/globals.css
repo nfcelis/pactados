@@ -152,6 +152,32 @@
   }
 }
 
+@keyframes science-title-float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-2px) scale(1.01);
+  }
+}
+
+@keyframes science-title-glow {
+  0%,
+  100% {
+    opacity: 0.54;
+    transform: translate(-50%, 0) scale(0.96);
+    filter: blur(22px);
+  }
+
+  50% {
+    opacity: 0.92;
+    transform: translate(-50%, -4px) scale(1.06);
+    filter: blur(30px);
+  }
+}
+
 .animate-fade-in-up {
   animation: fadeInUp 0.6s ease-out forwards;
 }
@@ -481,6 +507,206 @@
     0 8px 12px rgba(89, 28, 10, 0.18),
     0 14px 24px rgba(99, 34, 12, 0.2),
     0 0 12px rgba(164, 63, 23, 0.12);
+}
+
+.science-title-shell {
+  isolation: isolate;
+  text-wrap: balance;
+}
+
+.science-title {
+  animation: science-title-float 5.4s ease-in-out infinite;
+  text-shadow:
+    0 10px 18px rgba(72, 17, 4, 0.16),
+    0 18px 34px rgba(66, 14, 3, 0.24),
+    0 28px 58px rgba(49, 9, 2, 0.28),
+    0 0 30px rgba(255, 227, 172, 0.16);
+}
+
+.science-title-static {
+  position: relative;
+  color: #fff0dd;
+  text-shadow:
+    0 4px 10px rgba(255, 245, 220, 0.14),
+    0 14px 24px rgba(71, 18, 5, 0.2),
+    0 24px 40px rgba(52, 10, 2, 0.22),
+    0 0 22px rgba(255, 216, 146, 0.14);
+}
+
+.science-title-gradient {
+  line-height: 0.92;
+}
+
+.science-title-gradient .gradient-text-content {
+  -webkit-text-stroke: 1px rgba(112, 39, 15, 0.18);
+  filter:
+    saturate(1.12)
+    brightness(1.04)
+    drop-shadow(0 8px 14px rgba(255, 236, 199, 0.12))
+    drop-shadow(0 18px 30px rgba(72, 18, 5, 0.22))
+    drop-shadow(0 28px 44px rgba(50, 10, 2, 0.2));
+  text-shadow:
+    0 2px 0 rgba(255, 246, 220, 0.18),
+    0 6px 14px rgba(212, 108, 39, 0.14),
+    0 16px 32px rgba(71, 18, 5, 0.2),
+    0 0 24px rgba(255, 202, 121, 0.2);
+}
+
+.science-title-glow {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  z-index: 0;
+  width: min(62vw, 34rem);
+  height: clamp(4.2rem, 12vw, 7.2rem);
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 248, 225, 0.82) 0%, rgba(255, 203, 117, 0.48) 28%, rgba(255, 141, 68, 0.18) 56%, transparent 74%);
+  animation: science-title-glow 4.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.science-pill-shell {
+  position: relative;
+}
+
+.science-pill-button {
+  width: 100%;
+}
+
+.science-pill-button-content {
+  padding-left: 1.45rem;
+  padding-right: 1.65rem;
+}
+
+.science-pill-copy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.22em;
+  text-shadow:
+    0 2px 0 rgba(255, 246, 225, 0.06),
+    0 10px 24px rgba(0, 0, 0, 0.3);
+}
+
+.science-pill-plus,
+.science-pill-equals {
+  color: #ffd66d;
+  text-shadow:
+    0 0 14px rgba(255, 204, 102, 0.24),
+    0 0 24px rgba(242, 122, 50, 0.16);
+}
+
+.science-pill-fire {
+  position: absolute;
+  left: 50%;
+  top: -3.5rem;
+  width: 84px;
+  height: 78px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+  will-change: transform;
+  animation: hero-fire-breathe 6.8s cubic-bezier(0.42, 0, 0.2, 1) infinite;
+}
+
+.science-pill-fire-corner {
+  left: auto;
+  right: 1rem;
+  top: -2.45rem;
+  transform: rotate(16deg);
+  transform-origin: 58% 74%;
+}
+
+.science-pill-fire span {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.science-pill-fire-aura {
+  bottom: 10px;
+  width: 126px;
+  height: 78px;
+  background:
+    radial-gradient(ellipse at 50% 52%, rgba(255, 243, 175, 0.94), rgba(255, 220, 98, 0.64) 34%, rgba(255, 171, 75, 0.22) 58%, transparent 75%);
+  filter: blur(14px);
+  transform-origin: 50% 55%;
+  will-change: transform, opacity;
+  animation: hero-fire-aura-breathe 6.8s cubic-bezier(0.42, 0, 0.2, 1) infinite;
+}
+
+.science-pill-fire-halo {
+  bottom: 20px;
+  width: 94px;
+  height: 48px;
+  background:
+    radial-gradient(ellipse at center, rgba(255, 247, 197, 0.98), rgba(255, 205, 76, 0.68) 42%, transparent 74%);
+  filter: blur(10px);
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+  animation: hero-fire-halo-breathe 6.8s cubic-bezier(0.42, 0, 0.2, 1) infinite;
+}
+
+.science-pill-fire-image {
+  object-fit: contain;
+  filter:
+    drop-shadow(0 8px 10px rgba(255, 255, 255, 0.54))
+    drop-shadow(0 18px 24px rgba(255, 115, 53, 0.18));
+  transform-origin: 50% 72%;
+  will-change: transform, filter;
+  animation: hero-fire-image-breathe 6.8s cubic-bezier(0.42, 0, 0.2, 1) infinite;
+}
+
+.science-pill-fire-lines {
+  position: absolute;
+  right: 0.2rem;
+  top: 0.15rem;
+  height: 2rem;
+  width: 2rem;
+  object-fit: contain;
+  opacity: 0.88;
+}
+
+.science-pill-highlight {
+  display: inline-flex;
+  margin-left: 0.18em;
+  vertical-align: baseline;
+  line-height: 0.92;
+}
+
+.science-pill-highlight .gradient-text-content {
+  -webkit-text-stroke: 0.8px rgba(120, 45, 14, 0.22);
+  filter:
+    saturate(1.22)
+    brightness(1.1)
+    drop-shadow(0 0 12px rgba(255, 229, 162, 0.2))
+    drop-shadow(0 10px 20px rgba(92, 25, 8, 0.18))
+    drop-shadow(0 18px 30px rgba(41, 9, 2, 0.16));
+  text-shadow:
+    0 1px 0 rgba(255, 251, 236, 0.2),
+    0 0 16px rgba(255, 213, 131, 0.22),
+    0 0 28px rgba(255, 170, 74, 0.18);
+}
+
+@media (min-width: 768px) {
+  .science-pill-button-content {
+    padding-left: 2.1rem;
+    padding-right: 2.2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .science-pill-fire-corner {
+    right: 0.2rem;
+    top: -2.15rem;
+    transform: rotate(12deg) scale(0.88);
+  }
+
+  .science-pill-copy {
+    gap: 0.16em;
+  }
 }
 
 .system-circle-line {

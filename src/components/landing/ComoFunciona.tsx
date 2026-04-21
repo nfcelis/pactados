@@ -310,8 +310,8 @@ export function ComoFunciona() {
           .to(
             circle,
             {
-              scale: 0.18,
-              autoAlpha: 0.2,
+              scale: 0.08,
+              autoAlpha: 0,
               duration: 1.12,
               ease: "power2.inOut",
             },
