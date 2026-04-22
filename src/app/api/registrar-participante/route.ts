@@ -2,6 +2,7 @@ import { appendRegistroToGoogleSheets } from "@/lib/google-sheets";
 import { getRetoPorSlug } from "@/lib/retos-predefinidos";
 import { createResend } from "@/lib/resend";
 import { createSupabaseClient } from "@/lib/supabase";
+import { crearGrupoParaReto } from "@/lib/whatsapp-grupos";
 
 type RegistroBody = {
   reto_slug: string;
@@ -184,6 +185,19 @@ export async function POST(req: Request) {
         { error: "No se pudo guardar el registro en Supabase ni Google Sheets." },
         { status: 500 }
       );
+    }
+
+    // Crear grupo de WhatsApp (no bloquea el registro si falla)
+    if (process.env.EVOLUTION_API_URL && process.env.EVOLUTION_API_KEY) {
+      crearGrupoParaReto({
+        retoSlug: reto_slug,
+        tituloReto: reto_titulo,
+        metaDiaria: reto_meta_diaria,
+        nombreOrganizador: nombre_apodo,
+        telefonoCodigoOrganizador: telefono_codigo,
+        telefonoNumeroOrganizador: telefono_numero,
+        participantes,
+      }).catch((err) => console.error("Error creando grupo WhatsApp:", err));
     }
 
     if (process.env.RESEND_API_KEY && process.env.CREATOR_EMAIL) {

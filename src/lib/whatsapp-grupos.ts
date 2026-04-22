@@ -1,0 +1,181 @@
+const EVOLUTION_URL = process.env.EVOLUTION_API_URL!;
+const EVOLUTION_KEY = process.env.EVOLUTION_API_KEY!;
+const INSTANCE = process.env.EVOLUTION_INSTANCE!;
+
+function getServiceSupabase() {
+  const { createClient } = require("@supabase/supabase-js");
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
+
+// ─── Verificar si ya existe un grupo activo con estos teléfonos ────
+
+export async function grupoYaExiste(
+  retoId: string,
+  telefonos: string[]
+): Promise<boolean> {
+  const supabase = getServiceSupabase();
+
+  const { data } = await supabase
+    .from("grupos_retos")
+    .select("participantes_telefonos")
+    .eq("reto_id", retoId)
+    .eq("activo", true);
+
+  if (!data || data.length === 0) return false;
+
+  for (const grupo of data) {
+    const telefonosGrupo: string[] = grupo.participantes_telefonos || [];
+    const mismosParticipantes = telefonos.every((t) => telefonosGrupo.includes(t));
+    if (mismosParticipantes) return true;
+  }
+
+  return false;
+}
+
+// ─── Crear grupo en WhatsApp vía Evolution API ─────────────────────
+
+export async function crearGrupoWhatsApp(
+  nombreGrupo: string,
+  participantes: string[]
+): Promise<string | null> {
+  try {
+    const res = await fetch(`${EVOLUTION_URL}/group/create/${INSTANCE}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: EVOLUTION_KEY,
+      },
+      body: JSON.stringify({
+        subject: nombreGrupo,
+        participants: participantes.map((p) => `${p}@s.whatsapp.net`),
+      }),
+    });
+
+    const data = await res.json();
+    console.log("GRUPO CREADO:", JSON.stringify(data, null, 2));
+
+    return data?.groupJid || data?.id || null;
+  } catch (error) {
+    console.error("Error creando grupo:", error);
+    return null;
+  }
+}
+
+// ─── Mensaje de bienvenida al grupo ───────────────────────────────
+
+export async function mandarBienvenida(
+  groupId: string,
+  tituloReto: string,
+  metaDiaria: string,
+  nombreOrganizador: string
+) {
+  const mensaje = `🎯 *¡Bienvenidos a Pactados!*
+
+Han sido añadidos al reto: *${tituloReto}*
+
+📋 *Meta diaria:* ${metaDiaria}
+
+📲 *¿Cómo verificar?*
+Cada día manda un audio o mensaje contando:
+1️⃣ Cuánto hiciste (páginas, km, minutos)
+2️⃣ Qué aprendiste o cómo te fue
+3️⃣ Cuándo lo hiciste
+
+El bot evaluará automáticamente si tu verificación es válida.
+
+*Organizador:* ${nombreOrganizador}
+¡Mucho éxito a todos! 💪`;
+
+  await fetch(`${EVOLUTION_URL}/message/sendText/${INSTANCE}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: EVOLUTION_KEY,
+    },
+    body: JSON.stringify({
+      number: groupId,
+      text: mensaje,
+    }),
+  });
+}
+
+// ─── Función principal ─────────────────────────────────────────────
+
+export async function crearGrupoParaReto({
+  retoSlug,
+  tituloReto,
+  metaDiaria,
+  nombreOrganizador,
+  telefonoCodigoOrganizador,
+  telefonoNumeroOrganizador,
+  participantes,
+}: {
+  retoSlug: string;
+  tituloReto: string;
+  metaDiaria: string;
+  nombreOrganizador: string;
+  telefonoCodigoOrganizador: string;
+  telefonoNumeroOrganizador: string;
+  participantes: Array<{ nombre: string; telefono_codigo: string; telefono_numero: string }>;
+}): Promise<{ ok: boolean; groupId?: string; error?: string }> {
+  const supabase = getServiceSupabase();
+
+  // 1. Obtener reto_id desde el slug
+  const { data: reto } = await supabase
+    .from("retos")
+    .select("id")
+    .eq("slug", retoSlug)
+    .single();
+
+  if (!reto) {
+    console.error("Reto no encontrado para slug:", retoSlug);
+    return { ok: false, error: "Reto no encontrado" };
+  }
+
+  // 2. Construir lista de teléfonos (sin +, sin espacios)
+  const limpiarTelefono = (codigo: string, numero: string) =>
+    (codigo + numero).replace(/\D/g, "");
+
+  const telefonoOrganizador = limpiarTelefono(
+    telefonoCodigoOrganizador,
+    telefonoNumeroOrganizador
+  );
+
+  const todosLosTelefonos = [
+    telefonoOrganizador,
+    ...participantes.map((p) => limpiarTelefono(p.telefono_codigo, p.telefono_numero)),
+  ];
+
+  console.log("Participantes del grupo:", todosLosTelefonos);
+
+  // 3. Anti-spam: verificar si ya existe un grupo igual
+  const yaExiste = await grupoYaExiste(reto.id, todosLosTelefonos);
+  if (yaExiste) {
+    console.log("Grupo ya existe, no se crea otro");
+    return { ok: false, error: "Ya existe un grupo con estos participantes" };
+  }
+
+  // 4. Crear el grupo en WhatsApp
+  const nombreGrupo = `Pactados - ${tituloReto}`;
+  const groupId = await crearGrupoWhatsApp(nombreGrupo, todosLosTelefonos);
+
+  if (!groupId) {
+    return { ok: false, error: "No se pudo crear el grupo" };
+  }
+
+  // 5. Guardar en Supabase
+  await supabase.from("grupos_retos").insert({
+    reto_id: reto.id,
+    whatsapp_group_id: groupId,
+    activo: true,
+    participantes_telefonos: todosLosTelefonos,
+  });
+
+  // 6. Mandar bienvenida
+  await mandarBienvenida(groupId, tituloReto, metaDiaria, nombreOrganizador);
+
+  return { ok: true, groupId };
+}
