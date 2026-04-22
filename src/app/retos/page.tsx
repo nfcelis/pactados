@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { motion } from "motion/react";
 import {
   Dumbbell,
   BookOpen,
@@ -104,24 +105,42 @@ export default function RetosPage() {
             </Link>
           </div>
 
-          {/* Cards grid */}
-          <div className="relative z-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {retosFiltrados.map((reto, i) => (
-              <div
-                key={reto.slug}
-                className="animate-fade-in-up"
-                style={{ animationDelay: `${0.1 + i * 0.07}s`, opacity: 0 }}
-              >
-                <RetoCard reto={reto} />
-              </div>
-            ))}
-          </div>
-
-          {retosFiltrados.length === 0 && (
+          {/* Cards bento grid */}
+          {retosFiltrados.length === 0 ? (
             <div className="landing-panel landing-panel-warm relative z-10 mt-8 px-6 py-14 text-center">
               <p className="font-body text-black/58">
                 Todavía no hay retos en esta categoría.
               </p>
+            </div>
+          ) : retosFiltrados.length === 4 ? (
+            <div className="relative z-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
+              {retosFiltrados.map((reto, i) => {
+                const isFeatured = i === 0 || i === 3;
+                return (
+                  <motion.div
+                    key={reto.slug}
+                    className={isFeatured ? "lg:col-span-2" : "lg:col-span-1"}
+                    initial={{ opacity: 0, y: 32 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.45, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <RetoCard reto={reto} featured={isFeatured} />
+                  </motion.div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="relative z-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {retosFiltrados.map((reto, i) => (
+                <motion.div
+                  key={reto.slug}
+                  initial={{ opacity: 0, y: 32 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <RetoCard reto={reto} />
+                </motion.div>
+              ))}
             </div>
           )}
         </section>
