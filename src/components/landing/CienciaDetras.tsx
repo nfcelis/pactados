@@ -80,30 +80,31 @@ export function CienciaDetras() {
   return (
     <section
       id="ciencia"
-      className="relative left-1/2 z-10 isolate w-screen -translate-x-1/2 px-6 pb-8 pt-4 md:-mt-[4.5rem] md:px-10 md:pb-10 md:pt-[8.5rem] lg:-mt-[6rem] lg:px-14 lg:pb-12 lg:pt-[9.5rem]"
+      className="relative left-1/2 z-10 isolate w-screen -translate-x-1/2 px-6 pb-8 pt-4 md:-mt-[5.5rem] md:px-10 md:pb-10 md:pt-[8.75rem] lg:-mt-[7rem] lg:px-14 lg:pb-12 lg:pt-[9.75rem]"
     >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 inset-y-[-12rem] overflow-hidden"
         style={{
           maskImage:
-            "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.72) 12%, black 24%, black 100%)",
+            "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.28) 10%, rgba(0,0,0,0.72) 20%, black 34%, black 100%)",
           WebkitMaskImage:
-            "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.72) 12%, black 24%, black 100%)",
+            "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.28) 10%, rgba(0,0,0,0.72) 20%, black 34%, black 100%)",
         }}
       >
-        <div className="absolute left-1/2 top-[-14rem] h-[28rem] w-[min(148vw,112rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,250,239,0.2)_0%,rgba(255,239,212,0.14)_28%,rgba(255,218,173,0.1)_46%,transparent_72%)] blur-[86px]" />
-        <div className="absolute left-1/2 top-[-10rem] h-[23rem] w-[min(122vw,96rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,252,244,0.42)_0%,rgba(255,236,199,0.18)_36%,rgba(255,186,118,0.08)_62%,transparent_84%)] blur-[96px]" />
-        <div className="absolute left-1/2 top-[-2.5rem] h-[36rem] w-[min(116vw,88rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.44)_0%,rgba(255,244,220,0.24)_28%,rgba(255,204,138,0.1)_52%,transparent_82%)] blur-[128px]" />
-        <div className="absolute left-1/2 top-[14rem] h-[26rem] w-[min(112vw,90rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,220,163,0.2)_0%,rgba(255,173,92,0.12)_38%,rgba(233,115,49,0.08)_58%,transparent_82%)] blur-[120px]" />
+        <div className="absolute left-1/2 top-[-15rem] h-[26rem] w-[min(148vw,112rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,246,231,0.1)_0%,rgba(255,224,178,0.08)_32%,rgba(255,188,123,0.06)_52%,transparent_74%)] blur-[92px]" />
+        <div className="absolute left-1/2 top-[-8.5rem] h-[20rem] w-[min(122vw,96rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,245,225,0.18)_0%,rgba(255,223,180,0.1)_36%,rgba(255,173,101,0.05)_64%,transparent_84%)] blur-[104px]" />
+        <div className="absolute left-1/2 top-[1.5rem] h-[29rem] w-[min(116vw,88rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,247,232,0.18)_0%,rgba(255,230,196,0.12)_26%,rgba(255,191,120,0.07)_52%,transparent_82%)] blur-[132px]" />
+        <div className="absolute left-1/2 top-[14rem] h-[26rem] w-[min(112vw,90rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,220,163,0.16)_0%,rgba(255,173,92,0.1)_38%,rgba(233,115,49,0.07)_58%,transparent_82%)] blur-[120px]" />
+        <div className="absolute inset-x-0 top-[-2rem] h-[12rem] bg-[linear-gradient(180deg,rgba(246,188,124,0.16),rgba(246,188,124,0.06)_46%,transparent_100%)]" />
 
         <div
-          className="absolute inset-x-[-10%] top-[-3rem] h-[30rem] opacity-80 md:h-[38rem]"
+          className="absolute inset-x-[-10%] top-[11rem] h-[26rem] opacity-62 md:top-[12rem] md:h-[32rem]"
           style={{
             maskImage:
-              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.72) 14%, black 28%, black 70%, rgba(0,0,0,0.54) 86%, transparent 100%)",
+              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.48) 10%, rgba(0,0,0,0.9) 24%, black 56%, rgba(0,0,0,0.52) 82%, transparent 100%)",
             WebkitMaskImage:
-              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.72) 14%, black 28%, black 70%, rgba(0,0,0,0.54) 86%, transparent 100%)",
+              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.48) 10%, rgba(0,0,0,0.9) 24%, black 56%, rgba(0,0,0,0.52) 82%, transparent 100%)",
           }}
         >
           <div className="absolute inset-0 blur-[9px]">
@@ -123,12 +124,12 @@ export function CienciaDetras() {
         </div>
 
         <div
-          className="absolute inset-x-[-12%] top-[10rem] h-[34rem] opacity-58 md:top-[12rem] md:h-[38rem]"
+          className="absolute inset-x-[-12%] top-[18rem] h-[28rem] opacity-46 md:top-[19rem] md:h-[32rem]"
           style={{
             maskImage:
-              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.44) 10%, rgba(0,0,0,0.92) 26%, rgba(0,0,0,0.8) 68%, rgba(0,0,0,0.34) 88%, transparent 100%)",
+              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.32) 8%, rgba(0,0,0,0.82) 24%, rgba(0,0,0,0.74) 62%, rgba(0,0,0,0.28) 86%, transparent 100%)",
             WebkitMaskImage:
-              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.44) 10%, rgba(0,0,0,0.92) 26%, rgba(0,0,0,0.8) 68%, rgba(0,0,0,0.34) 88%, transparent 100%)",
+              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.32) 8%, rgba(0,0,0,0.82) 24%, rgba(0,0,0,0.74) 62%, rgba(0,0,0,0.28) 86%, transparent 100%)",
           }}
         >
           <div className="absolute inset-0 blur-[12px]">
@@ -148,7 +149,7 @@ export function CienciaDetras() {
         </div>
 
         <div
-          className="absolute left-1/2 top-[16.5rem] h-[15rem] w-[min(82vw,42rem)] -translate-x-1/2 opacity-46 md:top-[17rem] md:h-[17rem] md:w-[min(66vw,44rem)]"
+          className="absolute left-1/2 top-[24rem] h-[15rem] w-[min(82vw,42rem)] -translate-x-1/2 opacity-42 md:top-[25rem] md:h-[17rem] md:w-[min(66vw,44rem)]"
           style={{
             maskImage:
               "radial-gradient(ellipse at center, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.88) 34%, rgba(0,0,0,0.42) 68%, transparent 100%)",
@@ -173,7 +174,7 @@ export function CienciaDetras() {
         </div>
 
         <div
-          className="absolute left-1/2 top-[21.5rem] h-[13rem] w-[min(68vw,34rem)] -translate-x-1/2 opacity-36 md:top-[22rem] md:h-[15rem] md:w-[min(52vw,36rem)]"
+          className="absolute left-1/2 top-[29rem] h-[13rem] w-[min(68vw,34rem)] -translate-x-1/2 opacity-34 md:top-[30rem] md:h-[15rem] md:w-[min(52vw,36rem)]"
           style={{
             maskImage:
               "radial-gradient(ellipse at center, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.8) 38%, rgba(0,0,0,0.34) 72%, transparent 100%)",
@@ -198,7 +199,7 @@ export function CienciaDetras() {
         </div>
 
         <div
-          className="absolute left-1/2 top-[26rem] h-[11rem] w-[min(62vw,28rem)] -translate-x-1/2 opacity-30 md:top-[26.5rem] md:h-[12rem] md:w-[min(44vw,30rem)]"
+          className="absolute left-1/2 top-[33rem] h-[11rem] w-[min(62vw,28rem)] -translate-x-1/2 opacity-28 md:top-[34rem] md:h-[12rem] md:w-[min(44vw,30rem)]"
           style={{
             maskImage:
               "radial-gradient(ellipse at center, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.72) 40%, rgba(0,0,0,0.28) 74%, transparent 100%)",

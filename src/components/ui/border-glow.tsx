@@ -5,6 +5,7 @@ import { useRef, useCallback, useState, useEffect, type ReactNode } from "react"
 interface BorderGlowProps {
   children?: ReactNode;
   className?: string;
+  borderWidth?: number;
   edgeSensitivity?: number;
   glowColor?: string;
   backgroundColor?: string;
@@ -20,7 +21,11 @@ interface BorderGlowProps {
 function parseHSL(hslStr: string): { h: number; s: number; l: number } {
   const match = hslStr.match(/([\d.]+)\s*([\d.]+)%?\s*([\d.]+)%?/);
   if (!match) return { h: 40, s: 80, l: 80 };
-  return { h: parseFloat(match[1]), s: parseFloat(match[2]), l: parseFloat(match[3]) };
+  return {
+    h: parseFloat(match[1]),
+    s: parseFloat(match[2]),
+    l: parseFloat(match[3]),
+  };
 }
 
 function buildBoxShadow(glowColor: string, intensity: number): string {
@@ -99,27 +104,25 @@ const GRADIENT_POSITIONS = [
   "82% 18%",
   "51% 4%",
 ];
-
 const COLOR_MAP = [0, 1, 2, 0, 1, 2, 1];
 
 function buildMeshGradients(colors: string[]): string[] {
   const gradients: string[] = [];
-
   for (let i = 0; i < 7; i++) {
     const c = colors[Math.min(COLOR_MAP[i], colors.length - 1)];
     gradients.push(`radial-gradient(at ${GRADIENT_POSITIONS[i]}, ${c} 0px, transparent 50%)`);
   }
-
   gradients.push(`linear-gradient(${colors[0]} 0 100%)`);
   return gradients;
 }
 
-const BorderGlow: React.FC<BorderGlowProps> = ({
+export default function BorderGlow({
   children,
   className = "",
+  borderWidth = 3,
   edgeSensitivity = 30,
   glowColor = "40 80 80",
-  backgroundColor = "#060010",
+  backgroundColor = "#120F17",
   borderRadius = 28,
   glowRadius = 40,
   glowIntensity = 1.0,
@@ -127,7 +130,7 @@ const BorderGlow: React.FC<BorderGlowProps> = ({
   animated = false,
   colors = ["#c084fc", "#f472b6", "#38bdf8"],
   fillOpacity = 0.5,
-}) => {
+}: BorderGlowProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [cursorAngle, setCursorAngle] = useState(45);
@@ -177,7 +180,7 @@ const BorderGlow: React.FC<BorderGlowProps> = ({
       setEdgeProximity(getEdgeProximity(card, x, y));
       setCursorAngle(getCursorAngle(card, x, y));
     },
-    [getCursorAngle, getEdgeProximity]
+    [getEdgeProximity, getCursorAngle]
   );
 
   useEffect(() => {
@@ -193,7 +196,7 @@ const BorderGlow: React.FC<BorderGlowProps> = ({
       duration: 1500,
       end: 50,
       onUpdate: (v) => {
-        setCursorAngle((angleEnd - angleStart) * (v / 100) + angleStart);
+        setCursorAngle(((angleEnd - angleStart) * v) / 100 + angleStart);
       },
     });
     animateValue({
@@ -203,7 +206,7 @@ const BorderGlow: React.FC<BorderGlowProps> = ({
       start: 50,
       end: 100,
       onUpdate: (v) => {
-        setCursorAngle((angleEnd - angleStart) * (v / 100) + angleStart);
+        setCursorAngle(((angleEnd - angleStart) * v) / 100 + angleStart);
       },
     });
     animateValue({
@@ -219,12 +222,20 @@ const BorderGlow: React.FC<BorderGlowProps> = ({
 
   const colorSensitivity = edgeSensitivity + 20;
   const isVisible = isHovered || sweepActive;
+  const baseBorderOpacity = animated ? 0.38 : 0.28;
+  const baseGlowOpacity = animated ? 0.2 : 0.14;
   const borderOpacity = isVisible
-    ? Math.max(0, (edgeProximity * 100 - colorSensitivity) / (100 - colorSensitivity))
-    : 0;
+    ? Math.max(
+        baseBorderOpacity,
+        (edgeProximity * 100 - colorSensitivity) / (100 - colorSensitivity)
+      )
+    : baseBorderOpacity;
   const glowOpacity = isVisible
-    ? Math.max(0, (edgeProximity * 100 - edgeSensitivity) / (100 - edgeSensitivity))
-    : 0;
+    ? Math.max(
+        baseGlowOpacity,
+        (edgeProximity * 100 - edgeSensitivity) / (100 - edgeSensitivity)
+      )
+    : baseGlowOpacity;
 
   const meshGradients = buildMeshGradients(colors);
   const borderBg = meshGradients.map((g) => `${g} border-box`);
@@ -241,11 +252,20 @@ const BorderGlow: React.FC<BorderGlowProps> = ({
       style={{
         background: backgroundColor,
         borderRadius: `${borderRadius}px`,
+        padding: `${borderWidth}px`,
         transform: "translate3d(0, 0, 0.01px)",
         boxShadow:
-          "rgba(0,0,0,0.1) 0 1px 2px, rgba(0,0,0,0.1) 0 2px 4px, rgba(0,0,0,0.1) 0 4px 8px, rgba(0,0,0,0.1) 0 8px 16px, rgba(0,0,0,0.1) 0 16px 32px, rgba(0,0,0,0.1) 0 32px 64px",
+          "rgba(0,0,0,0.08) 0 1px 2px, rgba(0,0,0,0.08) 0 4px 12px, rgba(0,0,0,0.06) 0 12px 28px",
       }}
     >
+      <div
+        className="absolute inset-0 -z-[1] rounded-[inherit]"
+        style={{
+          boxShadow: `inset 0 0 0 ${Math.max(borderWidth, 2)}px hsl(${parseHSL(glowColor).h}deg ${parseHSL(glowColor).s}% ${parseHSL(glowColor).l}% / 32%), 0 0 0 1px hsl(${parseHSL(glowColor).h}deg ${parseHSL(glowColor).s}% ${parseHSL(glowColor).l}% / 18%)`,
+          opacity: 0.95,
+        }}
+      />
+
       <div
         className="absolute inset-0 -z-[1] rounded-[inherit]"
         style={{
@@ -264,46 +284,50 @@ const BorderGlow: React.FC<BorderGlowProps> = ({
 
       <div
         className="absolute inset-0 -z-[1] rounded-[inherit]"
-        style={{
-          border: "1px solid transparent",
-          background: fillBg.join(", "),
-          maskImage: [
-            "linear-gradient(to bottom, black, black)",
-            "radial-gradient(ellipse at 50% 50%, black 40%, transparent 65%)",
-            "radial-gradient(ellipse at 66% 66%, black 5%, transparent 40%)",
-            "radial-gradient(ellipse at 33% 33%, black 5%, transparent 40%)",
-            "radial-gradient(ellipse at 66% 33%, black 5%, transparent 40%)",
-            "radial-gradient(ellipse at 33% 66%, black 5%, transparent 40%)",
-            `conic-gradient(from ${angleDeg} at center, transparent 5%, black 15%, black 85%, transparent 95%)`,
-          ].join(", "),
-          WebkitMaskImage: [
-            "linear-gradient(to bottom, black, black)",
-            "radial-gradient(ellipse at 50% 50%, black 40%, transparent 65%)",
-            "radial-gradient(ellipse at 66% 66%, black 5%, transparent 40%)",
-            "radial-gradient(ellipse at 33% 33%, black 5%, transparent 40%)",
-            "radial-gradient(ellipse at 66% 33%, black 5%, transparent 40%)",
-            "radial-gradient(ellipse at 33% 66%, black 5%, transparent 40%)",
-            `conic-gradient(from ${angleDeg} at center, transparent 5%, black 15%, black 85%, transparent 95%)`,
-          ].join(", "),
-          maskComposite: "subtract, add, add, add, add, add",
-          WebkitMaskComposite:
-            "source-out, source-over, source-over, source-over, source-over, source-over",
-          opacity: borderOpacity * fillOpacity,
-          mixBlendMode: "soft-light",
-          transition: isVisible ? "opacity 0.25s ease-out" : "opacity 0.75s ease-in-out",
-        } as React.CSSProperties}
+        style={
+          {
+            border: "1px solid transparent",
+            background: fillBg.join(", "),
+            maskImage: [
+              "linear-gradient(to bottom, black, black)",
+              "radial-gradient(ellipse at 50% 50%, black 40%, transparent 65%)",
+              "radial-gradient(ellipse at 66% 66%, black 5%, transparent 40%)",
+              "radial-gradient(ellipse at 33% 33%, black 5%, transparent 40%)",
+              "radial-gradient(ellipse at 66% 33%, black 5%, transparent 40%)",
+              "radial-gradient(ellipse at 33% 66%, black 5%, transparent 40%)",
+              `conic-gradient(from ${angleDeg} at center, transparent 5%, black 15%, black 85%, transparent 95%)`,
+            ].join(", "),
+            WebkitMaskImage: [
+              "linear-gradient(to bottom, black, black)",
+              "radial-gradient(ellipse at 50% 50%, black 40%, transparent 65%)",
+              "radial-gradient(ellipse at 66% 66%, black 5%, transparent 40%)",
+              "radial-gradient(ellipse at 33% 33%, black 5%, transparent 40%)",
+              "radial-gradient(ellipse at 66% 33%, black 5%, transparent 40%)",
+              "radial-gradient(ellipse at 33% 66%, black 5%, transparent 40%)",
+              `conic-gradient(from ${angleDeg} at center, transparent 5%, black 15%, black 85%, transparent 95%)`,
+            ].join(", "),
+            maskComposite: "subtract, add, add, add, add, add",
+            WebkitMaskComposite:
+              "source-out, source-over, source-over, source-over, source-over, source-over",
+            opacity: borderOpacity * fillOpacity,
+            mixBlendMode: "soft-light",
+            transition: isVisible ? "opacity 0.25s ease-out" : "opacity 0.75s ease-in-out",
+          } as React.CSSProperties
+        }
       />
 
       <span
         className="pointer-events-none absolute z-[1] rounded-[inherit]"
-        style={{
-          inset: `${-glowRadius}px`,
-          maskImage: `conic-gradient(from ${angleDeg} at center, black 2.5%, transparent 10%, transparent 90%, black 97.5%)`,
-          WebkitMaskImage: `conic-gradient(from ${angleDeg} at center, black 2.5%, transparent 10%, transparent 90%, black 97.5%)`,
-          opacity: glowOpacity,
-          mixBlendMode: "plus-lighter",
-          transition: isVisible ? "opacity 0.25s ease-out" : "opacity 0.75s ease-in-out",
-        } as React.CSSProperties}
+        style={
+          {
+            inset: `${-glowRadius}px`,
+            maskImage: `conic-gradient(from ${angleDeg} at center, black 2.5%, transparent 10%, transparent 90%, black 97.5%)`,
+            WebkitMaskImage: `conic-gradient(from ${angleDeg} at center, black 2.5%, transparent 10%, transparent 90%, black 97.5%)`,
+            opacity: glowOpacity,
+            mixBlendMode: "plus-lighter",
+            transition: isVisible ? "opacity 0.25s ease-out" : "opacity 0.75s ease-in-out",
+          } as React.CSSProperties
+        }
       >
         <span
           className="absolute rounded-[inherit]"
@@ -314,9 +338,14 @@ const BorderGlow: React.FC<BorderGlowProps> = ({
         />
       </span>
 
-      <div className="relative z-[1] flex flex-col overflow-auto">{children}</div>
+      <div
+        className="relative z-[1] flex flex-col overflow-hidden"
+        style={{
+          borderRadius: `calc(${borderRadius}px - ${borderWidth}px)`,
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
-};
-
-export default BorderGlow;
+}

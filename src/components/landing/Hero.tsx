@@ -8,7 +8,7 @@ import StarBorder from "@/components/ui/star-border";
 
 export function Hero() {
   return (
-    <section className="relative flex flex-1 flex-col justify-center overflow-hidden px-6 pb-20 pt-24 md:px-10 md:pt-28 lg:px-14 lg:pt-32">
+    <section className="relative flex flex-1 flex-col justify-center overflow-hidden px-6 pb-16 pt-20 md:min-h-[calc(100vh-2rem)] md:px-10 md:pb-36 md:pt-32 lg:px-14 lg:pb-44 lg:pt-36">
       <div className="landing-floating-doodle left-[20.8%] top-[22.6%] hidden lg:block">
         <Image
           src="/fuego-doodle-left.png"
@@ -62,8 +62,8 @@ export function Hero() {
             />
           </div>
 
-          <h1 className="font-display hero-title mx-auto text-[clamp(3rem,6.2vw,5.35rem)] leading-[0.9] uppercase tracking-tight">
-            <span className="hero-title-line block whitespace-nowrap">
+          <h1 className="font-display hero-title mx-auto text-[clamp(2rem,7.5vw,5.35rem)] leading-[0.9] uppercase tracking-tight">
+            <span className="hero-title-line block md:whitespace-nowrap">
               <span className="hero-title-solid">{"\u00bfY si "}</span>
               <GradientText
                 colors={["#FFB300", "#FF6A00", "#A80000", "#FF6A00", "#FFB300"]}
@@ -75,7 +75,7 @@ export function Hero() {
               </GradientText>
               <span className="hero-title-solid"> te</span>
             </span>
-            <span className="hero-title-line block whitespace-nowrap">
+            <span className="hero-title-line block md:whitespace-nowrap">
               <span className="hero-title-solid">{"hiciera M\u00C1S "}</span>
               <GradientText
                 colors={["#FFB300", "#FF6A00", "#A80000", "#FF6A00", "#FFB300"]}
@@ -114,7 +114,7 @@ export function Hero() {
                 alt=""
                 width={32}
                 height={36}
-                className="absolute left-[-1.9rem] top-1/2 h-[3.15rem] w-[2.7rem] -translate-y-1/2 object-contain opacity-95"
+                className="absolute left-[-1.9rem] top-1/2 hidden h-[3.15rem] w-[2.7rem] -translate-y-1/2 object-contain opacity-95 md:block"
               />
               <StarBorder
                 as="div"
@@ -137,7 +137,7 @@ export function Hero() {
                 alt=""
                 width={34}
                 height={26}
-                className="absolute right-[-2.35rem] top-[18%] h-[4.1rem] w-[3.5rem] -translate-y-1/2 object-contain opacity-95"
+                className="absolute right-[-2.35rem] top-[18%] hidden h-[4.1rem] w-[3.5rem] -translate-y-1/2 object-contain opacity-95 md:block"
               />
             </div>
           </div>

@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
+import { RetosEnAccion } from "@/components/landing/RetosEnAccion";
 import { ComoFunciona } from "@/components/landing/ComoFunciona";
 import { CienciaDetras } from "@/components/landing/CienciaDetras";
 import { CTA } from "@/components/landing/CTA";
@@ -15,6 +16,7 @@ export default function HomePage() {
         <section className="mx-auto flex min-h-[780px] w-full max-w-[1120px] flex-1 flex-col">
           <Navbar />
           <Hero />
+          <RetosEnAccion />
           <ComoFunciona />
           <CienciaDetras />
         </section>

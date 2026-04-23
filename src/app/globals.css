@@ -459,6 +459,30 @@
   text-wrap: balance;
 }
 
+@media (max-width: 767px) {
+  .hero-fire {
+    width: 160px;
+    height: 142px;
+    top: -2.4rem;
+  }
+
+  .hero-fire-aura {
+    width: 240px;
+    height: 142px;
+    bottom: 20px;
+  }
+
+  .hero-fire-halo {
+    width: 180px;
+    height: 88px;
+    bottom: 36px;
+  }
+
+  .hero-title {
+    margin-top: 4.6rem;
+  }
+}
+
 .hero-title-line {
   display: block;
 }
@@ -507,6 +531,60 @@
     0 8px 12px rgba(89, 28, 10, 0.18),
     0 14px 24px rgba(99, 34, 12, 0.2),
     0 0 12px rgba(164, 63, 23, 0.12);
+}
+
+.cta-poster-line {
+  transform: skewX(-5deg);
+}
+
+.cta-poster-tilt {
+  transform: skewX(-8deg) rotate(-2deg);
+  transform-origin: center;
+}
+
+.cta-poster-gradient {
+  filter:
+    saturate(1.62)
+    contrast(1.3)
+    brightness(1.08)
+    drop-shadow(0 8px 14px rgba(255, 220, 138, 0.2))
+    drop-shadow(0 18px 26px rgba(117, 26, 2, 0.24))
+    drop-shadow(0 22px 0 rgba(117, 26, 2, 0.26));
+}
+
+.cta-poster-gradient .gradient-text-content {
+  -webkit-text-stroke: 1px rgba(118, 40, 7, 0.32);
+  text-shadow:
+    0 2px 0 rgba(255, 238, 192, 0.22),
+    0 6px 8px rgba(255, 149, 45, 0.24),
+    0 14px 24px rgba(124, 29, 4, 0.28),
+    0 20px 0 rgba(124, 29, 4, 0.36),
+    0 24px 32px rgba(62, 12, 2, 0.24);
+}
+
+.cta-poster-ribbon {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(25, 24, 24, 0.96), rgba(7, 7, 7, 0.94));
+  box-shadow:
+    0 16px 30px rgba(12, 4, 2, 0.26),
+    0 2px 0 rgba(255, 255, 255, 0.05) inset;
+  transform: skewX(-10deg);
+}
+
+.cta-poster-ribbon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(255, 170, 71, 0.08) 48%, transparent 100%);
+  pointer-events: none;
+}
+
+.cta-poster-ribbon > * {
+  transform: skewX(10deg);
 }
 
 .science-title-shell {
@@ -1008,5 +1086,308 @@
 
   100% {
     transform: translate(1px, -1px);
+  }
+}
+
+/* ── ComoFunciona marble blob ── */
+.cf-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cf-bg-base {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(155deg, #fde4c0 0%, #f5c07a 45%, #e87840 100%);
+}
+
+.cf-blob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 115%;
+  height: 115%;
+  margin-top: -57.5%;
+  margin-left: -57.5%;
+  background: radial-gradient(
+    ellipse at 44% 44%,
+    #ffe040 0%,
+    #ff8800 30%,
+    #e83000 58%,
+    rgba(180, 20, 0, 0.6) 72%,
+    transparent 82%
+  );
+  border-radius: 50%;
+  overflow: hidden;
+  will-change: transform, filter;
+  animation:
+    blobHue 14s ease-in-out infinite alternate,
+    blobShape 18s ease-in-out infinite,
+    blobSpin 40s linear infinite;
+}
+
+@keyframes blobHue {
+  0% {
+    filter: hue-rotate(0deg) saturate(1.1) brightness(1.05);
+  }
+  30% {
+    filter: hue-rotate(-18deg) saturate(1.2) brightness(1);
+  }
+  65% {
+    filter: hue-rotate(-35deg) saturate(1.3) brightness(0.95);
+  }
+  100% {
+    filter: hue-rotate(-8deg) saturate(1.15) brightness(1.02);
+  }
+}
+
+@keyframes blobShape {
+  0%,
+  100% {
+    border-radius: 50%;
+  }
+  12% {
+    border-radius: 58% 42% 54% 46% / 46% 54% 46% 54%;
+  }
+  25% {
+    border-radius: 42% 58% 44% 56% / 56% 44% 60% 40%;
+  }
+  37% {
+    border-radius: 55% 45% 60% 40% / 42% 58% 46% 54%;
+  }
+  50% {
+    border-radius: 44% 56% 40% 60% / 58% 42% 54% 46%;
+  }
+  62% {
+    border-radius: 63% 37% 50% 50% / 50% 50% 58% 42%;
+  }
+  75% {
+    border-radius: 38% 62% 56% 44% / 46% 54% 42% 58%;
+  }
+  87% {
+    border-radius: 52% 48% 46% 54% / 54% 46% 48% 52%;
+  }
+}
+
+@keyframes blobSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cf-burst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 148%;
+  height: 148%;
+  margin-top: -74%;
+  margin-left: -74%;
+  opacity: 0.45;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 210, 80, 0.06) 1.5deg,
+    transparent 3deg,
+    transparent 29deg,
+    rgba(255, 210, 80, 0.06) 30.5deg,
+    transparent 32deg,
+    transparent 59deg,
+    rgba(255, 210, 80, 0.06) 60.5deg,
+    transparent 62deg,
+    transparent 89deg,
+    rgba(255, 210, 80, 0.06) 90.5deg,
+    transparent 92deg,
+    transparent 119deg,
+    rgba(255, 210, 80, 0.06) 120.5deg,
+    transparent 122deg,
+    transparent 149deg,
+    rgba(255, 210, 80, 0.06) 150.5deg,
+    transparent 152deg,
+    transparent 179deg,
+    rgba(255, 210, 80, 0.06) 180.5deg,
+    transparent 182deg,
+    transparent 209deg,
+    rgba(255, 210, 80, 0.06) 210.5deg,
+    transparent 212deg,
+    transparent 239deg,
+    rgba(255, 210, 80, 0.06) 240.5deg,
+    transparent 242deg,
+    transparent 269deg,
+    rgba(255, 210, 80, 0.06) 270.5deg,
+    transparent 272deg,
+    transparent 299deg,
+    rgba(255, 210, 80, 0.06) 300.5deg,
+    transparent 302deg,
+    transparent 329deg,
+    rgba(255, 210, 80, 0.06) 330.5deg,
+    transparent 332deg
+  );
+  will-change: transform;
+  animation: burstSpin 30s linear infinite;
+}
+
+@keyframes burstSpin {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.cf-orb {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform, opacity;
+}
+
+.cf-orb-1 {
+  width: 42%;
+  height: 42%;
+  top: -5%;
+  right: -3%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 140, 0, 0.55) 0%,
+    transparent 70%
+  );
+  filter: blur(55px);
+  animation: orbFloat1 16s ease-in-out infinite alternate;
+}
+
+.cf-orb-2 {
+  width: 34%;
+  height: 34%;
+  bottom: -4%;
+  left: 3%;
+  background: radial-gradient(
+    circle,
+    rgba(220, 40, 0, 0.5) 0%,
+    transparent 70%
+  );
+  filter: blur(50px);
+  animation: orbFloat2 22s ease-in-out infinite alternate;
+}
+
+@keyframes orbFloat1 {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate(-20px, 15px);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(10px, -20px);
+    opacity: 0.45;
+  }
+}
+
+@keyframes orbFloat2 {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(18px, -12px);
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate(-12px, 18px);
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-blob,
+  .cf-orb-1,
+  .cf-orb-2,
+  .cf-burst {
+    animation: none !important;
+  }
+}
+
+/* ── ComoFunciona lightweight CSS orbs (no WebGL) ── */
+.cf-simple-orb {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.cf-simple-orb-a {
+  width: 70%;
+  height: 70%;
+  top: -18%;
+  left: 10%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 200, 80, 0.48) 0%,
+    rgba(255, 140, 40, 0.28) 42%,
+    transparent 70%
+  );
+  filter: blur(72px);
+  animation: cfFloatA 16s ease-in-out infinite alternate;
+}
+
+.cf-simple-orb-b {
+  width: 58%;
+  height: 58%;
+  bottom: -12%;
+  right: 8%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 110, 28, 0.44) 0%,
+    rgba(210, 70, 18, 0.24) 44%,
+    transparent 70%
+  );
+  filter: blur(64px);
+  animation: cfFloatB 20s ease-in-out infinite alternate;
+}
+
+.cf-simple-orb-c {
+  width: 46%;
+  height: 46%;
+  top: 28%;
+  left: 32%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 238, 130, 0.32) 0%,
+    transparent 68%
+  );
+  filter: blur(80px);
+  animation: cfFloatC 24s ease-in-out infinite alternate;
+}
+
+@keyframes cfFloatA {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(38px, 44px);
+  }
+}
+
+@keyframes cfFloatB {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-30px, -38px);
+  }
+}
+
+@keyframes cfFloatC {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-22px, 28px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-simple-orb {
+    animation: none !important;
   }
 }

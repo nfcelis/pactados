@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { BellRing, Coins, Users, type LucideIcon } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import Grainient from "@/components/ui/grainient";
-import ShinyText from "@/components/ui/shiny-text";
+import GradientText from "@/components/ui/gradient-text";
+import MagicRings from "@/components/ui/magic-rings";
 import SpotlightCard from "@/components/ui/spotlight-card";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -23,7 +23,7 @@ const pasos: {
     icon: Coins,
     titulo: "Elige un reto o crea el tuyo",
     descripcion:
-      "Selecciona entre los retos disponibles o propón uno propio. Fitness, lectura, estudio, hábitos - lo que necesites cambiar.",
+      "Selecciona entre los retos disponibles o propón uno propio. Fitness, lectura, estudio, hábitos: lo que necesites cambiar.",
   },
   {
     numero: "02",
@@ -56,17 +56,14 @@ function SistemaCard({
   return (
     <SpotlightCard
       spotlightColor="rgba(255, 241, 214, 0.46)"
-      className={`group relative flex min-h-[320px] flex-col items-center justify-start border border-white/24 bg-[linear-gradient(180deg,rgba(255,244,232,0.34)_0%,rgba(255,227,201,0.22)_100%)] p-7 pt-20 text-center shadow-[0_22px_34px_rgba(112,41,14,0.16)] backdrop-blur-md transition duration-300 hover:-translate-y-1 overflow-visible ${className}`}
+      className={`group relative flex min-h-[320px] flex-col items-center justify-start overflow-visible border border-white/24 bg-[linear-gradient(180deg,rgba(255,244,232,0.34)_0%,rgba(255,227,201,0.22)_100%)] p-7 pt-20 text-center shadow-[0_22px_34px_rgba(112,41,14,0.16)] backdrop-blur-md transition duration-300 hover:-translate-y-1 ${className}`}
     >
       <div className="font-display absolute right-5 top-4 text-5xl uppercase leading-none text-[#ffd4af]/12">
         {paso.numero}
       </div>
 
       {index === 0 ? (
-        <div
-          className={`${assetWrapperClass} -rotate-[10deg]`}
-          aria-hidden="true"
-        >
+        <div className={`${assetWrapperClass} -rotate-[10deg]`} aria-hidden="true">
           <Image
             src="/target-card.png"
             alt=""
@@ -76,10 +73,7 @@ function SistemaCard({
           />
         </div>
       ) : index === 1 ? (
-        <div
-          className={`${assetWrapperClass} rotate-[4deg]`}
-          aria-hidden="true"
-        >
+        <div className={`${assetWrapperClass} rotate-[4deg]`} aria-hidden="true">
           <Image
             src="/pacto-card.png"
             alt=""
@@ -88,11 +82,8 @@ function SistemaCard({
             className="h-[7.15rem] w-[7.15rem] object-contain drop-shadow-[0_10px_18px_rgba(67,31,29,0.24)]"
           />
         </div>
-      ) : index === 2 ? (
-        <div
-          className={`${assetWrapperClass} -rotate-[6deg]`}
-          aria-hidden="true"
-        >
+      ) : (
+        <div className={`${assetWrapperClass} -rotate-[6deg]`} aria-hidden="true">
           <Image
             src="/whatsapp-card.png"
             alt=""
@@ -101,16 +92,12 @@ function SistemaCard({
             className="h-[7.15rem] w-[7.15rem] object-contain drop-shadow-[0_10px_18px_rgba(67,31,29,0.28)]"
           />
         </div>
-      ) : (
-        <div className="mb-6 inline-flex rounded-full bg-white/14 p-4 text-[#fff0d6] ring-1 ring-white/12 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-          <paso.icon className="h-6 w-6" strokeWidth={2.2} />
-        </div>
       )}
 
-      <h3 className="font-display mb-4 mt-2 text-[1.68rem] uppercase leading-[0.95] tracking-wide text-[#fffaf4] [text-shadow:0_2px_10px_rgba(91,34,15,0.18)]">
+      <h3 className="font-display mb-4 mt-2 text-[1.68rem] uppercase leading-[0.95] tracking-wide text-[#a64217] [text-shadow:0_1px_0_rgba(255,244,224,0.2)]">
         {paso.titulo}
       </h3>
-      <p className="font-body mx-auto max-w-[24ch] text-[0.98rem] leading-7 text-white/92 [text-shadow:0_1px_8px_rgba(91,34,15,0.12)]">
+      <p className="font-body mx-auto max-w-[24ch] text-[0.98rem] leading-7 text-[#7a4a31]">
         {paso.descripcion}
       </p>
     </SpotlightCard>
@@ -119,243 +106,61 @@ function SistemaCard({
 
 export function ComoFunciona() {
   const sectionRef = useRef<HTMLElement>(null);
-  const desktopSceneRef = useRef<HTMLDivElement>(null);
-  const pinRef = useRef<HTMLDivElement>(null);
-  const circleRef = useRef<HTMLDivElement>(null);
-  const introTitleRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const section = sectionRef.current;
-    const desktopScene = desktopSceneRef.current;
-    const pin = pinRef.current;
-    const circle = circleRef.current;
-    const introTitle = introTitleRef.current;
-    const content = contentRef.current;
-
-    if (!section || !desktopScene || !pin || !circle || !introTitle || !content) {
-      return;
-    }
+    if (!section) return;
 
     const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-
-      mm.add("(min-width: 768px)", () => {
-        const headingBits = gsap
-          .utils.toArray<HTMLElement>(content.querySelectorAll("[data-system-copy]"))
-          .filter((element) => !element.hasAttribute("data-system-title"));
-        const headingTitle = gsap.utils.toArray<HTMLElement>(
-          content.querySelectorAll("[data-system-title]")
-        );
-        const introWords = gsap.utils.toArray<HTMLElement>(
-          introTitle.querySelectorAll("[data-system-word]")
-        );
-        const cards = gsap.utils.toArray<HTMLElement>(
-          content.querySelectorAll("[data-system-card]")
-        );
-
-        gsap.set(circle, {
-          scale: 0,
-          autoAlpha: 0,
-          transformOrigin: "50% 50%",
-          force3D: true,
-        });
-        gsap.set(introTitle, {
+      gsap.fromTo(
+        section.querySelectorAll("[data-system-shell]"),
+        { autoAlpha: 0, y: 34 },
+        {
           autoAlpha: 1,
-          scale: 1,
           y: 0,
-          transformOrigin: "50% 50%",
-          force3D: true,
-        });
-        gsap.set(introWords, {
-          autoAlpha: 0,
-          y: 22,
-          scale: 0.94,
-          filter: "blur(20px)",
-          force3D: true,
-        });
-        gsap.set(headingBits, {
-          autoAlpha: 0,
-          y: 42,
-          filter: "blur(20px)",
-          force3D: true,
-        });
-        gsap.set(headingTitle, {
-          autoAlpha: 0,
-          y: 60,
-          scale: 1.1,
-          filter: "blur(15px) brightness(2)",
-          force3D: true,
-        });
-        gsap.set(cards, {
-          autoAlpha: 0,
-          y: 56,
-          force3D: true,
-        });
-
-        const preOpenTimeline = gsap.timeline({
-          defaults: { ease: "none" },
-          scrollTrigger: {
-            trigger: desktopScene,
-            start: "top bottom",
-            end: "top top",
-            scrub: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-
-        preOpenTimeline.to(circle, {
-          scale: 0.34,
-          autoAlpha: 0.86,
-          duration: 1,
+          duration: 0.7,
           ease: "power2.out",
-        });
-        preOpenTimeline.to(
-          introWords,
-          {
-            autoAlpha: 1,
-            y: 0,
-            scale: 1,
-            filter: "blur(0px)",
-            duration: 0.16,
-            stagger: 0.16,
-            ease: "power2.out",
-          },
-          0.08
-        );
-
-        const timeline = gsap.timeline({
-          defaults: { ease: "none" },
           scrollTrigger: {
-            trigger: desktopScene,
-            start: "top top",
-            end: "+=1900",
-            scrub: 0.95,
-            pin,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
+            trigger: section,
+            start: "top 88%",
+            toggleActions: "play none none none",
           },
-        });
+        }
+      );
 
-        timeline
-          .to(
-            circle,
-            {
-              scale: 1,
-              autoAlpha: 1,
-              duration: 0.92,
-              ease: "power2.out",
-            },
-            0
-          )
-          .to(
-            introTitle,
-            {
-              autoAlpha: 0,
-              scale: 0.78,
-              y: -18,
-              duration: 0.26,
-              ease: "power2.out",
-            },
-            0.16
-          )
-          .to(
-            introWords,
-            {
-              autoAlpha: 0,
-              y: -10,
-              scale: 0.94,
-              filter: "blur(20px)",
-              duration: 0.22,
-              stagger: 0.03,
-              ease: "power2.out",
-            },
-            0.16
-          )
-          .to(
-            headingBits,
-            {
-              autoAlpha: 1,
-              y: 0,
-              filter: "blur(0px)",
-              duration: 0.48,
-              stagger: 0.06,
-              ease: "power2.out",
-            },
-            0.24
-          )
-          .to(
-            headingTitle,
-            {
-              autoAlpha: 1,
-              y: 0,
-              scale: 1,
-              filter: "blur(0px) brightness(1)",
-              duration: 0.64,
-              ease: "power2.out",
-            },
-            0.24
-          )
-          .to(
-            cards,
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.68,
-              stagger: 0.1,
-              ease: "power2.out",
-            },
-            0.36
-          )
-          .to(
-            circle,
-            {
-              scale: 0.08,
-              autoAlpha: 0,
-              duration: 1.12,
-              ease: "power2.inOut",
-            },
-            0.98
-          )
-          .to(
-            headingBits,
-            {
-              autoAlpha: 0,
-              y: -24,
-              filter: "blur(20px)",
-              duration: 0.9,
-              stagger: 0.04,
-              ease: "power2.inOut",
-            },
-            0.98
-          )
-          .to(
-            headingTitle,
-            {
-              autoAlpha: 0,
-              y: -28,
-              scale: 0.94,
-              filter: "blur(18px) brightness(1.2)",
-              duration: 0.9,
-              ease: "power2.inOut",
-            },
-            0.98
-          )
-          .to(
-            cards,
-            {
-              autoAlpha: 0,
-              y: 34,
-              filter: "blur(16px)",
-              duration: 0.96,
-              stagger: 0.06,
-              ease: "power2.inOut",
-            },
-            1.02
-          );
-      });
+      gsap.fromTo(
+        section.querySelectorAll("[data-reveal-hdr]"),
+        { autoAlpha: 0, y: 22 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.55,
+          stagger: 0.09,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 82%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
 
-      return () => mm.revert();
+      gsap.fromTo(
+        section.querySelectorAll("[data-reveal-card]"),
+        { autoAlpha: 0, y: 52 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.62,
+          stagger: 0.14,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 66%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
     }, section);
 
     return () => ctx.revert();
@@ -365,139 +170,129 @@ export function ComoFunciona() {
     <section
       ref={sectionRef}
       id="sistema"
-      className="relative overflow-visible px-6 pb-14 pt-10 md:-mt-[10rem] md:px-10 md:pb-[4.5rem] md:pt-2 lg:-mt-[12rem] lg:px-14 lg:pt-4"
+      className="relative -mt-2 overflow-visible px-6 pb-20 pt-2 md:-mt-3 md:px-10 md:pb-28 md:pt-3 lg:-mt-4 lg:px-14 lg:pb-32 lg:pt-4"
     >
-      <div className="absolute left-[10%] top-8 h-20 w-20 rounded-full bg-white/8 blur-3xl" />
-      <div className="absolute right-[12%] top-16 h-24 w-24 rounded-full bg-[#ffb35f]/14 blur-3xl" />
-
-      <div className="relative z-10 md:hidden">
-        <div className="mb-8 flex flex-col items-center gap-3 text-center">
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.28em] text-[#fff1e5]/82">
-            El sistema
-          </p>
-          <h2 className="font-display text-3xl uppercase tracking-wide text-[#fff7ef]">
-            <ShinyText
-              text={"\u00BFC\u00F3mo funciona el sistema?"}
-              speed={3.2}
-              delay={0.2}
-              color="#fff2df"
-              shineColor="#ffffff"
-              spread={115}
-              direction="left"
-              yoyo={false}
-              pauseOnHover={false}
-              disabled={false}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[calc(100%+18rem)] w-screen -translate-x-1/2 -translate-y-1/2 overflow-hidden"
+      >
+        <div className="absolute inset-x-0 top-[-3rem] h-[6rem] bg-[linear-gradient(180deg,rgba(248,239,224,0)_0%,rgba(247,226,191,0.42)_44%,rgba(241,199,138,0.14)_78%,transparent_100%)] blur-[16px]" />
+        <div className="absolute left-1/2 top-[-0.35rem] h-[6.25rem] w-[min(98vw,64rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,246,228,0.58)_0%,rgba(255,221,170,0.16)_46%,transparent_82%)] blur-[30px]" />
+        <div
+          className="absolute left-1/2 top-1/2 h-[136%] w-[min(142vw,120rem)] -translate-x-1/2 -translate-y-1/2 opacity-[0.42]"
+          style={{
+            maskImage:
+              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.66) 12%, rgba(0,0,0,0.92) 22%, rgba(0,0,0,0.92) 82%, rgba(0,0,0,0.66) 92%, transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.66) 12%, rgba(0,0,0,0.92) 22%, rgba(0,0,0,0.92) 82%, rgba(0,0,0,0.66) 92%, transparent 100%)",
+          }}
+        >
+          <div className="absolute left-1/2 top-1/2 h-[128%] w-[128%] -translate-x-1/2 -translate-y-1/2 mix-blend-screen">
+            <MagicRings
+              color="#f7a055"
+              colorTwo="#f1d263"
+              ringCount={6}
+              speed={1.04}
+              attenuation={9.2}
+              lineThickness={2}
+              baseRadius={0.35}
+              radiusStep={0.1}
+              scaleRate={0.1}
+              opacity={0.82}
+              blur={0}
+              noiseAmount={0.03}
+              rotation={0}
+              ringGap={1.5}
+              fadeIn={0.7}
+              fadeOut={0.5}
+              followMouse={false}
+              mouseInfluence={0.2}
+              hoverScale={1.2}
+              parallax={0.025}
+              clickBurst={false}
             />
-          </h2>
-          <div className="h-[2px] w-24 rounded-full bg-[#ffd8bb]/45" />
+          </div>
         </div>
-
-        <div className="grid gap-5">
-          {pasos.map((paso, index) => (
-            <SistemaCard key={paso.numero} paso={paso} index={index} />
-          ))}
+        <div
+          className="absolute left-1/2 top-[56%] h-[30rem] w-[min(86vw,56rem)] -translate-x-1/2 -translate-y-1/2 opacity-[0.78]"
+          style={{
+            maskImage:
+              "radial-gradient(ellipse at center, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.9) 36%, rgba(0,0,0,0.42) 72%, transparent 100%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse at center, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.9) 36%, rgba(0,0,0,0.42) 72%, transparent 100%)",
+          }}
+        >
+          <div className="absolute inset-0 mix-blend-screen">
+            <MagicRings
+              color="#f7a055"
+              colorTwo="#f1d263"
+              ringCount={6}
+              speed={1.08}
+              attenuation={8.1}
+              lineThickness={2.25}
+              baseRadius={0.24}
+              radiusStep={0.082}
+              scaleRate={0.11}
+              opacity={1}
+              blur={0}
+              noiseAmount={0.022}
+              rotation={0}
+              ringGap={1.42}
+              fadeIn={0.68}
+              fadeOut={0.54}
+              followMouse={false}
+              mouseInfluence={0.2}
+              hoverScale={1.16}
+              parallax={0.02}
+              clickBurst={false}
+            />
+          </div>
         </div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_46%,rgba(255,206,123,0.065),transparent_34%),radial-gradient(circle_at_18%_24%,rgba(255,176,92,0.04),transparent_24%),radial-gradient(circle_at_82%_72%,rgba(212,93,28,0.04),transparent_28%)]" />
       </div>
 
-      <div ref={desktopSceneRef} className="relative hidden h-[280vh] md:block">
-        <div ref={pinRef} className="relative h-screen overflow-hidden">
-          <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-            <div
-              ref={circleRef}
-              className="absolute left-1/2 top-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full shadow-[0_24px_120px_rgba(132,45,17,0.14)]"
-              style={{
-                width: "min(calc(100% - 2rem), 1080px)",
-              }}
-            >
-              <Grainient
-                color1="#8b2916"
-                color2="#cc5a27"
-                color3="#e8aa67"
-                timeSpeed={0.18}
-                colorBalance={0}
-                warpStrength={1}
-                warpFrequency={5}
-                warpSpeed={2}
-                warpAmplitude={50}
-                blendAngle={24}
-                blendSoftness={0.05}
-                rotationAmount={500}
-                noiseScale={1.4}
-                grainAmount={0.18}
-                grainScale={1.4}
-                grainAnimated={false}
-                contrast={1.9}
-                gamma={0.92}
-                saturation={1.05}
-                centerX={0}
-                centerY={0}
-                zoom={0.92}
-              />
-              <div
-                ref={introTitleRef}
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-[9%] z-10 flex flex-col items-center justify-center gap-y-0.5 text-center"
+      <div data-system-shell className="relative z-10 mx-auto max-w-[1120px]">
+        <div className="mb-14 flex flex-col items-center gap-3 text-center md:mb-16">
+          <p
+            data-reveal-hdr
+            className="font-body text-xs font-semibold uppercase tracking-[0.28em] text-[#b56a3b]/86"
+          >
+            El sistema
+          </p>
+          <h2
+            data-reveal-hdr
+            className="font-display text-[clamp(2.4rem,4.25vw,4.45rem)] uppercase leading-[0.92] tracking-wide text-[#b94819]"
+          >
+            <span className="block md:whitespace-nowrap">
+              <span>{"\u00bfC\u00f3mo "}</span>
+              <GradientText
+                colors={["#FFB300", "#FF6A00", "#A80000", "#FF6A00", "#FFB300"]}
+                animationSpeed={4.2}
+                showBorder={false}
+                className="hero-gradient-word inline-flex"
               >
-                <span
-                  data-system-word
-                  className="system-circle-line font-display block w-full text-[clamp(3.75rem,6.85vw,7.35rem)] uppercase leading-[0.76] tracking-[0.005em] text-[#fff7ef]"
-                >
-                  {"\u00BFC\u00F3mo funciona"}
-                </span>
-                <span
-                  data-system-word
-                  className="system-circle-line system-circle-neon font-body block w-full text-[clamp(3.35rem,5.95vw,6.15rem)] italic leading-[0.78] tracking-[0.005em] text-[#ffcf68]"
-                >
-                  el sistema?
-                </span>
-              </div>
-            </div>
-          </div>
+                funciona
+              </GradientText>
+              <span> el</span>
+            </span>
+            <span className="block md:whitespace-nowrap">sistema?</span>
+          </h2>
+          <div
+            data-reveal-hdr
+            className="h-[2px] w-24 rounded-full bg-[linear-gradient(90deg,rgba(217,92,28,0.08),rgba(217,92,28,0.78),rgba(217,92,28,0.08))]"
+          />
+        </div>
 
-          <div ref={contentRef} className="relative z-10 flex h-full flex-col justify-center">
-            <div className="mb-10 flex flex-col items-center gap-3 text-center">
-              <p
-                data-system-copy
-                className="font-body text-xs font-semibold uppercase tracking-[0.28em] text-[#fff1e5]/82"
-              >
-                El sistema
-              </p>
-              <h2
-                data-system-copy
-                data-system-title
-                className="font-display text-[clamp(3rem,4.25vw,4.45rem)] uppercase tracking-wide text-[#fff7ef]"
-              >
-                <ShinyText
-                  text={"\u00BFC\u00F3mo funciona el sistema?"}
-                  speed={3.2}
-                  delay={0.2}
-                  color="#fff2df"
-                  shineColor="#ffffff"
-                  spread={115}
-                  direction="left"
-                  yoyo={false}
-                  pauseOnHover={false}
-                  disabled={false}
-                />
-              </h2>
-              <div
-                data-system-copy
-                className="h-[2px] w-24 rounded-full bg-[#ffd8bb]/45"
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-6">
+          {pasos.map((paso, index) => (
+            <div key={paso.numero} data-reveal-card>
+              <SistemaCard
+                paso={paso}
+                index={index}
+                className="md:min-h-[350px]"
               />
             </div>
-
-            <div className="mx-auto grid w-full max-w-[1120px] grid-cols-3 gap-6">
-              {pasos.map((paso, index) => (
-                <div key={paso.numero} data-system-card>
-                  <SistemaCard
-                    paso={paso}
-                    index={index}
-                    className="min-h-[350px] px-7 py-8"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
