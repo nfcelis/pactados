@@ -196,6 +196,10 @@ export async function POST(req: Request) {
         telefonoCodigoOrganizador: telefono_codigo,
         telefonoNumeroOrganizador: telefono_numero,
         participantes,
+        duracionDias,
+        montoPorPersona: consecuencia_monto,
+        modalidad: reto_modalidad,
+        frecuenciaPenalidad: consecuencia_frecuencia,
       }).catch((err) => console.error("Error creando grupo WhatsApp:", err));
     
 
@@ -238,6 +242,10 @@ export async function POST(req: Request) {
         telefonoCodigoOrganizador: telefono_codigo,
         telefonoNumeroOrganizador: telefono_numero,
         participantes,
+        duracionDias,
+        montoPorPersona: consecuencia_monto,
+        modalidad: reto_modalidad,
+        frecuenciaPenalidad: consecuencia_frecuencia,
       }).catch((err) => {
         console.error("Error creando grupo WhatsApp:", err);
         return null;

@@ -10,21 +10,21 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { event, data } = body;
 
-  if (event !== "messages.upsert") {
-    return Response.json({ ok: true });
-  }
+  if (event !== "messages.upsert") return Response.json({ ok: true });
 
-  const isAudio = !!data?.message?.audioMessage;
-  const isText = !!(
-    data?.message?.conversation ||
-    data?.message?.extendedTextMessage?.text
-  );
   const groupId = data?.key?.remoteJid;
   const isGroup = groupId?.endsWith("@g.us");
-  const senderPhone = data?.key?.participant?.replace("@s.whatsapp.net", "");
-
   if (!isGroup) return Response.json({ ok: true });
 
+  const senderPhone = data?.key?.participant?.replace("@s.whatsapp.net", "");
+  const isAudio = !!data?.message?.audioMessage;
+  const isText = !!(data?.message?.conversation || data?.message?.extendedTextMessage?.text);
+  const isImage = !!data?.message?.imageMessage;
+  const texto = data?.message?.conversation || data?.message?.extendedTextMessage?.text || "";
+
+  if (!isAudio && !isText && !isImage) return Response.json({ ok: true });
+
+  // Buscar grupo en Supabase
   const { data: grupoReto } = await supabase
     .from("grupos_retos")
     .select("*, retos(*)")
@@ -34,185 +34,75 @@ export async function POST(req: NextRequest) {
 
   if (!grupoReto) return Response.json({ ok: true });
 
-  if (isAudio) {
-    await procesarAudio({ data, grupoReto, senderPhone, groupId });
+  // Determinar tipo de mensaje
+  let tipo = "ignorar";
+
+  if (isImage && grupoReto.estado === "esperando_pagos") {
+    tipo = "comprobante";
+  } else if (isText && /^(confirmo|rechazo)\s+\w+/i.test(texto) && grupoReto.estado === "esperando_pagos") {
+    tipo = "confirmacion_pago";
+  } else if ((isAudio || isText) && grupoReto.estado === "activo") {
+    tipo = "verificacion";
   }
 
-  if (isText) {
-    const texto =
-      data.message?.conversation ||
-      data.message?.extendedTextMessage?.text || "";
-    await procesarTexto({ texto, grupoReto, senderPhone, groupId });
+  if (tipo === "ignorar") return Response.json({ ok: true });
+
+  console.log("MANDANDO A N8N:", { tipo, groupId, senderPhone });
+
+  // Mandar todo a n8n
+  const webhookUrl = tipo === "verificacion"
+    ? process.env.N8N_WEBHOOK_VALIDACIONES
+    : process.env.N8N_WEBHOOK_PAGOS;
+
+  console.log("WEBHOOK URL:", webhookUrl);
+
+  const n8nRes = await fetch(webhookUrl!, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      tipo,
+      groupId,
+      senderPhone,
+      isAudio,
+      isText,
+      isImage,
+      texto,
+      messageData: data,
+      reto: {
+        id: grupoReto.reto_id,
+        titulo: grupoReto.retos.titulo,
+        metaDiaria: grupoReto.retos.meta_diaria,
+        categoria: grupoReto.retos.categoria,
+        dificultad: grupoReto.retos.dificultad,
+      },
+      grupo: {
+        id: grupoReto.id,
+        estado: grupoReto.estado,
+        modalidad: grupoReto.modalidad,
+        organizador_telefono: grupoReto.organizador_telefono,
+        monto_por_persona: grupoReto.monto_por_persona,
+      }
+    }),
+  });
+
+  let resultado: any = {};
+  try {
+    const text = await n8nRes.text();
+    console.log("RESPUESTA N8N RAW:", text);
+    resultado = text ? JSON.parse(text) : {};
+  } catch (e) {
+    console.error("ERROR PARSEANDO N8N:", e);
+    resultado = {};
+  }
+  // Si n8n devuelve un mensaje para mandar al grupo
+  if (resultado?.mensajeGrupo) {
+    await enviarMensaje(groupId, resultado.mensajeGrupo);
   }
 
   return Response.json({ ok: true });
 }
 
-async function procesarAudio({ data, grupoReto, senderPhone, groupId }: any) {
-  try {
-    const mediaRes = await fetch(
-      `${process.env.EVOLUTION_API_URL}/chat/getBase64FromMediaMessage/${process.env.EVOLUTION_INSTANCE}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: process.env.EVOLUTION_API_KEY!,
-        },
-        body: JSON.stringify({ message: data }),
-      }
-    );
-    const { base64 } = await mediaRes.json();
-
-    const audioBuffer = Buffer.from(base64, "base64");
-    const formData = new FormData();
-    formData.append(
-      "file",
-      new Blob([audioBuffer], { type: "audio/ogg" }),
-      "audio.ogg"
-    );
-    formData.append("model", "whisper-1");
-    formData.append("language", "es");
-
-    const whisperRes = await fetch(
-      "https://api.openai.com/v1/audio/transcriptions",
-      {
-        method: "POST",
-        headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}` },
-        body: formData,
-      }
-    );
-    const { text: transcripcion } = await whisperRes.json();
-
-    const evaluacion = await evaluarVerificacion({
-      contenido: transcripcion,
-      tipo: "audio",
-      metaDiaria: grupoReto.retos.meta_diaria,
-      tituloReto: grupoReto.retos.titulo,
-    });
-
-    const participante = await buscarParticipante(senderPhone, grupoReto.reto_id);
-    await responderEnGrupo(groupId, evaluacion, participante?.nombre || senderPhone);
-
-    if (evaluacion.aprobado && participante) {
-      await supabase.from("verificaciones").insert({
-        participante_id: participante.id,
-        fecha: new Date().toISOString().split("T")[0],
-        completado: true,
-        transcripcion,
-        metodo: "audio_whatsapp",
-      });
-    }
-  } catch (error) {
-    console.error("Error procesando audio:", error);
-  }
-}
-
-async function procesarTexto({ texto, grupoReto, senderPhone, groupId }: any) {
-  if (texto.length < 15) return;
-
-  try {
-    const evaluacion = await evaluarVerificacion({
-      contenido: texto,
-      tipo: "texto",
-      metaDiaria: grupoReto.retos.meta_diaria,
-      tituloReto: grupoReto.retos.titulo,
-    });
-    console.log("EVALUACION:", JSON.stringify(evaluacion, null, 2)); // agregar esto
-
-
-    if (evaluacion.esVerificacion) {
-      const participante = await buscarParticipante(senderPhone, grupoReto.reto_id);
-      await responderEnGrupo(groupId, evaluacion, participante?.nombre || senderPhone);
-
-      if (evaluacion.aprobado && participante) {
-        await supabase.from("verificaciones").insert({
-          participante_id: participante.id,
-          fecha: new Date().toISOString().split("T")[0],
-          completado: true,
-          transcripcion: texto,
-          metodo: "texto_whatsapp",
-        });
-      }
-    }
-  } catch (error) {
-    console.error("Error procesando texto:", error);
-  }
-}
-
-async function evaluarVerificacion({ contenido, tipo, metaDiaria, tituloReto }: any) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": process.env.ANTHROPIC_API_KEY!,
-      "anthropic-version": "2023-06-01",
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 300,
-      system: `Eres el verificador de PMC, una plataforma de retos de disciplina personal.
-Tu trabajo: evaluar si un mensaje es una verificación válida del reto diario.
-
-Responde ÚNICAMENTE en JSON con este formato exacto:
-{
-  "esVerificacion": true/false,
-  "aprobado": true/false,
-  "razon": "máximo 2 oraciones en español",
-  "emoji": "✅ o ❌ o 🤔"
-}
-
-Criterios ESTRICTOS:
-- esVerificacion: ¿el mensaje claramente intenta reportar que completó la actividad?
-- aprobado: el mensaje debe tener AL MENOS 3 de estos elementos:
-    1. Cantidad específica (páginas, km, minutos)
-    2. Contenido concreto de lo que leyó/hizo (tema, capítulo, concepto)
-    3. Reflexión o aprendizaje propio sobre lo que hizo
-    4. Contexto temporal (hoy, esta mañana, etc)
-- Un audio de menos de 30 segundos o texto muy corto SIN detalles NO es válido.
-- "hoy lo hice" o "leí mis páginas" sin más contexto NO es válido.
-- Sé estricto: si hay duda, no aprobar.`,
-      messages: [
-        {
-          role: "user",
-          content: `Reto: ${tituloReto}
-Meta diaria: ${metaDiaria}
-Tipo de mensaje: ${tipo}
-
-Contenido:
-"${contenido}"
-
-¿Es una verificación válida?`,
-        },
-      ],
-    }),
-  });
-
-  const result = await res.json();
-  try {
-    const text = result.content[0].text;
-    const clean = text.replace(/```json\n?|\n?```/g, "").trim();
-    return JSON.parse(clean);
-  } catch {
-    console.log("RESULTADO CLAUDE RAW:", JSON.stringify(result, null, 2));
-    return { esVerificacion: false, aprobado: false, razon: "Error evaluando", emoji: "🤔" };
-  }
-}
-
-async function buscarParticipante(telefono: string, retoId: string) {
-  const { data } = await supabase
-    .from("participantes")
-    .select("*")
-    .eq("reto_id", retoId)
-    .ilike("telefono", `%${telefono}%`)
-    .single();
-  return data;
-}
-
-async function responderEnGrupo(groupId: string, evaluacion: any, nombre: string) {
-  const mensaje = evaluacion.aprobado
-    ? `${evaluacion.emoji} *¡Verificación aprobada, ${nombre}!*\n${evaluacion.razon}`
-    : `${evaluacion.emoji} *No aprobado, ${nombre}.*\n${evaluacion.razon}\n\n_Manda más detalles 💪_`;
-
+async function enviarMensaje(groupId: string, texto: string) {
   await fetch(
     `${process.env.EVOLUTION_API_URL}/message/sendText/${process.env.EVOLUTION_INSTANCE}`,
     {
@@ -221,7 +111,7 @@ async function responderEnGrupo(groupId: string, evaluacion: any, nombre: string
         "Content-Type": "application/json",
         apikey: process.env.EVOLUTION_API_KEY!,
       },
-      body: JSON.stringify({ number: groupId, text: mensaje }),
+      body: JSON.stringify({ number: groupId, text: texto }),
     }
   );
 }

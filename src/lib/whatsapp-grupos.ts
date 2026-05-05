@@ -154,6 +154,10 @@ export async function crearGrupoParaReto({
   telefonoCodigoOrganizador,
   telefonoNumeroOrganizador,
   participantes,
+  duracionDias,
+  montoPorPersona,
+  modalidad,
+  frecuenciaPenalidad,
 }: {
   retoSlug: string;
   tituloReto: string;
@@ -162,6 +166,10 @@ export async function crearGrupoParaReto({
   telefonoCodigoOrganizador: string;
   telefonoNumeroOrganizador: string;
   participantes: Array<{ nombre: string; telefono_codigo: string; telefono_numero: string }>;
+  duracionDias?: number;
+  montoPorPersona?: number;
+  modalidad?: string;
+  frecuenciaPenalidad?: string;
 }): Promise<{ ok: boolean; groupId?: string; linkInvitacion?: string; error?: string }> {
   const supabase = getServiceSupabase();
 
@@ -213,11 +221,22 @@ export async function crearGrupoParaReto({
   }
 
   // 5. Guardar en Supabase
+  const fechaInicio = new Date().toISOString().split("T")[0];
+  const fechaFin = duracionDias
+    ? new Date(Date.now() + duracionDias * 86400000).toISOString().split("T")[0]
+    : null;
+
   await supabase.from("grupos_retos").insert({
     reto_id: reto.id,
     whatsapp_group_id: groupId,
     activo: true,
     participantes_telefonos: todosLosTelefonos,
+    organizador_telefono: telefonoOrganizador,
+    fecha_inicio: fechaInicio,
+    fecha_fin: fechaFin,
+    monto_por_persona: montoPorPersona ?? null,
+    modalidad: modalidad ?? null,
+    frecuencia_penalidad: frecuenciaPenalidad ?? null,
   });
 
   // 6. Obtener link siempre
