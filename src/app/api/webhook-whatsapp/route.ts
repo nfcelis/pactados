@@ -10,6 +10,28 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { event, data } = body;
 
+  if (event === "group.participants.updated" || event === "GROUP_PARTICIPANTS_UPDATE") {
+    const groupId = data?.id;
+    const participants = data?.participants || [];
+    const action = data?.action; // 'add' | 'remove'
+
+    if (action === "add" && groupId) {
+      console.log("NUEVO MIEMBRO EN GRUPO:", { groupId, participants });
+
+      await fetch(process.env.N8N_WEBHOOK_PAGOS!, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tipo: "miembro_unido",
+          groupId,
+          participants,
+        }),
+      });
+    }
+
+    return Response.json({ ok: true });
+  }
+
   if (event !== "messages.upsert") return Response.json({ ok: true });
 
   const groupId = data?.key?.remoteJid;
