@@ -188,7 +188,6 @@ export async function POST(req: Request) {
     }
 
     // Crear grupo de WhatsApp (no bloquea el registro si falla)
-    if (process.env.EVOLUTION_API_URL && process.env.EVOLUTION_API_KEY) {
       crearGrupoParaReto({
         retoSlug: reto_slug,
         tituloReto: reto_titulo,
@@ -198,9 +197,9 @@ export async function POST(req: Request) {
         telefonoNumeroOrganizador: telefono_numero,
         participantes,
       }).catch((err) => console.error("Error creando grupo WhatsApp:", err));
-    }
+    
 
-    if (process.env.RESEND_API_KEY && process.env.CREATOR_EMAIL) {
+    if (process.env.RESEND_API_KEY && process.env.CREATOR_EMAIL) {  
       try {
         const resend = createResend();
         await resend.emails.send({
@@ -227,7 +226,27 @@ export async function POST(req: Request) {
       }
     }
 
-    return Response.json({ success: true });
+    // Crear grupo y capturar el resultado
+    let linkInvitacion: string | undefined;
+
+    if (process.env.EVOLUTION_API_URL && process.env.EVOLUTION_API_KEY) {
+      const resultado = await crearGrupoParaReto({
+        retoSlug: reto_slug,
+        tituloReto: reto_titulo,
+        metaDiaria: reto_meta_diaria,
+        nombreOrganizador: nombre_apodo,
+        telefonoCodigoOrganizador: telefono_codigo,
+        telefonoNumeroOrganizador: telefono_numero,
+        participantes,
+      }).catch((err) => {
+        console.error("Error creando grupo WhatsApp:", err);
+        return null;
+      });
+
+      linkInvitacion = resultado?.linkInvitacion;
+    }
+
+    return Response.json({ success: true, linkInvitacion });
   } catch (error) {
     console.error("API registrar-participante error:", error);
     return Response.json({ error: "Error interno del servidor" }, { status: 500 });

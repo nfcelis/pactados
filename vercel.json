@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/recordatorio-manana",
+      "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/cron/check-nocturno",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/resumen-semanal",
+      "schedule": "0 4 * * 0"
+    }
+  ]
+}

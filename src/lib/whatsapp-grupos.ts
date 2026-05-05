@@ -40,8 +40,11 @@ export async function grupoYaExiste(
 export async function crearGrupoWhatsApp(
   nombreGrupo: string,
   participantes: string[]
-): Promise<string | null> {
+): Promise<{ groupId: string | null; noAgregados: string[] }> {
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+
     const res = await fetch(`${EVOLUTION_URL}/group/create/${INSTANCE}`, {
       method: "POST",
       headers: {
@@ -52,30 +55,49 @@ export async function crearGrupoWhatsApp(
         subject: nombreGrupo,
         participants: participantes.map((p) => `${p}@s.whatsapp.net`),
       }),
+      signal: controller.signal,
     });
 
+    clearTimeout(timeout);
     const data = await res.json();
     console.log("GRUPO CREADO:", JSON.stringify(data, null, 2));
 
-    return data?.groupJid || data?.id || null;
+    const groupId = data?.id || null;
+
+    // Detectar quiénes no fueron añadidos
+    const agregados = (data?.participants || [])
+      .map((p: any) => p.phoneNumber?.replace("@s.whatsapp.net", ""))
+      .filter(Boolean);
+
+    const noAgregados = participantes.filter((p) => !agregados.includes(p));
+
+    console.log("No agregados:", noAgregados);
+
+    return { groupId, noAgregados };
   } catch (error) {
     console.error("Error creando grupo:", error);
-    return null;
+    return { groupId: null, noAgregados: [] };
   }
 }
 
 // ─── Mensaje de bienvenida al grupo ───────────────────────────────
-
 export async function mandarBienvenida(
   groupId: string,
   tituloReto: string,
   metaDiaria: string,
-  nombreOrganizador: string
+  nombreOrganizador: string,
+  faltantes: string[] = [],
+  linkGrupo?: string
 ) {
+  console.log("MANDANDO BIENVENIDA a:", groupId);
+  const mensajeFaltantes = faltantes.length > 0
+    ? `\n⚠️ No pudimos añadir a *${faltantes.join(", ")}* automáticamente.\nCompárteles este link para que se unan:\n${linkGrupo}\n`
+    : "";
+
   const mensaje = `🎯 *¡Bienvenidos a Pactados!*
 
 Han sido añadidos al reto: *${tituloReto}*
-
+${mensajeFaltantes}
 📋 *Meta diaria:* ${metaDiaria}
 
 📲 *¿Cómo verificar?*
@@ -89,18 +111,38 @@ El bot evaluará automáticamente si tu verificación es válida.
 *Organizador:* ${nombreOrganizador}
 ¡Mucho éxito a todos! 💪`;
 
-  await fetch(`${EVOLUTION_URL}/message/sendText/${INSTANCE}`, {
+  const resBienvenida = await fetch(`${EVOLUTION_URL}/message/sendText/${INSTANCE}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       apikey: EVOLUTION_KEY,
     },
-    body: JSON.stringify({
-      number: groupId,
-      text: mensaje,
-    }),
+    body: JSON.stringify({ number: groupId, text: mensaje }),
   });
+  const dataBienvenida = await resBienvenida.json();
+  console.log("RESPUESTA BIENVENIDA (Evolution API):", JSON.stringify(dataBienvenida, null, 2));
 }
+// ─── Obtener link de invitación del grupo ──────────────────────────
+
+export async function obtenerLinkInvitacion(groupId: string): Promise<string | null> {
+  try {
+    const res = await fetch(
+      `${EVOLUTION_URL}/group/inviteCode/${INSTANCE}?groupJid=${groupId}`,
+      {
+        headers: { apikey: EVOLUTION_KEY },
+      }
+    );
+    const data = await res.json();
+    console.log("LINK INVITACION:", JSON.stringify(data, null, 2));
+    return data?.inviteCode
+      ? `https://chat.whatsapp.com/${data.inviteCode}`
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+
 
 // ─── Función principal ─────────────────────────────────────────────
 
@@ -120,7 +162,7 @@ export async function crearGrupoParaReto({
   telefonoCodigoOrganizador: string;
   telefonoNumeroOrganizador: string;
   participantes: Array<{ nombre: string; telefono_codigo: string; telefono_numero: string }>;
-}): Promise<{ ok: boolean; groupId?: string; error?: string }> {
+}): Promise<{ ok: boolean; groupId?: string; linkInvitacion?: string; error?: string }> {
   const supabase = getServiceSupabase();
 
   // 1. Obtener reto_id desde el slug
@@ -145,9 +187,13 @@ export async function crearGrupoParaReto({
   );
 
   const todosLosTelefonos = [
+  ...new Set([
     telefonoOrganizador,
     ...participantes.map((p) => limpiarTelefono(p.telefono_codigo, p.telefono_numero)),
-  ];
+  ])
+];
+
+
 
   console.log("Participantes del grupo:", todosLosTelefonos);
 
@@ -158,9 +204,9 @@ export async function crearGrupoParaReto({
     return { ok: false, error: "Ya existe un grupo con estos participantes" };
   }
 
-  // 4. Crear el grupo en WhatsApp
+  // 4. Crear el grupo
   const nombreGrupo = `Pactados - ${tituloReto}`;
-  const groupId = await crearGrupoWhatsApp(nombreGrupo, todosLosTelefonos);
+  const { groupId, noAgregados } = await crearGrupoWhatsApp(nombreGrupo, todosLosTelefonos);
 
   if (!groupId) {
     return { ok: false, error: "No se pudo crear el grupo" };
@@ -174,8 +220,33 @@ export async function crearGrupoParaReto({
     participantes_telefonos: todosLosTelefonos,
   });
 
-  // 6. Mandar bienvenida
-  await mandarBienvenida(groupId, tituloReto, metaDiaria, nombreOrganizador);
+  // 6. Obtener link siempre
+  console.log("OBTENIENDO LINK...");
+  const linkGrupo = await obtenerLinkInvitacion(groupId);
+  console.log("LINK OBTENIDO:", linkGrupo);
 
-  return { ok: true, groupId };
+  // 7. Mensaje de bienvenida en el grupo
+  const nombresFaltantes = noAgregados.map((tel) => {
+    const todos = [
+      { nombre: nombreOrganizador, telefono: telefonoOrganizador },
+      ...participantes.map((p) => ({
+        nombre: p.nombre,
+        telefono: limpiarTelefono(p.telefono_codigo, p.telefono_numero),
+      })),
+    ];
+    return todos.find((p) => p.telefono === tel)?.nombre || tel;
+  });
+
+  console.log("MANDANDO BIENVENIDA...", { groupId, nombresFaltantes, linkGrupo });
+  await mandarBienvenida(
+    groupId,
+    tituloReto,
+    metaDiaria,
+    nombreOrganizador,
+    nombresFaltantes,
+    linkGrupo || undefined
+  );
+  console.log("BIENVENIDA ENVIADA");
+
+  return { ok: true, groupId, linkInvitacion: linkGrupo || undefined };
 }
