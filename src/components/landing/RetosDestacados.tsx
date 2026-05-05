@@ -1,7 +1,14 @@
 import Link from "next/link";
-import { Activity, BookOpen, GraduationCap, WifiOff, type LucideIcon } from "lucide-react";
+import {
+  Activity,
+  ArrowRight,
+  BookOpen,
+  GraduationCap,
+  WifiOff,
+  type LucideIcon,
+} from "lucide-react";
 import { RETOS } from "@/lib/retos-predefinidos";
-import { Dificultad } from "@/types";
+import { Categoria, Dificultad } from "@/types";
 
 const RETO_ICONS: Record<string, LucideIcon> = {
   Activity,
@@ -11,110 +18,91 @@ const RETO_ICONS: Record<string, LucideIcon> = {
 };
 
 const dificultadColor: Record<Dificultad, string> = {
-  facil: "#22c55e",
-  medio: "#F7A04B",
-  dificil: "#ef4444",
+  facil: "text-emerald-700",
+  medio: "text-amber-700",
+  dificil: "text-rose-700",
 };
 
 const dificultadLabel: Record<Dificultad, string> = {
-  facil: "Fácil",
+  facil: "Facil",
   medio: "Medio",
-  dificil: "Difícil",
+  dificil: "Dificil",
+};
+
+const categoriaStyles: Record<Categoria, string> = {
+  fitness:
+    "bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(255,238,228,0.86))] border-white/35",
+  lectura:
+    "bg-[linear-gradient(180deg,rgba(255,248,231,0.92),rgba(255,233,196,0.85))] border-white/30",
+  estudio:
+    "bg-[linear-gradient(180deg,rgba(245,248,255,0.95),rgba(220,233,255,0.88))] border-white/30",
+  habitos:
+    "bg-[linear-gradient(180deg,rgba(255,244,236,0.95),rgba(255,220,205,0.88))] border-white/35",
 };
 
 export function RetosDestacados() {
-  const destacados = RETOS.slice(0, 3);
+  const destacados = RETOS.slice(0, 4);
 
   return (
-    <section
-      className="py-24 px-4"
-      style={{ backgroundColor: "rgba(253,250,245, 0.6)", borderTop: "1px solid #E8E0D0" }}
-    >
-      <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 gap-4">
-          <div>
-            <p
-              className="text-sm font-medium mb-3 uppercase tracking-widest"
-              style={{ color: "#F26430", fontFamily: "var(--font-dm-sans)" }}
-            >
-              Empieza hoy
-            </p>
-            <h2
-              className="text-5xl sm:text-6xl md:text-7xl uppercase"
-              style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
-            >
-              Retos disponibles
-            </h2>
-          </div>
-          <Link
-            href="/retos"
-            className="text-sm font-medium underline underline-offset-4 hover:opacity-80 transition-opacity whitespace-nowrap"
-            style={{ color: "#F26430", fontFamily: "var(--font-dm-sans)" }}
-          >
-            Ver todos →
-          </Link>
+    <section id="retos" className="px-6 pb-6 pt-7 md:px-8 lg:px-10">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.28em] text-white/65">
+            Curados para arrancar
+          </p>
+          <h2 className="font-display mt-2 text-4xl uppercase tracking-wide text-white md:text-5xl">
+            Retos disponibles
+          </h2>
         </div>
+        <Link
+          href="/retos"
+          className="font-body inline-flex items-center gap-2 text-sm font-medium text-white/80 transition hover:text-white"
+        >
+          Ver catalogo completo
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {destacados.map((reto) => {
-            const Icon = RETO_ICONS[reto.iconName] ?? Activity;
-            return (
+      <div className="grid gap-4 md:grid-cols-2">
+        {destacados.map((reto) => {
+          const Icon = RETO_ICONS[reto.iconName] ?? Activity;
+
+          return (
             <Link
               key={reto.slug}
               href={`/retos/${reto.slug}`}
-              className="group relative p-6 rounded-xl border transition-all duration-300 hover:border-[#F26430] hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(242,100,48,0.35)]"
-              style={{
-                backgroundColor: "#FFFFFF",
-                borderColor: "#E8E0D0",
-              }}
+              className={`group flex min-h-[212px] flex-col rounded-[28px] border p-5 shadow-[0_22px_48px_rgba(80,20,7,0.2)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_56px_rgba(80,20,7,0.25)] ${categoriaStyles[reto.categoria]}`}
             >
-              <div className="flex items-start justify-between mb-4">
-                <Icon className="w-10 h-10" style={{ color: "#F26430" }} />
+              <div className="mb-4 flex items-start justify-between gap-3">
+                <div className="rounded-2xl bg-black/5 p-3 text-[#f47432]">
+                  <Icon className="h-5 w-5" />
+                </div>
                 <span
-                  className="text-xs font-bold px-3 py-1 rounded-full"
-                  style={{
-                    color: dificultadColor[reto.dificultad],
-                    backgroundColor: `${dificultadColor[reto.dificultad]}15`,
-                    fontFamily: "var(--font-dm-sans)",
-                  }}
+                  className={`font-body rounded-full bg-black/6 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${dificultadColor[reto.dificultad]}`}
                 >
                   {dificultadLabel[reto.dificultad]}
                 </span>
               </div>
 
-              <h3
-                className="text-2xl uppercase mb-2"
-                style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
-              >
+              <h3 className="font-display max-w-[16ch] text-[1.8rem] uppercase leading-[0.95] text-[#2a1409]">
                 {reto.titulo}
               </h3>
-              <p
-                className="text-sm text-gray-500 mb-4 line-clamp-2"
-                style={{ fontFamily: "var(--font-dm-sans)" }}
-              >
+              <p className="font-body mt-3 line-clamp-3 text-sm leading-6 text-black/62">
                 {reto.descripcion}
               </p>
 
-              <div className="flex items-center justify-between">
-                <span
-                  className="text-xs text-gray-600"
-                  style={{ fontFamily: "var(--font-dm-sans)" }}
-                >
-                  {reto.duracion_dias} días
+              <div className="mt-auto flex items-center justify-between gap-3 pt-5">
+                <span className="font-body text-sm font-medium text-black/58">
+                  {reto.duracion_dias} dias
                 </span>
-                <span
-                  className="text-sm font-medium group-hover:text-[#F26430] transition-colors"
-                  style={{
-                    color: "#7A6F65",
-                    fontFamily: "var(--font-dm-sans)",
-                  }}
-                >
-                  Quiero este reto →
+                <span className="font-body inline-flex items-center gap-2 text-sm font-semibold text-[#a5441f] transition group-hover:translate-x-1">
+                  Quiero este reto
+                  <ArrowRight className="h-4 w-4" />
                 </span>
               </div>
             </Link>
-          );})}
-        </div>
+          );
+        })}
       </div>
     </section>
   );

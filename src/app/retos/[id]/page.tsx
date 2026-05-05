@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   Activity, BookOpen, GraduationCap, WifiOff,
-  Zap, Check, Flame, Clock3, type LucideIcon,
+  Zap, Check, Flame, Clock3, ArrowLeft, type LucideIcon,
 } from "lucide-react";
 import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
@@ -19,15 +19,15 @@ const RETO_ICONS: Record<string, LucideIcon> = {
 };
 
 const dificultadLabel: Record<Dificultad, string> = {
-  facil: "Facil",
+  facil: "Fácil",
   medio: "Medio",
-  dificil: "Dificil",
+  dificil: "Difícil",
 };
 
 const dificultadColor: Record<Dificultad, string> = {
-  facil: "#22c55e",
-  medio: "#F7A04B",
-  dificil: "#ef4444",
+  facil: "text-emerald-700",
+  medio: "text-amber-700",
+  dificil: "text-rose-700",
 };
 
 interface Props {
@@ -57,176 +57,116 @@ export default async function RetoDetallePage({ params }: Props) {
   const Icon = RETO_ICONS[reto.iconName] ?? Activity;
 
   return (
-    <main className="relative min-h-screen overflow-hidden" style={{ backgroundColor: "#F5F0E8" }}>
-      <Navbar />
+    <main className="landing-stage overflow-hidden px-4 pb-0 pt-6 md:px-6 lg:px-8">
+      <div className="landing-orb landing-orb-left" aria-hidden="true" />
+      <div className="landing-orb landing-orb-right" aria-hidden="true" />
 
-      <div
-        className="pointer-events-none absolute -left-16 top-24 h-72 w-72 rounded-full blur-3xl"
-        style={{ backgroundColor: "rgba(242,100,48,0.12)" }}
-      />
-      <div
-        className="pointer-events-none absolute -right-16 top-64 h-72 w-72 rounded-full blur-3xl"
-        style={{ backgroundColor: "rgba(245,230,66,0.15)" }}
-      />
+      <div className="relative flex min-h-screen flex-col">
+        <section className="relative mx-auto w-full max-w-[1120px] flex-1 pb-16 pt-24 md:pt-28 lg:pt-32">
+          <Navbar />
+          <div className="landing-grid absolute inset-x-0 top-0 h-52 opacity-30" />
 
-      <div className="relative px-4 pb-16 pt-24">
-        <div className="mx-auto max-w-6xl">
-          <Link
-            href="/retos"
-            className="mb-6 inline-flex items-center gap-2 text-sm text-gray-600 transition-colors hover:text-gray-900"
-            style={{ fontFamily: "var(--font-dm-sans)" }}
-          >
-            &larr; Todos los retos
-          </Link>
-
-          <section
-            className="mb-10 rounded-3xl border p-6 sm:p-9"
-            style={{
-              background: "linear-gradient(160deg, rgba(255,255,255,0.9), rgba(253,250,245,0.85))",
-              borderColor: "#E5DAC8",
-            }}
-          >
-            <div className="flex flex-wrap items-center gap-4">
-              <div
-                className="rounded-2xl p-3"
-                style={{ backgroundColor: "#FFF5EF", border: "1px solid #F8DCCF" }}
+          <div className="relative z-10">
+            <div className="animate-fade-in-up delay-100">
+              <Link
+                href="/retos"
+                className="font-body mb-8 inline-flex items-center gap-2 text-sm font-medium text-black/52 transition hover:text-black/80"
               >
-                <Icon className="h-9 w-9" style={{ color: "#F26430" }} />
-              </div>
-              <span
-                className="rounded-full px-4 py-1.5 text-sm font-semibold"
-                style={{
-                  color: dificultadColor[reto.dificultad],
-                  backgroundColor: `${dificultadColor[reto.dificultad]}20`,
-                  fontFamily: "var(--font-dm-sans)",
-                }}
-              >
-                {dificultadLabel[reto.dificultad]}
-              </span>
+                <ArrowLeft className="h-4 w-4" />
+                Todos los retos
+              </Link>
             </div>
 
-            <h1
-              className="mt-5 text-5xl uppercase leading-none sm:text-7xl"
-              style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
-            >
-              {reto.titulo}
-            </h1>
-            <p
-              className="mt-4 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg"
-              style={{ fontFamily: "var(--font-dm-sans)" }}
-            >
-              {reto.descripcion}
-            </p>
-
-            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="rounded-xl border px-4 py-3 hover:border-[#F26430] hover:shadow-[0_0_30px_rgba(242,100,48,0.35)]" style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}>
-                <p className="mb-1 text-xs uppercase tracking-wider text-gray-500" style={{ fontFamily: "var(--font-dm-sans)" }}>
-                  Duracion
-                </p>
-                <p className="inline-flex items-center gap-2 text-sm font-semibold text-gray-700" style={{ fontFamily: "var(--font-dm-sans)" }}>
-                  <Clock3 className="h-4 w-4" />
-                  {reto.duracion_dias} dias
-                </p>
-              </div>
-
-              <div className="rounded-xl border px-4 py-3 hover:border-[#F26430] hover:shadow-[0_0_30px_rgba(242,100,48,0.35)]" style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}>
-                <p className="mb-1 text-xs uppercase tracking-wider text-gray-500" style={{ fontFamily: "var(--font-dm-sans)" }}>
-                  Meta diaria
-                </p>
-                <p className="inline-flex items-center gap-2 text-sm font-semibold text-gray-700" style={{ fontFamily: "var(--font-dm-sans)" }}>
-                  <Zap className="h-4 w-4" />
-                  {reto.meta_diaria}
-                </p>
-              </div>
-
-              <div className="rounded-xl border px-4 py-3 hover:border-[#F26430] hover:shadow-[0_0_30px_rgba(242,100,48,0.35)]" style={{ backgroundColor: "#FFFFFF", borderColor: "#E8E0D0" }}>
-                <p className="mb-1 text-xs uppercase tracking-wider text-gray-500" style={{ fontFamily: "var(--font-dm-sans)" }}>
-                  Intensidad
-                </p>
-                <p className="inline-flex items-center gap-2 text-sm font-semibold text-gray-700" style={{ fontFamily: "var(--font-dm-sans)" }}>
-                  <Flame className="h-4 w-4" />
-                  Compromiso diario
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-            <div className="space-y-5">
-              <div
-                className="rounded-2xl border p-6"
-                style={{ backgroundColor: "#FFFFFF", borderColor: "#DDD6C8" }}
-              >
-                <h2
-                  className="mb-4 text-3xl uppercase"
-                  style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
+            {/* Main header panel */}
+            <div className="landing-panel landing-panel-warm animate-fade-in-up delay-200 mb-6 p-6 sm:p-10">
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="rounded-2xl bg-black/6 p-3 text-[#f47432]">
+                  <Icon className="h-8 w-8" />
+                </div>
+                <span
+                  className={`font-body rounded-full bg-black/6 px-4 py-1.5 text-sm font-semibold uppercase tracking-[0.18em] ${dificultadColor[reto.dificultad]}`}
                 >
-                  Como funciona
+                  {dificultadLabel[reto.dificultad]}
+                </span>
+              </div>
+
+              <h1 className="font-display mt-5 text-[clamp(3.5rem,9vw,7.5rem)] uppercase leading-[0.88] tracking-tight">
+                <span className="hero-title-solid">{reto.titulo}</span>
+              </h1>
+              <p className="font-body mt-4 max-w-3xl text-base leading-relaxed text-black/58 sm:text-lg">
+                {reto.descripcion}
+              </p>
+
+              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                {[
+                  { label: "Duración", icon: Clock3, value: `${reto.duracion_dias} días` },
+                  { label: "Meta diaria", icon: Zap, value: reto.meta_diaria },
+                  { label: "Intensidad", icon: Flame, value: "Compromiso diario" },
+                ].map(({ label, icon: StatIcon, value }) => (
+                  <div
+                    key={label}
+                    className="rounded-[20px] border border-white/50 bg-white/52 px-4 py-3 backdrop-blur-sm"
+                  >
+                    <p className="font-body mb-1 text-xs font-semibold uppercase tracking-wider text-black/40">
+                      {label}
+                    </p>
+                    <p className="font-body inline-flex items-center gap-2 text-sm font-semibold text-[#2a1409]">
+                      <StatIcon className="h-4 w-4 text-[#f47432]" />
+                      {value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom two-column grid */}
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+              <div className="flex flex-col gap-5">
+                {/* How it works */}
+                <div className="landing-panel landing-panel-warm animate-fade-in-up delay-300 p-6">
+                  <h2 className="font-display mb-4 text-[2.2rem] uppercase leading-none tracking-tight">
+                    <span className="hero-title-solid">Cómo funciona</span>
+                  </h2>
+                  <ul className="space-y-3">
+                    {[
+                      `Cumples la meta durante ${reto.duracion_dias} días seguidos.`,
+                      "Tu avance se reporta en un grupo de WhatsApp.",
+                      "Puedes sumar amigos para reforzar el compromiso.",
+                      "Si quieres, defines consecuencias concretas al fallar.",
+                    ].map((text) => (
+                      <li key={text} className="flex items-start gap-3">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#f47432]" />
+                        <span className="font-body text-sm leading-relaxed text-black/60">{text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Ember accent block */}
+                <div className="landing-panel landing-panel-ember animate-fade-in-up delay-400 p-7">
+                  <p className="font-display text-center text-[2.6rem] uppercase leading-[0.9] tracking-tight text-[#fff7ef] [text-shadow:0_8px_24px_rgba(97,27,9,0.28)]">
+                    No es motivación.
+                    <br />
+                    <span className="text-[#ffd8a8]">Es estructura.</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Registration form */}
+              <div className="landing-panel landing-panel-warm animate-fade-in-up delay-300 p-6 sm:p-8">
+                <h2 className="font-display mb-5 text-[2.8rem] uppercase leading-none tracking-tight">
+                  <span className="hero-title-solid">Unirme al reto</span>
                 </h2>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: "#F26430" }} />
-                    <span className="text-sm text-gray-600" style={{ fontFamily: "var(--font-dm-sans)" }}>
-                      Cumples la meta durante {reto.duracion_dias} dias seguidos.
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: "#F26430" }} />
-                    <span className="text-sm text-gray-600" style={{ fontFamily: "var(--font-dm-sans)" }}>
-                      Tu avance se reporta en un grupo de WhatsApp.
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: "#F26430" }} />
-                    <span className="text-sm text-gray-600" style={{ fontFamily: "var(--font-dm-sans)" }}>
-                      Puedes sumar amigos para reforzar el compromiso.
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: "#F26430" }} />
-                    <span className="text-sm text-gray-600" style={{ fontFamily: "var(--font-dm-sans)" }}>
-                      Si quieres, defines consecuencias concretas al fallar.
-                    </span>
-                  </li>
-                </ul>
-              </div>
-
-              <div
-                className="rounded-2xl border p-6"
-                style={{ backgroundColor: "#1A1A1A", borderColor: "#1A1A1A" }}
-              >
-                <p
-                  className="text-center text-3xl uppercase leading-none"
-                  style={{ fontFamily: "var(--font-bebas)", color: "#FFFFFF" }}
-                >
-                  No es motivacion.
-                  <br />
-                  Es estructura.
-                </p>
+                <FormRegistro reto={reto} />
               </div>
             </div>
+          </div>
+        </section>
 
-            <div
-              className="rounded-2xl border p-6 sm:p-8"
-              style={{
-                backgroundColor: "#FFFFFF",
-                borderColor: "#DDD6C8",
-                boxShadow: "0 22px 44px rgba(26,26,26,0.08)",
-              }}
-            >
-              <h2
-                className="mb-5 text-4xl uppercase"
-                style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
-              >
-                Unirme al reto
-              </h2>
-              <FormRegistro reto={reto} />
-            </div>
-          </section>
+        <div className="mx-auto w-full max-w-[1120px]">
+          <Footer />
         </div>
       </div>
-
-      <Footer />
     </main>
   );
 }

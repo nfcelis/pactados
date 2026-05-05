@@ -2,14 +2,21 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Dumbbell, BookOpen, GraduationCap, Brain, PenLine, Sparkles, type LucideIcon } from "lucide-react";
+import { motion } from "motion/react";
+import {
+  Dumbbell,
+  BookOpen,
+  GraduationCap,
+  Brain,
+  PenLine,
+  Sparkles,
+  type LucideIcon,
+} from "lucide-react";
 import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { RetoCard } from "@/components/retos/RetoCard";
 import { RETOS } from "@/lib/retos-predefinidos";
 import { Categoria } from "@/types";
-import DoodleBackground from "@/components/DoodleBackground";
-
 
 const categorias: { valor: Categoria | "todos"; label: string; icon?: LucideIcon }[] = [
   { valor: "todos", label: "Todos" },
@@ -28,63 +35,59 @@ export default function RetosPage() {
       : RETOS.filter((r) => r.categoria === categoriaActiva);
 
   return (
-    <main className="relative min-h-screen overflow-hidden" style={{ backgroundColor: "#F5F0E8" }}>
-      <Navbar />
-      <DoodleBackground bgColor="#F5F0E8" doodleColor="#110f0f">
-      <div
-        className="pointer-events-none absolute -left-20 top-20 h-72 w-72 rounded-full blur-3xl"
-        style={{ backgroundColor: "rgba(242,100,48,0.14)" }}
-      />
-      <div
-        className="pointer-events-none absolute -right-20 top-56 h-72 w-72 rounded-full blur-3xl"
-        style={{ backgroundColor: "rgba(245,230,66,0.15)" }}
-      />
+    <main className="landing-stage overflow-hidden px-4 pb-0 pt-6 md:px-6 lg:px-8">
+      <div className="landing-orb landing-orb-left" aria-hidden="true" />
+      <div className="landing-orb landing-orb-right" aria-hidden="true" />
 
-      <div className="relative px-4 pb-16 pt-24">
-        <div className="mx-auto max-w-6xl">
-          <section
-            className="mb-10 rounded-3xl border px-6 py-10 sm:px-10"
-            style={{
-              background: "linear-gradient(160deg, rgba(255,255,255,0.9), rgba(253,250,245,0.85))",
-              borderColor: "#E6DCCB",
-            }}
-          >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wider"
-              style={{ borderColor: "#E4D7C4", color: "#7A6F65", fontFamily: "var(--font-dm-sans)" }}>
-              <Sparkles className="h-3.5 w-3.5" />
-              Elige tu siguiente compromiso
+      <div className="relative flex min-h-screen flex-col">
+        <section className="relative mx-auto w-full max-w-[1120px] flex-1 pb-16 pt-24 md:pt-28 lg:pt-32">
+          <Navbar />
+          <div className="landing-grid absolute inset-x-0 top-0 h-52 opacity-30" />
+
+          {/* Hero header */}
+          <div className="relative z-10 mb-10">
+            <div className="animate-fade-in-up delay-100">
+              <div className="landing-chip mb-6">
+                <Sparkles className="h-3.5 w-3.5" />
+                Elige tu siguiente compromiso
+              </div>
             </div>
 
-            <h1
-              className="text-5xl uppercase leading-none sm:text-7xl md:text-8xl"
-              style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
-            >
-              Todos los retos
+            <h1 className="font-display animate-fade-in-up delay-200 text-[clamp(4.5rem,10vw,8.5rem)] uppercase leading-[0.88] tracking-tight">
+              <span className="hero-title-solid block">Todos los</span>
+              <span className="landing-highlight block">retos</span>
             </h1>
-            <p
-              className="mt-4 max-w-2xl text-base text-gray-600 sm:text-lg"
-              style={{ fontFamily: "var(--font-dm-sans)" }}
-            >
-              Escoge el reto que mas te incomoda. Ese suele ser el que mas te cambia.
-            </p>
-          </section>
 
-          <section className="mb-10 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap gap-3">
+            <p className="font-body animate-fade-in-up delay-300 mt-5 max-w-lg text-[1.02rem] leading-7 text-black/62">
+              Escoge el reto que más te incomoda.{" "}
+              <strong className="font-semibold text-[#a5441f]">
+                Ese suele ser el que más te cambia.
+              </strong>
+            </p>
+          </div>
+
+          {/* Filters row */}
+          <div className="animate-fade-in-up delay-400 relative z-10 mb-8 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-wrap gap-2">
               {categorias.map((cat) => (
                 <button
                   key={cat.valor}
                   onClick={() => setCategoriaActiva(cat.valor)}
-                  className="inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
+                  className="font-body inline-flex items-center gap-2 rounded-full border px-5 py-2 text-sm font-semibold transition-all duration-200 hover:-translate-y-0.5"
                   style={{
-                    backgroundColor: categoriaActiva === cat.valor ? "#1A1A1A" : "#FFFFFF",
-                    color: categoriaActiva === cat.valor ? "#FFFFFF" : "#7A6F65",
-                    border: `1px solid ${categoriaActiva === cat.valor ? "#1A1A1A" : "#DDD6C8"}`,
-                    fontFamily: "var(--font-dm-sans)",
+                    backgroundColor:
+                      categoriaActiva === cat.valor ? "#2a1409" : "rgba(255,255,255,0.62)",
+                    color:
+                      categoriaActiva === cat.valor ? "#fff7ef" : "rgba(42,20,9,0.68)",
+                    borderColor:
+                      categoriaActiva === cat.valor
+                        ? "rgba(42,20,9,0.18)"
+                        : "rgba(255,255,255,0.48)",
+                    backdropFilter: "blur(10px)",
                     boxShadow:
                       categoriaActiva === cat.valor
-                        ? "0 10px 24px rgba(26,26,26,0.2)"
-                        : "0 8px 18px rgba(80,60,20,0.06)",
+                        ? "0 10px 24px rgba(42,20,9,0.22)"
+                        : "0 4px 12px rgba(124,50,18,0.08)",
                   }}
                 >
                   {cat.icon && <cat.icon className="h-4 w-4" />}
@@ -95,38 +98,57 @@ export default function RetosPage() {
 
             <Link
               href="/retos/crear"
-              className="inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-semibold text-white transition-all duration-200 hover:scale-105"
-              style={{
-                background: "linear-gradient(135deg, #F26430, #E03228)",
-                fontFamily: "var(--font-dm-sans)",
-                boxShadow: "0 14px 24px rgba(224,50,40,0.28)",
-              }}
+              className="font-body inline-flex items-center gap-2 rounded-full bg-[#f47432] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_16px_30px_rgba(244,116,50,0.38)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#e8672d]"
             >
               <PenLine className="h-4 w-4" />
               Crear reto personalizado
             </Link>
-          </section>
+          </div>
 
-          <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {retosFiltrados.map((reto) => (
-              <RetoCard key={reto.slug} reto={reto} />
-            ))}
-          </section>
-
-          {retosFiltrados.length === 0 && (
-            <div
-              className="mt-8 rounded-2xl border px-6 py-14 text-center"
-              style={{ backgroundColor: "#FFFFFF", borderColor: "#DDD6C8" }}
-            >
-              <p className="text-gray-600" style={{ fontFamily: "var(--font-dm-sans)" }}>
-                Todavia no hay retos en esta categoria.
+          {/* Cards bento grid */}
+          {retosFiltrados.length === 0 ? (
+            <div className="landing-panel landing-panel-warm relative z-10 mt-8 px-6 py-14 text-center">
+              <p className="font-body text-black/58">
+                Todavía no hay retos en esta categoría.
               </p>
             </div>
+          ) : retosFiltrados.length === 4 ? (
+            <div className="relative z-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
+              {retosFiltrados.map((reto, i) => {
+                const isFeatured = i === 0 || i === 3;
+                return (
+                  <motion.div
+                    key={reto.slug}
+                    className={isFeatured ? "lg:col-span-2" : "lg:col-span-1"}
+                    initial={{ opacity: 0, y: 32 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.45, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <RetoCard reto={reto} featured={isFeatured} />
+                  </motion.div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="relative z-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {retosFiltrados.map((reto, i) => (
+                <motion.div
+                  key={reto.slug}
+                  initial={{ opacity: 0, y: 32 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <RetoCard reto={reto} />
+                </motion.div>
+              ))}
+            </div>
           )}
+        </section>
+
+        <div className="mx-auto w-full max-w-[1120px]">
+          <Footer />
         </div>
       </div>
-      </DoodleBackground>
-      <Footer />
     </main>
   );
 }

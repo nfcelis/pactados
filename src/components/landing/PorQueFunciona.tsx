@@ -1,82 +1,67 @@
-import { DollarSign, Eye, BarChart2, type LucideIcon } from "lucide-react";
+import { BarChart2, DollarSign, Eye, type LucideIcon } from "lucide-react";
 
 const razones: { icon: LucideIcon; titulo: string; descripcion: string }[] = [
   {
     icon: DollarSign,
-    titulo: "Consecuencia económica real",
+    titulo: "Consecuencia economica real",
     descripcion:
-      "El dinero habla. Cuando hay algo que perder, el cerebro activa un modo diferente. No es motivación — es ingeniería del comportamiento.",
+      "Cuando hay algo que perder, tu cerebro deja de negociar contigo.",
   },
   {
     icon: Eye,
-    titulo: "Compromiso público",
+    titulo: "Compromiso publico",
     descripcion:
-      "Decirle a tus amigos que vas a hacer algo multiplica las probabilidades de que lo hagas. La vergüenza social es poderosa.",
+      "Decirlo en voz alta y mostrar avances cambia la forma en que respondes.",
   },
   {
     icon: BarChart2,
     titulo: "Accountability diario",
     descripcion:
-      "Un recordatorio cada día. Un grupo que te vigila. Un registro que no miente. Sin excusas, sin negaciones.",
+      "Cada dia cuenta. Cada reporte queda. Cada omision se nota.",
   },
 ];
 
 export function PorQueFunciona() {
   return (
-    <section className="py-24 px-4" style={{ backgroundColor: "rgba(237, 232, 223,0.6)" }}>
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <p
-            className="text-sm font-medium mb-3 uppercase tracking-widest"
-            style={{ color: "#1A1A1A", fontFamily: "var(--font-dm-sans)" }}
-          >
-            La ciencia detrás
+    <section id="ciencia" className="mt-auto px-6 pb-6 md:px-8 lg:px-10">
+      <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(49,14,5,0.9),rgba(26,8,3,0.97))] px-5 py-6 shadow-[0_30px_70px_rgba(0,0,0,0.28)] md:px-6">
+        <div className="absolute -right-12 top-0 h-36 w-36 rounded-full bg-[#ff8b41]/18 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-28 w-28 rounded-full bg-[#ff5c2b]/16 blur-3xl" />
+
+        <div className="relative z-10">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.28em] text-white/55">
+            La ciencia detras
           </p>
-          <h2
-            className="text-5xl sm:text-6xl md:text-7xl uppercase"
-            style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
-          >
-            Por qué funciona
+          <h2 className="font-display mt-2 text-4xl uppercase tracking-wide text-white md:text-5xl">
+            Por que funciona
           </h2>
+
+          <div className="font-body mt-5 inline-flex flex-wrap items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-white/72">
+            <span>Compromiso publico</span>
+            <span className="text-[#ff934d]">+</span>
+            <span>Consecuencia economica</span>
+            <span className="text-[#ff934d]">+</span>
+            <span>Seguimiento diario</span>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="relative z-10 mt-7 grid gap-4 md:grid-cols-3">
           {razones.map((razon) => (
-            <div key={razon.titulo} className="text-center">
-              <div className="flex justify-center mb-6">
-                <razon.icon className="w-14 h-14" style={{ color: "#1A1A1A" }} />
+            <div
+              key={razon.titulo}
+              className="rounded-[24px] border border-white/8 bg-white/5 p-5 backdrop-blur-sm"
+            >
+              <div className="mb-4 inline-flex rounded-2xl bg-[#ff8b41]/12 p-3 text-[#ff8b41]">
+                <razon.icon className="h-5 w-5" />
               </div>
-              <h3
-                className="text-2xl uppercase mb-4"
-                style={{ fontFamily: "var(--font-bebas)", color: "#1A1A1A" }}
-              >
+              <h3 className="font-display text-2xl uppercase tracking-wide text-white">
                 {razon.titulo}
               </h3>
-              <p
-                className="text-gray-600 leading-relaxed"
-                style={{ fontFamily: "var(--font-dm-sans)" }}
-              >
+              <p className="font-body mt-3 text-sm leading-6 text-white/68">
                 {razon.descripcion}
               </p>
             </div>
           ))}
-        </div>
-
-        {/* Formula visual */}
-        <div
-          className="mt-16 p-8 rounded-xl text-center"
-          style={{ backgroundColor: "#1A1A1A", border: "1px solid #1A1A1A" }}
-        >
-          <p
-            className="text-3xl sm:text-4xl md:text-5xl uppercase"
-            style={{ fontFamily: "var(--font-bebas)", color: "#FFFFFF" }}
-          >
-            Compromiso público{" "}
-            <span style={{ color: "#F9D67A" }}>+</span>{" "}
-            Consecuencia económica{" "}
-            <span style={{ color: "#F9D67A" }}>=</span>{" "}
-            <span style={{ color: "#F9D67A" }}>Disciplina real</span>
-          </p>
         </div>
       </div>
     </section>
