@@ -8,12 +8,14 @@ import {
   BookOpen,
   Flame,
   Footprints,
+  Move,
   ShieldBan,
   Users,
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import { useReducedEffects } from "@/lib/use-reduced-effects";
 import GradientText from "@/components/ui/gradient-text";
 import Stack from "@/components/ui/stack";
 
@@ -44,11 +46,14 @@ const retos = [
     Icon: Footprints,
     acento: "#ef8c39",
   },
-];
-
-const metricas = [
-  { valor: "23", etiqueta: "Retos activos hoy", icono: Flame },
-  { valor: "1.248", etiqueta: "Personas pactando ahora mismo", icono: Users },
+  {
+    titulo: "Reto Lectura",
+    imagen: "/reto-lectura.jpeg",
+    alt: "Chat de WhatsApp con evidencia de un reto de lectura",
+    participantes: 4,
+    Icon: BookOpen,
+    acento: "#df7c72",
+  },
 ];
 
 function RetoCard({
@@ -83,6 +88,8 @@ function RetoCard({
           alt={alt}
           width={760}
           height={1040}
+          sizes="(max-width: 768px) 88vw, (max-width: 1200px) 40vw, 32rem"
+          quality={72}
           className="h-[24rem] w-full object-cover object-top md:h-[28rem] lg:h-[31rem]"
         />
       </div>
@@ -99,10 +106,11 @@ function RetoCard({
 
 export function RetosEnAccion() {
   const sectionRef = useRef<HTMLElement>(null);
+  const reducedEffects = useReducedEffects();
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    if (!section || reducedEffects) return;
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -142,24 +150,62 @@ export function RetosEnAccion() {
       );
 
       gsap.fromTo(
-        section.querySelectorAll("[data-retos-footer]"),
-        { autoAlpha: 0, y: 28 },
+        section.querySelectorAll("[data-retos-side-left]"),
+        { autoAlpha: 0, x: -26, y: 20, scale: 0.94 },
         {
           autoAlpha: 1,
+          x: 0,
           y: 0,
-          duration: 0.7,
+          scale: 1,
+          duration: 0.85,
           ease: "power2.out",
           scrollTrigger: {
             trigger: section,
-            start: "top 72%",
+            start: "top 82%",
             toggleActions: "play none none none",
           },
         }
       );
+
+      gsap.fromTo(
+        section.querySelectorAll("[data-retos-side-right]"),
+        { autoAlpha: 0, x: 26, y: 20, scale: 0.94 },
+        {
+          autoAlpha: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          duration: 0.85,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 82%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        section.querySelectorAll("[data-retos-side-center]"),
+        { autoAlpha: 0, y: 24, scale: 0.97 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.9,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 82%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+
     }, section);
 
     return () => ctx.revert();
-  }, []);
+  }, [reducedEffects]);
 
   const cards = useMemo(
     () =>
@@ -181,12 +227,16 @@ export function RetosEnAccion() {
     <section
       ref={sectionRef}
       id="retos-en-accion"
-      className="relative -mt-4 overflow-visible px-6 pb-0 pt-6 md:-mt-8 md:px-10 md:pb-1 md:pt-8 lg:-mt-10 lg:px-14 lg:pb-2"
+      className="relative -mt-16 overflow-visible px-6 pb-0 pt-0 md:-mt-20 md:px-10 md:pb-1 md:pt-2 lg:-mt-24 lg:px-14 lg:pb-2 lg:pt-3"
+      style={{
+        contentVisibility: "auto",
+        containIntrinsicSize: "980px",
+      }}
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute inset-x-0 top-[-5.5rem] h-[9rem] bg-[linear-gradient(180deg,rgba(248,239,224,0)_0%,rgba(248,239,224,0.58)_42%,rgba(245,214,167,0.26)_76%,transparent_100%)] blur-[20px]" />
         <div className="absolute left-1/2 top-[-1.25rem] h-[8rem] w-[min(96vw,62rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,248,235,0.72)_0%,rgba(255,231,194,0.28)_42%,transparent_82%)] blur-[42px]" />
-        <div className="absolute left-[6%] top-[20%] hidden lg:block">
+        <div data-retos-side-left className="absolute left-[6%] top-[20%] hidden lg:block">
           <Image
             src="/fuego-doodle-left.png"
             alt=""
@@ -195,7 +245,7 @@ export function RetosEnAccion() {
             className="h-[4.4rem] w-[4.4rem] object-contain opacity-72"
           />
         </div>
-        <div className="absolute right-[4%] top-[18%] hidden lg:block">
+        <div data-retos-side-right className="absolute right-[4%] top-[18%] hidden lg:block">
           <Image
             src="/fuego-doodle-right-large.png"
             alt=""
@@ -204,7 +254,10 @@ export function RetosEnAccion() {
             className="h-[5rem] w-[5rem] object-contain opacity-62"
           />
         </div>
-        <div className="absolute left-1/2 top-[20%] h-[28rem] w-[min(104vw,74rem)] -translate-x-1/2 rounded-[50%] border border-[#f4b274]/62 opacity-68" />
+        <div
+          data-retos-side-center
+          className="absolute left-1/2 top-[20%] h-[28rem] w-[min(104vw,74rem)] -translate-x-1/2 rounded-[50%] border border-[#f4b274]/62 opacity-68"
+        />
       </div>
 
       <div className="relative z-10 mx-auto max-w-[1120px]">
@@ -267,6 +320,16 @@ export function RetosEnAccion() {
               </span>
             </div>
 
+            <div
+              data-retos-copy
+              className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#f1d1ae] bg-white/55 px-4 py-2 text-[#b06f3d] shadow-[0_10px_22px_rgba(196,113,42,0.08)] backdrop-blur-sm"
+            >
+              <Move className="h-4 w-4" strokeWidth={2.1} />
+              <span className="font-body text-sm font-semibold">
+                Arrastra las cards para explorar más evidencias
+              </span>
+            </div>
+
             <div data-retos-copy className="mt-8">
               <Link
                 href="/retos"
@@ -280,68 +343,23 @@ export function RetosEnAccion() {
 
           <div
             data-retos-stack
-            className="relative ml-auto h-[31rem] w-full max-w-[33rem] md:h-[37rem] md:max-w-[35rem] lg:h-[41rem] lg:max-w-[37rem]"
+            className="relative ml-auto h-[33rem] w-full max-w-[34rem] md:h-[39rem] md:max-w-[36rem] lg:h-[43rem] lg:max-w-[38rem]"
           >
             <div className="absolute left-1/2 top-1/2 h-[118%] w-[118%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,223,177,0.32)_0%,rgba(255,187,117,0.14)_46%,transparent_78%)] blur-[62px]" />
             <Stack
               randomRotation={false}
-              sensitivity={140}
+              sensitivity={110}
               sendToBackOnClick
               cards={cards}
-              autoplay
-              autoplayDelay={3200}
-              pauseOnHover
+              autoplay={!reducedEffects}
+              autoplayDelay={5000}
+              pauseOnHover={!reducedEffects}
+              mobileClickOnly
+              enableTilt={!reducedEffects}
             />
           </div>
         </div>
 
-        <div
-          data-retos-footer
-          className="mt-7 overflow-hidden rounded-[2rem] border border-[#f2d4b6] bg-[linear-gradient(180deg,rgba(255,251,247,0.94),rgba(255,242,226,0.88))] shadow-[0_24px_54px_rgba(180,93,29,0.1),inset_0_1px_0_rgba(255,255,255,0.74)]"
-        >
-          <div className="grid gap-5 px-5 py-5 md:grid-cols-[1.3fr_0.7fr_0.95fr_1fr] md:items-center md:px-6">
-            <div className="flex items-start gap-4">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(180deg,#ff8a2f,#ff681b)] text-white shadow-[0_16px_26px_rgba(232,113,39,0.28)]">
-                <Users className="h-8 w-8" strokeWidth={2.1} />
-              </div>
-              <div>
-                <h3 className="font-body text-[1.1rem] font-bold text-[#2f2a26]">
-                  Nuestra comunidad no para
-                </h3>
-                <p className="font-body mt-1 max-w-[27ch] text-[0.98rem] leading-6 text-[#8e7a69]">
-                  Cada día más personas se comprometen y completan sus retos.
-                </p>
-              </div>
-            </div>
-
-            {metricas.map((item) => (
-              <div
-                key={item.etiqueta}
-                className="flex items-center gap-3 md:justify-center md:border-l md:border-[#efd8c2] md:pl-6"
-              >
-                <item.icono className="h-6 w-6 text-[#f27823]" strokeWidth={2.1} />
-                <div>
-                  <p className="font-display text-[2.2rem] leading-none text-[#2a2420]">
-                    {item.valor}
-                  </p>
-                  <p className="font-body text-[0.92rem] text-[#9b8675]">
-                    {item.etiqueta}
-                  </p>
-                </div>
-              </div>
-            ))}
-
-            <div className="md:border-l md:border-[#efd8c2] md:pl-6">
-              <Link
-                href="/retos"
-                className="font-body inline-flex w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(180deg,#ff8a2f,#ff681b)] px-6 py-4 text-[1rem] font-semibold text-white shadow-[0_16px_28px_rgba(232,113,39,0.22)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_30px_rgba(232,113,39,0.28)]"
-              >
-                Explorar todos los retos
-                <ArrowRight className="h-4 w-4" strokeWidth={2.4} />
-              </Link>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

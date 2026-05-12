@@ -7,7 +7,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import GradientText from "@/components/ui/gradient-text";
-import MagicRings from "@/components/ui/magic-rings";
 import SpotlightCard from "@/components/ui/spotlight-card";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -170,83 +169,43 @@ export function ComoFunciona() {
     <section
       ref={sectionRef}
       id="sistema"
-      className="relative -mt-2 overflow-visible px-6 pb-20 pt-2 md:-mt-3 md:px-10 md:pb-28 md:pt-3 lg:-mt-4 lg:px-14 lg:pb-32 lg:pt-4"
+      className="relative mt-10 overflow-visible px-6 pb-20 pt-6 md:mt-14 md:px-10 md:pb-28 md:pt-8 lg:mt-16 lg:px-14 lg:pb-32 lg:pt-10"
+      style={{
+        contentVisibility: "auto",
+        containIntrinsicSize: "920px",
+      }}
     >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-1/2 h-[calc(100%+18rem)] w-screen -translate-x-1/2 -translate-y-1/2 overflow-hidden"
       >
-        <div className="absolute inset-x-0 top-[-3rem] h-[6rem] bg-[linear-gradient(180deg,rgba(248,239,224,0)_0%,rgba(247,226,191,0.42)_44%,rgba(241,199,138,0.14)_78%,transparent_100%)] blur-[16px]" />
-        <div className="absolute left-1/2 top-[-0.35rem] h-[6.25rem] w-[min(98vw,64rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,246,228,0.58)_0%,rgba(255,221,170,0.16)_46%,transparent_82%)] blur-[30px]" />
+        <div className="absolute inset-x-0 top-[-1.5rem] h-[4.5rem] bg-[linear-gradient(180deg,rgba(248,239,224,0)_0%,rgba(247,226,191,0.26)_44%,rgba(241,199,138,0.08)_78%,transparent_100%)] blur-[14px]" />
+        <div className="absolute left-1/2 top-[0.75rem] h-[5.2rem] w-[min(98vw,62rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,246,228,0.34)_0%,rgba(255,221,170,0.1)_46%,transparent_82%)] blur-[24px]" />
         <div
-          className="absolute left-1/2 top-1/2 h-[136%] w-[min(142vw,120rem)] -translate-x-1/2 -translate-y-1/2 opacity-[0.42]"
+          className="absolute left-1/2 top-[55%] h-[34rem] w-[min(94vw,62rem)] -translate-x-1/2 -translate-y-1/2 opacity-[0.44]"
           style={{
             maskImage:
-              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.66) 12%, rgba(0,0,0,0.92) 22%, rgba(0,0,0,0.92) 82%, rgba(0,0,0,0.66) 92%, transparent 100%)",
+              "radial-gradient(ellipse at center, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.92) 44%, rgba(0,0,0,0.44) 74%, transparent 100%)",
             WebkitMaskImage:
-              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.66) 12%, rgba(0,0,0,0.92) 22%, rgba(0,0,0,0.92) 82%, rgba(0,0,0,0.66) 92%, transparent 100%)",
+              "radial-gradient(ellipse at center, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.92) 44%, rgba(0,0,0,0.44) 74%, transparent 100%)",
           }}
         >
-          <div className="absolute left-1/2 top-1/2 h-[128%] w-[128%] -translate-x-1/2 -translate-y-1/2 mix-blend-screen">
-            <MagicRings
-              color="#f7a055"
-              colorTwo="#f1d263"
-              ringCount={6}
-              speed={1.04}
-              attenuation={9.2}
-              lineThickness={2}
-              baseRadius={0.35}
-              radiusStep={0.1}
-              scaleRate={0.1}
-              opacity={0.82}
-              blur={0}
-              noiseAmount={0.03}
-              rotation={0}
-              ringGap={1.5}
-              fadeIn={0.7}
-              fadeOut={0.5}
-              followMouse={false}
-              mouseInfluence={0.2}
-              hoverScale={1.2}
-              parallax={0.025}
-              clickBurst={false}
-            />
-          </div>
+          <div className="absolute inset-0 rounded-full border border-[#f7c26b]/45 bg-[radial-gradient(circle_at_center,rgba(247,160,85,0.2)_0%,rgba(241,210,99,0.12)_28%,rgba(241,210,99,0.05)_44%,transparent_68%)] blur-[2px]" />
+          <div className="absolute left-1/2 top-1/2 h-[72%] w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#f6b15a]/35" />
+          <div className="absolute left-1/2 top-1/2 h-[48%] w-[48%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#f1d263]/28" />
         </div>
         <div
-          className="absolute left-1/2 top-[56%] h-[30rem] w-[min(86vw,56rem)] -translate-x-1/2 -translate-y-1/2 opacity-[0.78]"
+          className="absolute left-1/2 top-[57%] h-[22rem] w-[min(72vw,40rem)] -translate-x-1/2 -translate-y-1/2 opacity-[0.24]"
           style={{
             maskImage:
-              "radial-gradient(ellipse at center, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.9) 36%, rgba(0,0,0,0.42) 72%, transparent 100%)",
+              "radial-gradient(ellipse at center, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.84) 38%, rgba(0,0,0,0.22) 72%, transparent 100%)",
             WebkitMaskImage:
-              "radial-gradient(ellipse at center, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.9) 36%, rgba(0,0,0,0.42) 72%, transparent 100%)",
+              "radial-gradient(ellipse at center, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.84) 38%, rgba(0,0,0,0.22) 72%, transparent 100%)",
           }}
         >
-          <div className="absolute inset-0 mix-blend-screen">
-            <MagicRings
-              color="#f7a055"
-              colorTwo="#f1d263"
-              ringCount={6}
-              speed={1.08}
-              attenuation={8.1}
-              lineThickness={2.25}
-              baseRadius={0.24}
-              radiusStep={0.082}
-              scaleRate={0.11}
-              opacity={1}
-              blur={0}
-              noiseAmount={0.022}
-              rotation={0}
-              ringGap={1.42}
-              fadeIn={0.68}
-              fadeOut={0.54}
-              followMouse={false}
-              mouseInfluence={0.2}
-              hoverScale={1.16}
-              parallax={0.02}
-              clickBurst={false}
-            />
-          </div>
+          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(247,160,85,0.18)_0%,rgba(241,210,99,0.1)_30%,transparent_72%)] blur-[5px]" />
+          <div className="absolute left-1/2 top-1/2 h-[66%] w-[66%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#f7b366]/30" />
+          <div className="absolute left-1/2 top-1/2 h-[38%] w-[38%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#f1d263]/24" />
         </div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_46%,rgba(255,206,123,0.065),transparent_34%),radial-gradient(circle_at_18%_24%,rgba(255,176,92,0.04),transparent_24%),radial-gradient(circle_at_82%_72%,rgba(212,93,28,0.04),transparent_28%)]" />
       </div>

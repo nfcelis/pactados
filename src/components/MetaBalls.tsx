@@ -3,6 +3,8 @@
 import React, { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle, Transform, Vec3, Camera } from 'ogl';
 
+import { useAnimationActivity } from "@/lib/use-animation-activity";
+
 type MetaBallsProps = {
   color?: string;
   speed?: number;
@@ -133,12 +135,22 @@ const MetaBalls: React.FC<MetaBallsProps> = ({
   enableTransparency = false
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isAnimationActive = useAnimationActivity(containerRef, {
+    rootMargin: "220px 0px",
+  });
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || !isAnimationActive) return;
 
-    const dpr = 1;
+    const isCoarsePointer =
+      typeof window !== "undefined" &&
+      window.matchMedia("(pointer: coarse)").matches;
+    const hardwareConcurrency =
+      typeof navigator !== "undefined" ? navigator.hardwareConcurrency ?? 8 : 8;
+    const isLowPowerDevice = isCoarsePointer || hardwareConcurrency <= 4;
+
+    const dpr = isLowPowerDevice ? 0.75 : 1;
     const renderer = new Renderer({
       dpr,
       alpha: true,
@@ -193,7 +205,11 @@ const MetaBalls: React.FC<MetaBallsProps> = ({
     mesh.setParent(scene);
 
     const maxBalls = 50;
-    const effectiveBallCount = Math.min(ballCount, maxBalls);
+    const requestedBallCount = isLowPowerDevice
+      ? Math.max(10, Math.floor(ballCount * 0.65))
+      : ballCount;
+    const effectiveBallCount = Math.min(requestedBallCount, maxBalls);
+    program.uniforms.iBallCount.value = effectiveBallCount;
     const ballParams: BallParams[] = [];
     for (let i = 0; i < effectiveBallCount; i++) {
       const idx = i + 1;
@@ -211,6 +227,7 @@ const MetaBalls: React.FC<MetaBallsProps> = ({
     let pointerInside = false;
     let pointerX = gl.canvas.width * 0.5;
     let pointerY = gl.canvas.height * 0.5;
+    const allowMouseInteraction = enableMouseInteraction && !isCoarsePointer;
 
     function resize() {
       if (!container) return;
@@ -225,7 +242,7 @@ const MetaBalls: React.FC<MetaBallsProps> = ({
     resize();
 
     function onPointerMove(e: PointerEvent) {
-      if (!enableMouseInteraction || !container) return;
+      if (!allowMouseInteraction || !container) return;
       const rect = container.getBoundingClientRect();
       const withinX = e.clientX >= rect.left && e.clientX <= rect.right;
       const withinY = e.clientY >= rect.top && e.clientY <= rect.bottom;
@@ -239,16 +256,24 @@ const MetaBalls: React.FC<MetaBallsProps> = ({
       pointerY = (1 - py / rect.height) * gl.canvas.height;
     }
     function onPointerLeaveWindow() {
-      if (!enableMouseInteraction) return;
+      if (!allowMouseInteraction) return;
       pointerInside = false;
     }
-    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
     window.addEventListener('pointerleave', onPointerLeaveWindow);
 
     const startTime = performance.now();
     let animationFrameId: number;
+    const targetFPS = isLowPowerDevice ? 24 : 30;
+    const frameDuration = 1000 / targetFPS;
+    let lastRenderTime = 0;
     function update(t: number) {
       animationFrameId = requestAnimationFrame(update);
+      if (t - lastRenderTime < frameDuration) {
+        return;
+      }
+      lastRenderTime = t;
+
       const elapsed = (t - startTime) * 0.001;
       program.uniforms.iTime.value = elapsed;
 
@@ -264,7 +289,10 @@ const MetaBalls: React.FC<MetaBallsProps> = ({
       }
 
       let targetX: number, targetY: number;
-      if (pointerInside) {
+      if (!allowMouseInteraction) {
+        targetX = gl.canvas.width * 0.5;
+        targetY = gl.canvas.height * 0.5;
+      } else if (pointerInside) {
         targetX = pointerX;
         targetY = pointerY;
       } else {
@@ -288,10 +316,13 @@ const MetaBalls: React.FC<MetaBallsProps> = ({
       window.removeEventListener('resize', resize);
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerleave', onPointerLeaveWindow);
-      container.removeChild(gl.canvas);
+      if (container.contains(gl.canvas)) {
+        container.removeChild(gl.canvas);
+      }
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, [
+    isAnimationActive,
     color,
     cursorBallColor,
     speed,

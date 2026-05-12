@@ -81,6 +81,10 @@ export function CienciaDetras() {
     <section
       id="ciencia"
       className="relative left-1/2 z-10 isolate w-screen -translate-x-1/2 px-6 pb-8 pt-4 md:-mt-[5.5rem] md:px-10 md:pb-10 md:pt-[8.75rem] lg:-mt-[7rem] lg:px-14 lg:pb-12 lg:pt-[9.75rem]"
+      style={{
+        contentVisibility: "auto",
+        containIntrinsicSize: "1180px",
+      }}
     >
       <div
         aria-hidden="true"
@@ -114,7 +118,7 @@ export function CienciaDetras() {
               cursorBallSize={2.25}
               ballCount={34}
               animationSize={34}
-              enableMouseInteraction
+              enableMouseInteraction={false}
               enableTransparency
               hoverSmoothness={0.12}
               clumpFactor={1.18}
@@ -139,7 +143,7 @@ export function CienciaDetras() {
               cursorBallSize={1.8}
               ballCount={26}
               animationSize={44}
-              enableMouseInteraction
+              enableMouseInteraction={false}
               enableTransparency
               hoverSmoothness={0.08}
               clumpFactor={1.34}
@@ -164,7 +168,7 @@ export function CienciaDetras() {
               cursorBallSize={1.9}
               ballCount={24}
               animationSize={36}
-              enableMouseInteraction
+              enableMouseInteraction={false}
               enableTransparency
               hoverSmoothness={0.1}
               clumpFactor={1.05}
@@ -189,7 +193,7 @@ export function CienciaDetras() {
               cursorBallSize={1.5}
               ballCount={18}
               animationSize={32}
-              enableMouseInteraction
+              enableMouseInteraction={false}
               enableTransparency
               hoverSmoothness={0.08}
               clumpFactor={0.94}
@@ -214,7 +218,7 @@ export function CienciaDetras() {
               cursorBallSize={1.3}
               ballCount={14}
               animationSize={28}
-              enableMouseInteraction
+              enableMouseInteraction={false}
               enableTransparency
               hoverSmoothness={0.08}
               clumpFactor={0.88}

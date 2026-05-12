@@ -1,13 +1,16 @@
 "use client";
 
 import { motion, useMotionValue, useTransform, type PanInfo } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { useAnimationActivity } from "@/lib/use-animation-activity";
 
 interface CardRotateProps {
   children: React.ReactNode;
   onSendToBack: () => void;
   sensitivity: number;
   disableDrag?: boolean;
+  enableTilt?: boolean;
 }
 
 function CardRotate({
@@ -15,17 +18,20 @@ function CardRotate({
   onSendToBack,
   sensitivity,
   disableDrag = false,
+  enableTilt = true,
 }: CardRotateProps) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const rotateX = useTransform(y, [-100, 100], [60, -60]);
-  const rotateY = useTransform(x, [-100, 100], [-60, 60]);
+  const rotateX = useTransform(y, [-100, 100], enableTilt ? [60, -60] : [0, 0]);
+  const rotateY = useTransform(x, [-100, 100], enableTilt ? [-60, 60] : [0, 0]);
 
   function handleDragEnd(
     _event: MouseEvent | TouchEvent | PointerEvent,
     info: PanInfo
   ) {
     if (Math.abs(info.offset.x) > sensitivity || Math.abs(info.offset.y) > sensitivity) {
+      x.set(0);
+      y.set(0);
       onSendToBack();
     } else {
       x.set(0);
@@ -43,12 +49,13 @@ function CardRotate({
 
   return (
     <motion.div
-      className="absolute inset-0 cursor-grab"
+      className="absolute inset-0 cursor-grab touch-none"
       style={{ x, y, rotateX, rotateY }}
       drag
       dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
       dragElastic={0.6}
-      whileTap={{ cursor: "grabbing" }}
+      dragMomentum={false}
+      whileTap={{ cursor: "grabbing", scale: 1.01 }}
       onDragEnd={handleDragEnd}
     >
       {children}
@@ -67,6 +74,8 @@ interface StackProps {
   pauseOnHover?: boolean;
   mobileClickOnly?: boolean;
   mobileBreakpoint?: number;
+  enableTilt?: boolean;
+  autoplayOnlyWhenVisible?: boolean;
 }
 
 export default function Stack({
@@ -80,12 +89,18 @@ export default function Stack({
   pauseOnHover = false,
   mobileClickOnly = false,
   mobileBreakpoint = 768,
+  enableTilt = true,
+  autoplayOnlyWhenVisible = true,
 }: StackProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [stack, setStack] = useState<{ id: number; content: React.ReactNode }[]>(
     () => cards.map((content, index) => ({ id: index + 1, content }))
   );
+  const isAnimationActive = useAnimationActivity(containerRef, {
+    rootMargin: "240px 0px",
+  });
 
   useEffect(() => {
     const checkMobile = () => {
@@ -101,8 +116,10 @@ export default function Stack({
     setStack(cards.map((content, index) => ({ id: index + 1, content })));
   }, [cards]);
 
-  const shouldDisableDrag = mobileClickOnly && isMobile;
+  const shouldDisableDrag = (mobileClickOnly && isMobile) || !enableTilt;
   const shouldEnableClick = sendToBackOnClick || shouldDisableDrag;
+  const shouldAutoplay =
+    autoplay && (!autoplayOnlyWhenVisible || isAnimationActive);
 
   const sendToBack = (id: number) => {
     setStack((prev) => {
@@ -115,7 +132,7 @@ export default function Stack({
   };
 
   useEffect(() => {
-    if (!autoplay || stack.length <= 1 || isPaused) return;
+    if (!shouldAutoplay || stack.length <= 1 || isPaused) return;
 
     const interval = setInterval(() => {
       const topCardId = stack[stack.length - 1].id;
@@ -123,17 +140,19 @@ export default function Stack({
     }, autoplayDelay);
 
     return () => clearInterval(interval);
-  }, [autoplay, autoplayDelay, stack, isPaused]);
+  }, [shouldAutoplay, autoplayDelay, stack, isPaused]);
 
   return (
     <div
+      ref={containerRef}
       className="relative h-full w-full"
       style={{ perspective: 600 }}
       onMouseEnter={() => pauseOnHover && setIsPaused(true)}
       onMouseLeave={() => pauseOnHover && setIsPaused(false)}
     >
       {stack.map((card, index) => {
-        const randomRotate = randomRotation ? Math.random() * 10 - 5 : 0;
+        const randomRotate =
+          randomRotation && enableTilt ? Math.random() * 10 - 5 : 0;
 
         return (
           <CardRotate
@@ -141,6 +160,7 @@ export default function Stack({
             onSendToBack={() => sendToBack(card.id)}
             sensitivity={sensitivity}
             disableDrag={shouldDisableDrag}
+            enableTilt={enableTilt}
           >
             <motion.div
               className="h-full w-full overflow-hidden rounded-[2rem]"

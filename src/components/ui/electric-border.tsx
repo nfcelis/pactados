@@ -8,6 +8,8 @@ import {
   useRef,
 } from "react";
 
+import { useAnimationActivity } from "@/lib/use-animation-activity";
+
 function hexToRgba(hex: string, alpha = 1): string {
   if (!hex) return `rgba(0,0,0,${alpha})`;
 
@@ -53,6 +55,9 @@ export default function ElectricBorder({
   const animationRef = useRef<number | null>(null);
   const timeRef = useRef(0);
   const lastFrameTimeRef = useRef(0);
+  const isAnimationActive = useAnimationActivity(containerRef, {
+    rootMargin: "200px 0px",
+  });
 
   const random = useCallback((x: number) => {
     return (Math.sin(x * 12.9898) * 43758.5453) % 1;
@@ -239,7 +244,10 @@ export default function ElectricBorder({
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
-    if (!canvas || !container) return;
+    if (!canvas || !container || !isAnimationActive) return;
+
+    timeRef.current = 0;
+    lastFrameTimeRef.current = 0;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -268,9 +276,22 @@ export default function ElectricBorder({
     };
 
     let { width, height, dpr } = updateSize();
+    const targetFPS = 30;
+    const frameDuration = 1000 / targetFPS;
 
     const drawElectricBorder = (currentTime: number) => {
       if (!canvas || !ctx) return;
+
+      if (lastFrameTimeRef.current === 0) {
+        lastFrameTimeRef.current = currentTime;
+      }
+
+      if (
+        currentTime - lastFrameTimeRef.current < frameDuration
+      ) {
+        animationRef.current = requestAnimationFrame(drawElectricBorder);
+        return;
+      }
 
       const deltaTime = (currentTime - lastFrameTimeRef.current) / 1000;
       timeRef.current += deltaTime * speed;
@@ -366,6 +387,7 @@ export default function ElectricBorder({
       resizeObserver.disconnect();
     };
   }, [
+    isAnimationActive,
     borderRadius,
     chaos,
     color,

@@ -3,6 +3,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
+import { useAnimationActivity } from "@/lib/use-animation-activity";
+
 interface LightPillarProps {
   topColor?: string;
   bottomColor?: string;
@@ -45,6 +47,9 @@ export default function LightPillar({
   const timeRef = useRef(0);
   const rotationSpeedRef = useRef(rotationSpeed);
   const [webGLSupported, setWebGLSupported] = useState(true);
+  const isAnimationActive = useAnimationActivity(containerRef, {
+    rootMargin: "260px 0px",
+  });
 
   useEffect(() => {
     const canvas = document.createElement("canvas");
@@ -57,7 +62,7 @@ export default function LightPillar({
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current || !webGLSupported) return;
+    if (!containerRef.current || !webGLSupported || !isAnimationActive) return;
 
     const container = containerRef.current;
     const width = container.clientWidth;
@@ -343,7 +348,12 @@ export default function LightPillar({
     }
 
     let lastTime = performance.now();
-    const targetFPS = effectiveQuality === "low" ? 30 : 60;
+    const targetFPS =
+      effectiveQuality === "low"
+        ? 24
+        : effectiveQuality === "medium"
+          ? 30
+          : 45;
     const frameTime = 1000 / targetFPS;
 
     const animate = (currentTime: number) => {
@@ -418,7 +428,20 @@ export default function LightPillar({
       geometryRef.current = null;
       rafRef.current = null;
     };
-  }, [webGLSupported, quality, topColor, bottomColor, intensity, interactive, glowAmount, pillarWidth, pillarHeight, noiseIntensity, pillarRotation]);
+  }, [
+    isAnimationActive,
+    webGLSupported,
+    quality,
+    topColor,
+    bottomColor,
+    intensity,
+    interactive,
+    glowAmount,
+    pillarWidth,
+    pillarHeight,
+    noiseIntensity,
+    pillarRotation,
+  ]);
 
   useEffect(() => {
     rotationSpeedRef.current = rotationSpeed;
