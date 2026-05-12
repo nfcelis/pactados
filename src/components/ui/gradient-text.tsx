@@ -1,12 +1,6 @@
 "use client";
 
-import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
-import {
-  motion,
-  useAnimationFrame,
-  useMotionValue,
-  useTransform,
-} from "motion/react";
+import { type CSSProperties, type ReactNode, useCallback, useMemo, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -32,59 +26,6 @@ export default function GradientText({
   yoyo = true,
 }: GradientTextProps) {
   const [isPaused, setIsPaused] = useState(false);
-  const progress = useMotionValue(0);
-  const elapsedRef = useRef(0);
-  const lastTimeRef = useRef<number | null>(null);
-
-  const animationDuration = animationSpeed * 1000;
-
-  useAnimationFrame((time) => {
-    if (isPaused) {
-      lastTimeRef.current = null;
-      return;
-    }
-
-    if (lastTimeRef.current === null) {
-      lastTimeRef.current = time;
-      return;
-    }
-
-    const deltaTime = time - lastTimeRef.current;
-    lastTimeRef.current = time;
-    elapsedRef.current += deltaTime;
-
-    if (yoyo) {
-      const fullCycle = animationDuration * 2;
-      const cycleTime = elapsedRef.current % fullCycle;
-
-      if (cycleTime < animationDuration) {
-        progress.set((cycleTime / animationDuration) * 100);
-      } else {
-        progress.set(
-          100 - ((cycleTime - animationDuration) / animationDuration) * 100
-        );
-      }
-    } else {
-      progress.set((elapsedRef.current / animationDuration) * 100);
-    }
-  });
-
-  useEffect(() => {
-    elapsedRef.current = 0;
-    progress.set(0);
-  }, [animationSpeed, progress, yoyo]);
-
-  const backgroundPosition = useTransform(progress, (p) => {
-    if (direction === "horizontal") {
-      return `${p}% 50%`;
-    }
-
-    if (direction === "vertical") {
-      return `50% ${p}%`;
-    }
-
-    return `${p}% 50%`;
-  });
 
   const handleMouseEnter = useCallback(() => {
     if (pauseOnHover) setIsPaused(true);
@@ -102,20 +43,44 @@ export default function GradientText({
         : "to bottom right";
 
   const gradientColors = [...colors, colors[0]].join(", ");
+  const animationName = useMemo(() => {
+    if (direction === "vertical") return "gradient-text-shift-vertical";
+    if (direction === "diagonal") return "gradient-text-shift-diagonal";
+    return "gradient-text-shift-horizontal";
+  }, [direction]);
 
-  const gradientStyle = {
-    backgroundImage: `linear-gradient(${gradientAngle}, ${gradientColors})`,
-    backgroundSize:
-      direction === "horizontal"
-        ? "220% 100%"
-        : direction === "vertical"
-          ? "100% 220%"
-          : "220% 220%",
-    backgroundRepeat: "repeat",
-  };
+  const gradientStyle = useMemo(() => {
+    const style: CSSProperties = {
+      backgroundImage: `linear-gradient(${gradientAngle}, ${gradientColors})`,
+      backgroundSize:
+        direction === "horizontal"
+          ? "220% 100%"
+          : direction === "vertical"
+            ? "100% 220%"
+            : "220% 220%",
+      backgroundRepeat: "repeat",
+      animationName,
+      animationDuration: `${animationSpeed}s`,
+      animationTimingFunction: "linear",
+      animationIterationCount: "infinite",
+      animationDirection: yoyo ? "alternate" : "normal",
+      animationPlayState: isPaused ? "paused" : "running",
+      willChange: "background-position",
+    };
+
+    return style;
+  }, [
+    animationName,
+    animationSpeed,
+    direction,
+    gradientAngle,
+    gradientColors,
+    isPaused,
+    yoyo,
+  ]);
 
   return (
-    <motion.span
+    <span
       className={cn(
         "relative mx-auto inline-flex max-w-fit flex-row items-center justify-center font-medium transition-shadow duration-500",
         showBorder ? "px-2 py-1" : "",
@@ -126,9 +91,9 @@ export default function GradientText({
       data-gradient-text-root="true"
     >
       {showBorder ? (
-        <motion.span
+        <span
           className="pointer-events-none absolute inset-0 z-0 rounded-[1.25rem]"
-          style={{ ...gradientStyle, backgroundPosition }}
+          style={gradientStyle}
         >
           <span
             className="absolute z-[-1] rounded-[1.25rem] bg-black"
@@ -140,21 +105,20 @@ export default function GradientText({
               transform: "translate(-50%, -50%)",
             }}
           />
-        </motion.span>
+        </span>
       ) : null}
 
-      <motion.span
+      <span
         className="gradient-text-content relative z-[2] inline-block text-transparent"
         style={{
           ...gradientStyle,
-          backgroundPosition,
           WebkitBackgroundClip: "text",
           backgroundClip: "text",
         }}
         data-gradient-text-fill="true"
       >
         {children}
-      </motion.span>
-    </motion.span>
+      </span>
+    </span>
   );
 }

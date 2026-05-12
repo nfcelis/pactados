@@ -120,6 +120,56 @@
   }
 }
 
+@keyframes gradient-text-shift-horizontal {
+  from {
+    background-position: 0% 50%;
+  }
+
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes gradient-text-shift-vertical {
+  from {
+    background-position: 50% 0%;
+  }
+
+  to {
+    background-position: 50% 100%;
+  }
+}
+
+@keyframes gradient-text-shift-diagonal {
+  from {
+    background-position: 0% 0%;
+  }
+
+  to {
+    background-position: 100% 100%;
+  }
+}
+
+@keyframes shiny-text-sweep-left {
+  from {
+    background-position: 150% center;
+  }
+
+  to {
+    background-position: -50% center;
+  }
+}
+
+@keyframes shiny-text-sweep-right {
+  from {
+    background-position: -50% center;
+  }
+
+  to {
+    background-position: 150% center;
+  }
+}
+
 @keyframes orangeEdgeGlow {
   0% {
     opacity: 0.5;
@@ -1300,6 +1350,23 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .gradient-text-content,
+  .shiny-text-content,
+  .hero-fire,
+  .hero-fire-aura,
+  .hero-fire-halo,
+  .hero-fire-image,
+  .science-title,
+  .science-title-glow,
+  .science-pill-fire,
+  .science-pill-fire-aura,
+  .science-pill-fire-halo,
+  .science-pill-fire-image,
+  .animate-star-movement-bottom,
+  .animate-star-movement-top {
+    animation: none !important;
+  }
+
   .cf-blob,
   .cf-orb-1,
   .cf-orb-2,

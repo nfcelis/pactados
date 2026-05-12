@@ -12,6 +12,7 @@ import {
   Users,
 } from "lucide-react";
 
+import { useReducedEffects } from "@/lib/use-reduced-effects";
 import ElectricBorder from "@/components/ui/electric-border";
 import LightPillar from "@/components/ui/light-pillar";
 import GradientText from "@/components/ui/gradient-text";
@@ -42,10 +43,16 @@ function SideBadge({
 }
 
 export function CTA() {
+  const reducedEffects = useReducedEffects();
+
   return (
     <section
       id="cta"
       className="relative left-1/2 w-screen -translate-x-1/2 overflow-visible px-6 pb-18 pt-16 md:px-10 md:pb-22 md:pt-18 lg:px-14 lg:pb-24 lg:pt-20"
+      style={{
+        contentVisibility: "auto",
+        containIntrinsicSize: "920px",
+      }}
     >
       <div
         className="pointer-events-none absolute left-1/2 top-[47%] h-[165%] w-[138%] -translate-x-1/2 -translate-y-1/2 overflow-hidden blur-[0.6px] md:h-[175%] md:w-[132%] lg:h-[185%] lg:w-[126%]"
@@ -67,7 +74,7 @@ export function CTA() {
           noiseIntensity={0.28}
           pillarRotation={129}
           mixBlendMode="screen"
-          quality="high"
+          quality={reducedEffects ? "low" : "medium"}
         />
       </div>
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_24%,rgba(255,180,77,0.12),transparent_26%),radial-gradient(circle_at_16%_18%,rgba(255,171,82,0.06),transparent_18%),radial-gradient(circle_at_84%_72%,rgba(255,124,31,0.08),transparent_22%)]" />
@@ -165,23 +172,38 @@ export function CTA() {
         </div>
 
         <div className="relative mt-10">
-          <ElectricBorder
-            color="#ffb24c"
-            speed={1}
-            chaos={0.12}
-            thickness={2}
-            borderRadius={30}
-            className="rounded-[2rem]"
-            style={{ borderRadius: 30 }}
-          >
-            <Link
-              href="/retos"
-              className="font-display relative inline-flex items-center justify-center gap-3 rounded-[2rem] bg-[linear-gradient(180deg,#e36b1f_0%,#bf4b14_100%)] px-8 py-4 text-[1.18rem] uppercase tracking-[-0.03em] text-[#fff7ec] shadow-[0_0_0_4px_rgba(255,193,112,0.08),0_18px_42px_rgba(74,15,2,0.28),0_0_26px_rgba(255,178,76,0.24)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#c95518] active:translate-y-0 md:min-w-[31rem] md:px-12 md:py-5 md:text-[1.42rem]"
+          {reducedEffects ? (
+            <div
+              className="rounded-[2rem] border-2 border-[#ffb24c]/70 shadow-[0_0_0_4px_rgba(255,193,112,0.08),0_18px_42px_rgba(74,15,2,0.28),0_0_26px_rgba(255,178,76,0.18)]"
+              style={{ borderRadius: 30 }}
             >
-              <span>Ver todos los retos</span>
-              <ArrowRight className="h-7 w-7" strokeWidth={2.7} />
-            </Link>
-          </ElectricBorder>
+              <Link
+                href="/retos"
+                className="font-display relative inline-flex items-center justify-center gap-3 rounded-[2rem] bg-[linear-gradient(180deg,#e36b1f_0%,#bf4b14_100%)] px-8 py-4 text-[1.18rem] uppercase tracking-[-0.03em] text-[#fff7ec] transition duration-200 hover:-translate-y-0.5 hover:bg-[#c95518] active:translate-y-0 md:min-w-[31rem] md:px-12 md:py-5 md:text-[1.42rem]"
+              >
+                <span>Ver todos los retos</span>
+                <ArrowRight className="h-7 w-7" strokeWidth={2.7} />
+              </Link>
+            </div>
+          ) : (
+            <ElectricBorder
+              color="#ffb24c"
+              speed={1}
+              chaos={0.12}
+              thickness={2}
+              borderRadius={30}
+              className="rounded-[2rem]"
+              style={{ borderRadius: 30 }}
+            >
+              <Link
+                href="/retos"
+                className="font-display relative inline-flex items-center justify-center gap-3 rounded-[2rem] bg-[linear-gradient(180deg,#e36b1f_0%,#bf4b14_100%)] px-8 py-4 text-[1.18rem] uppercase tracking-[-0.03em] text-[#fff7ec] shadow-[0_0_0_4px_rgba(255,193,112,0.08),0_18px_42px_rgba(74,15,2,0.28),0_0_26px_rgba(255,178,76,0.24)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#c95518] active:translate-y-0 md:min-w-[31rem] md:px-12 md:py-5 md:text-[1.42rem]"
+              >
+                <span>Ver todos los retos</span>
+                <ArrowRight className="h-7 w-7" strokeWidth={2.7} />
+              </Link>
+            </ElectricBorder>
+          )}
           <div className="pointer-events-none absolute inset-x-[-12%] bottom-1/2 h-[4.2rem] translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(255,171,59,0.5)_0%,rgba(255,136,32,0.18)_48%,transparent_78%)] blur-[16px]" />
           <Image
             src="/button-lines-left.png"

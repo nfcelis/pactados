@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
+import { useAnimationActivity } from "@/lib/use-animation-activity";
+
 const vertexShader = `
 void main() {
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
@@ -59,7 +61,12 @@ void main() {
   c *= 1.0 + uBurst * 2.0;
   float n = fract(sin(dot(gl_FragCoord.xy + uTime * 100.0, vec2(12.9898, 78.233))) * 43758.5453);
   c += (n - 0.5) * uNoiseAmount;
-  gl_FragColor = vec4(c, max(c.r, max(c.g, c.b)) * uOpacity);
+  c = max(c, vec3(0.0));
+  float brightness = max(c.r, max(c.g, c.b));
+  float ringMask = smoothstep(0.08, 0.26, brightness);
+  c *= ringMask;
+  float alpha = ringMask * uOpacity;
+  gl_FragColor = vec4(c, alpha);
 }
 `;
 
@@ -117,6 +124,9 @@ export default function MagicRings({
   const hoverAmountRef = useRef(0);
   const isHoveredRef = useRef(false);
   const burstRef = useRef(0);
+  const isAnimationActive = useAnimationActivity(mountRef, {
+    rootMargin: "220px 0px",
+  });
 
   propsRef.current = {
     color,
@@ -144,7 +154,7 @@ export default function MagicRings({
 
   useEffect(() => {
     const mount = mountRef.current;
-    if (!mount) return;
+    if (!mount || !isAnimationActive) return;
 
     let renderer: THREE.WebGLRenderer;
     try {
@@ -196,6 +206,7 @@ export default function MagicRings({
       fragmentShader,
       uniforms,
       transparent: true,
+      blending: THREE.NormalBlending,
       depthWrite: false,
       depthTest: false,
     });
@@ -234,14 +245,22 @@ export default function MagicRings({
       burstRef.current = 1;
     };
 
-    mount.addEventListener("mousemove", onMouseMove);
+    mount.addEventListener("mousemove", onMouseMove, { passive: true });
     mount.addEventListener("mouseenter", onMouseEnter);
     mount.addEventListener("mouseleave", onMouseLeave);
     mount.addEventListener("click", onClick);
 
     let frameId = 0;
+    const targetFPS = 30;
+    const frameDuration = 1000 / targetFPS;
+    let lastRenderTime = 0;
     const animate = (t: number) => {
       frameId = requestAnimationFrame(animate);
+      if (t - lastRenderTime < frameDuration) {
+        return;
+      }
+      lastRenderTime = t;
+
       const p = propsRef.current!;
 
       smoothMouseRef.current[0] +=
@@ -295,7 +314,7 @@ export default function MagicRings({
       material.dispose();
       renderer.dispose();
     };
-  }, []);
+  }, [isAnimationActive]);
 
   return (
     <div
