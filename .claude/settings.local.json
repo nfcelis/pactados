@@ -10,7 +10,9 @@
       "Bash(tail:*)",
       "Bash(cd /c/Users/nelso/Documents/PMC/pactados && npm run build 2>&1)",
       "Bash(cd /c/Users/nelso/Documents/PMC/pactados && npx tsc --noEmit 2>&1)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(npx tsc *)",
+      "Bash(npx next *)"
     ]
   }
 }
