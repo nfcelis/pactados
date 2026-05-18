@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import {
   ArrowRight,
@@ -10,7 +8,6 @@ import {
   Users,
 } from "lucide-react";
 
-import MetaBalls from "@/components/MetaBalls";
 import GradientText from "@/components/ui/gradient-text";
 import ShinyText from "@/components/ui/shiny-text";
 
@@ -102,130 +99,9 @@ export function CienciaDetras() {
         <div className="absolute left-1/2 top-[14rem] h-[26rem] w-[min(112vw,90rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,220,163,0.16)_0%,rgba(255,173,92,0.1)_38%,rgba(233,115,49,0.07)_58%,transparent_82%)] blur-[120px]" />
         <div className="absolute inset-x-0 top-[-2rem] h-[12rem] bg-[linear-gradient(180deg,rgba(246,188,124,0.16),rgba(246,188,124,0.06)_46%,transparent_100%)]" />
 
-        <div
-          className="absolute inset-x-[-10%] top-[11rem] h-[26rem] opacity-62 md:top-[12rem] md:h-[32rem]"
-          style={{
-            maskImage:
-              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.48) 10%, rgba(0,0,0,0.9) 24%, black 56%, rgba(0,0,0,0.52) 82%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.48) 10%, rgba(0,0,0,0.9) 24%, black 56%, rgba(0,0,0,0.52) 82%, transparent 100%)",
-          }}
-        >
-          <div className="absolute inset-0 blur-[9px]">
-            <MetaBalls
-              color="#ffca82"
-              cursorBallColor="#fff5dd"
-              cursorBallSize={2.25}
-              ballCount={34}
-              animationSize={34}
-              enableMouseInteraction={false}
-              enableTransparency
-              hoverSmoothness={0.12}
-              clumpFactor={1.18}
-              speed={0.24}
-            />
-          </div>
-        </div>
-
-        <div
-          className="absolute inset-x-[-12%] top-[18rem] h-[28rem] opacity-46 md:top-[19rem] md:h-[32rem]"
-          style={{
-            maskImage:
-              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.32) 8%, rgba(0,0,0,0.82) 24%, rgba(0,0,0,0.74) 62%, rgba(0,0,0,0.28) 86%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.32) 8%, rgba(0,0,0,0.82) 24%, rgba(0,0,0,0.74) 62%, rgba(0,0,0,0.28) 86%, transparent 100%)",
-          }}
-        >
-          <div className="absolute inset-0 blur-[12px]">
-            <MetaBalls
-              color="#ffe1ae"
-              cursorBallColor="#fff9ea"
-              cursorBallSize={1.8}
-              ballCount={26}
-              animationSize={44}
-              enableMouseInteraction={false}
-              enableTransparency
-              hoverSmoothness={0.08}
-              clumpFactor={1.34}
-              speed={0.15}
-            />
-          </div>
-        </div>
-
-        <div
-          className="absolute left-1/2 top-[24rem] h-[15rem] w-[min(82vw,42rem)] -translate-x-1/2 opacity-42 md:top-[25rem] md:h-[17rem] md:w-[min(66vw,44rem)]"
-          style={{
-            maskImage:
-              "radial-gradient(ellipse at center, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.88) 34%, rgba(0,0,0,0.42) 68%, transparent 100%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse at center, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.88) 34%, rgba(0,0,0,0.42) 68%, transparent 100%)",
-          }}
-        >
-          <div className="absolute inset-0 blur-[7px]">
-            <MetaBalls
-              color="#ffe6ae"
-              cursorBallColor="#fffaf0"
-              cursorBallSize={1.9}
-              ballCount={24}
-              animationSize={36}
-              enableMouseInteraction={false}
-              enableTransparency
-              hoverSmoothness={0.1}
-              clumpFactor={1.05}
-              speed={0.17}
-            />
-          </div>
-        </div>
-
-        <div
-          className="absolute left-1/2 top-[29rem] h-[13rem] w-[min(68vw,34rem)] -translate-x-1/2 opacity-34 md:top-[30rem] md:h-[15rem] md:w-[min(52vw,36rem)]"
-          style={{
-            maskImage:
-              "radial-gradient(ellipse at center, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.8) 38%, rgba(0,0,0,0.34) 72%, transparent 100%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse at center, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.8) 38%, rgba(0,0,0,0.34) 72%, transparent 100%)",
-          }}
-        >
-          <div className="absolute inset-0 blur-[9px]">
-            <MetaBalls
-              color="#fff1c9"
-              cursorBallColor="#ffffff"
-              cursorBallSize={1.5}
-              ballCount={18}
-              animationSize={32}
-              enableMouseInteraction={false}
-              enableTransparency
-              hoverSmoothness={0.08}
-              clumpFactor={0.94}
-              speed={0.12}
-            />
-          </div>
-        </div>
-
-        <div
-          className="absolute left-1/2 top-[33rem] h-[11rem] w-[min(62vw,28rem)] -translate-x-1/2 opacity-28 md:top-[34rem] md:h-[12rem] md:w-[min(44vw,30rem)]"
-          style={{
-            maskImage:
-              "radial-gradient(ellipse at center, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.72) 40%, rgba(0,0,0,0.28) 74%, transparent 100%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse at center, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.72) 40%, rgba(0,0,0,0.28) 74%, transparent 100%)",
-          }}
-        >
-          <div className="absolute inset-0 blur-[10px]">
-            <MetaBalls
-              color="#ffe0a0"
-              cursorBallColor="#fff7df"
-              cursorBallSize={1.3}
-              ballCount={14}
-              animationSize={28}
-              enableMouseInteraction={false}
-              enableTransparency
-              hoverSmoothness={0.08}
-              clumpFactor={0.88}
-              speed={0.11}
-            />
-          </div>
-        </div>
+        <div className="absolute left-1/2 top-[10rem] h-[30rem] w-[min(108vw,72rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,202,128,0.30)_0%,rgba(255,172,80,0.14)_38%,transparent_72%)] blur-[36px]" />
+        <div className="absolute left-1/2 top-[18rem] h-[22rem] w-[min(82vw,52rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,228,165,0.22)_0%,rgba(255,188,100,0.08)_44%,transparent_72%)] blur-[44px]" />
+        <div className="absolute left-1/2 top-[28rem] h-[14rem] w-[min(56vw,34rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,240,190,0.18)_0%,rgba(255,210,140,0.06)_44%,transparent_72%)] blur-[28px]" />
 
         <div className="absolute left-1/2 top-[8rem] h-[20rem] w-[min(166vw,114rem)] -translate-x-1/2 rounded-[50%] border border-white/12 opacity-60" />
         <div className="absolute left-1/2 top-[10rem] h-[17rem] w-[min(152vw,106rem)] -translate-x-1/2 rounded-[50%] border border-white/8 opacity-42" />
