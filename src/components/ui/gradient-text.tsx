@@ -65,7 +65,6 @@ export default function GradientText({
       animationIterationCount: "infinite",
       animationDirection: yoyo ? "alternate" : "normal",
       animationPlayState: isPaused ? "paused" : "running",
-      willChange: "background-position",
     };
 
     return style;

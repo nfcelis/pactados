@@ -85,7 +85,7 @@ export function CienciaDetras() {
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 inset-y-[-12rem] overflow-hidden"
+        className="ciencia-bg pointer-events-none absolute inset-x-0 inset-y-[-12rem] overflow-hidden"
         style={{
           maskImage:
             "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.28) 10%, rgba(0,0,0,0.72) 20%, black 34%, black 100%)",

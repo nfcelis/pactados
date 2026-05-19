@@ -52,7 +52,6 @@ const ShinyText: React.FC<ShinyTextProps> = ({
       backgroundClip: "text",
       WebkitTextFillColor: "transparent",
       backgroundPosition: direction === "left" ? "150% center" : "-50% center",
-      willChange: "background-position",
     };
 
     if (!disabled) {
