@@ -218,13 +218,11 @@
   100% {
     opacity: 0.54;
     transform: translate(-50%, 0) scale(0.96);
-    filter: blur(22px);
   }
 
   50% {
     opacity: 0.92;
     transform: translate(-50%, -4px) scale(1.06);
-    filter: blur(30px);
   }
 }
 
@@ -476,7 +474,6 @@
     radial-gradient(ellipse at 50% 52%, rgba(255, 243, 175, 0.96), rgba(255, 220, 98, 0.72) 34%, rgba(255, 171, 75, 0.24) 58%, transparent 75%);
   filter: blur(26px);
   transform-origin: 50% 55%;
-  will-change: transform, opacity;
   animation: hero-fire-aura-breathe 6.8s cubic-bezier(0.42, 0, 0.2, 1) infinite;
 }
 
@@ -488,7 +485,6 @@
     radial-gradient(ellipse at center, rgba(255, 247, 197, 0.98), rgba(255, 205, 76, 0.7) 42%, transparent 74%);
   filter: blur(16px);
   transform-origin: 50% 50%;
-  will-change: transform, opacity;
   animation: hero-fire-halo-breathe 6.8s cubic-bezier(0.42, 0, 0.2, 1) infinite;
 }
 
@@ -498,7 +494,7 @@
     drop-shadow(0 10px 12px rgba(255, 255, 255, 0.55))
     drop-shadow(0 22px 32px rgba(255, 115, 53, 0.2));
   transform-origin: 50% 72%;
-  will-change: transform, filter;
+  will-change: transform;
   animation: hero-fire-image-breathe 6.8s cubic-bezier(0.42, 0, 0.2, 1) infinite;
 }
 
@@ -690,6 +686,7 @@
   border-radius: 9999px;
   background:
     radial-gradient(circle at 50% 50%, rgba(255, 248, 225, 0.82) 0%, rgba(255, 203, 117, 0.48) 28%, rgba(255, 141, 68, 0.18) 56%, transparent 74%);
+  filter: blur(26px);
   animation: science-title-glow 4.8s ease-in-out infinite;
   pointer-events: none;
 }
@@ -911,23 +908,14 @@
   0%,
   100% {
     transform: scale(0.986);
-    filter:
-      drop-shadow(0 9px 12px rgba(255, 255, 255, 0.48))
-      drop-shadow(0 20px 30px rgba(255, 115, 53, 0.16));
   }
 
   35% {
     transform: scale(1.008);
-    filter:
-      drop-shadow(0 11px 13px rgba(255, 255, 255, 0.56))
-      drop-shadow(0 24px 34px rgba(255, 115, 53, 0.22));
   }
 
   62% {
     transform: scale(1.038);
-    filter:
-      drop-shadow(0 13px 16px rgba(255, 255, 255, 0.66))
-      drop-shadow(0 30px 44px rgba(255, 115, 53, 0.3));
   }
 }
 
@@ -1456,5 +1444,73 @@
 @media (prefers-reduced-motion: reduce) {
   .cf-simple-orb {
     animation: none !important;
+  }
+}
+
+/* ── Touch device optimizations: prevent Safari iOS GPU memory crashes ── */
+@media (hover: none) and (pointer: coarse) {
+  /* Stop all fire animations — they run 4 simultaneous GPU compositor layers */
+  .hero-fire {
+    animation: none !important;
+    transform: translateX(-50%) !important;
+    will-change: auto !important;
+  }
+
+  .hero-fire-aura,
+  .hero-fire-halo,
+  .hero-fire-image {
+    animation: none !important;
+    will-change: auto !important;
+  }
+
+  /* Stop science section animations */
+  .science-title {
+    animation: none !important;
+  }
+
+  .science-title-glow {
+    animation: none !important;
+    opacity: 0.7;
+  }
+
+  /* Stop pill fire animations */
+  .science-pill-fire {
+    animation: none !important;
+    will-change: auto !important;
+  }
+
+  .science-pill-fire-aura,
+  .science-pill-fire-halo,
+  .science-pill-fire-image {
+    animation: none !important;
+    will-change: auto !important;
+  }
+
+  /* Remove backdrop-filter: each one forces a separate GPU compositor layer.
+     With 7+ stacked on the page, Safari iOS runs out of GPU memory and crashes. */
+  [class*="backdrop-blur"],
+  .landing-chip,
+  .landing-panel {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Hide heavy decorative backgrounds on mobile */
+  .ciencia-bg,
+  .como-funciona-bg {
+    display: none !important;
+  }
+
+  /* Stop floating orb / blob animations */
+  .cf-simple-orb,
+  .aurora-blob,
+  .grainient-flow {
+    animation: none !important;
+    will-change: auto !important;
+  }
+
+  /* Remove unused will-change hints */
+  .landing-orb {
+    will-change: auto !important;
   }
 }

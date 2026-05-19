@@ -177,7 +177,7 @@ export function ComoFunciona() {
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[calc(100%+18rem)] w-screen -translate-x-1/2 -translate-y-1/2 overflow-hidden"
+        className="como-funciona-bg pointer-events-none absolute left-1/2 top-1/2 h-[calc(100%+18rem)] w-screen -translate-x-1/2 -translate-y-1/2 overflow-hidden"
       >
         <div className="absolute inset-x-0 top-[-1.5rem] h-[4.5rem] bg-[linear-gradient(180deg,rgba(248,239,224,0)_0%,rgba(247,226,191,0.26)_44%,rgba(241,199,138,0.08)_78%,transparent_100%)] blur-[14px]" />
         <div className="absolute left-1/2 top-[0.75rem] h-[5.2rem] w-[min(98vw,62rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,246,228,0.34)_0%,rgba(255,221,170,0.1)_46%,transparent_82%)] blur-[24px]" />
