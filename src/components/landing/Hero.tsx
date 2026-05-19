@@ -41,7 +41,7 @@ export function Hero() {
       <div className="landing-grid absolute inset-x-10 top-12 bottom-8 opacity-30" />
 
       <div className="relative z-10 mx-auto flex max-w-[720px] flex-col items-center text-center">
-        <div className="animate-fade-in-up delay-100">
+        <div>
           <div className="hero-fire" aria-hidden="true">
             <span className="hero-fire-aura" />
             <span className="hero-fire-halo" />

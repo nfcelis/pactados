@@ -86,32 +86,9 @@ export function CienciaDetras() {
       <div
         aria-hidden="true"
         className="ciencia-bg pointer-events-none absolute inset-x-0 inset-y-[-12rem] overflow-hidden"
-        style={{
-          maskImage:
-            "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.28) 10%, rgba(0,0,0,0.72) 20%, black 34%, black 100%)",
-          WebkitMaskImage:
-            "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.28) 10%, rgba(0,0,0,0.72) 20%, black 34%, black 100%)",
-        }}
       >
-        <div className="absolute left-1/2 top-[-15rem] h-[26rem] w-[min(148vw,112rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,246,231,0.1)_0%,rgba(255,224,178,0.08)_32%,rgba(255,188,123,0.06)_52%,transparent_74%)] blur-[92px]" />
-        <div className="absolute left-1/2 top-[-8.5rem] h-[20rem] w-[min(122vw,96rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,245,225,0.18)_0%,rgba(255,223,180,0.1)_36%,rgba(255,173,101,0.05)_64%,transparent_84%)] blur-[104px]" />
-        <div className="absolute left-1/2 top-[1.5rem] h-[29rem] w-[min(116vw,88rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,247,232,0.18)_0%,rgba(255,230,196,0.12)_26%,rgba(255,191,120,0.07)_52%,transparent_82%)] blur-[132px]" />
-        <div className="absolute left-1/2 top-[14rem] h-[26rem] w-[min(112vw,90rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,220,163,0.16)_0%,rgba(255,173,92,0.1)_38%,rgba(233,115,49,0.07)_58%,transparent_82%)] blur-[120px]" />
-        <div className="absolute inset-x-0 top-[-2rem] h-[12rem] bg-[linear-gradient(180deg,rgba(246,188,124,0.16),rgba(246,188,124,0.06)_46%,transparent_100%)]" />
-
-        <div className="absolute left-1/2 top-[10rem] h-[30rem] w-[min(108vw,72rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,202,128,0.30)_0%,rgba(255,172,80,0.14)_38%,transparent_72%)] blur-[36px]" />
-        <div className="absolute left-1/2 top-[18rem] h-[22rem] w-[min(82vw,52rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,228,165,0.22)_0%,rgba(255,188,100,0.08)_44%,transparent_72%)] blur-[44px]" />
-        <div className="absolute left-1/2 top-[28rem] h-[14rem] w-[min(56vw,34rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,240,190,0.18)_0%,rgba(255,210,140,0.06)_44%,transparent_72%)] blur-[28px]" />
-
-        <div className="absolute left-1/2 top-[8rem] h-[20rem] w-[min(166vw,114rem)] -translate-x-1/2 rounded-[50%] border border-white/12 opacity-60" />
-        <div className="absolute left-1/2 top-[10rem] h-[17rem] w-[min(152vw,106rem)] -translate-x-1/2 rounded-[50%] border border-white/8 opacity-42" />
-        <div className="absolute left-1/2 bottom-[-9rem] h-[19rem] w-[min(172vw,118rem)] -translate-x-1/2 rounded-[50%] border border-white/10 opacity-38" />
-        <div className="absolute left-1/2 bottom-[-12rem] h-[23rem] w-[min(182vw,124rem)] -translate-x-1/2 rounded-[50%] border border-white/8 opacity-24" />
-
-        <div className="absolute left-[6%] top-[14rem] h-20 w-20 rounded-full bg-[radial-gradient(circle,rgba(255,247,228,0.7),rgba(255,222,160,0.16)_54%,transparent_76%)] blur-2xl" />
-        <div className="absolute right-[5%] top-[13rem] h-24 w-24 rounded-full bg-[radial-gradient(circle,rgba(255,248,233,0.68),rgba(255,222,160,0.12)_54%,transparent_76%)] blur-2xl" />
-        <div className="absolute left-[10%] bottom-[10rem] h-16 w-16 rounded-full bg-[radial-gradient(circle,rgba(255,248,235,0.48),rgba(255,220,162,0.16)_54%,transparent_76%)] blur-2xl" />
-        <div className="absolute right-[10%] bottom-[9rem] h-16 w-16 rounded-full bg-[radial-gradient(circle,rgba(255,248,235,0.46),rgba(255,220,162,0.14)_54%,transparent_76%)] blur-2xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,rgba(255,210,140,0.22),rgba(255,140,60,0.10)_54%,transparent_80%)]" />
+        <div className="absolute inset-x-0 top-0 h-[8rem] bg-[linear-gradient(180deg,rgba(246,188,124,0.14),transparent_100%)]" />
       </div>
 
       <div className="relative mx-auto max-w-[1280px]">
