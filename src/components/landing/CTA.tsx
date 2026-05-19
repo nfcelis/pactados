@@ -47,20 +47,8 @@ export function CTA() {
         containIntrinsicSize: "920px",
       }}
     >
-      <div
-        className="pointer-events-none absolute left-1/2 top-[47%] h-[165%] w-[138%] -translate-x-1/2 -translate-y-1/2 overflow-hidden blur-[0.6px] md:h-[175%] md:w-[132%] lg:h-[185%] lg:w-[126%]"
-        style={{
-          maskImage:
-            "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.78) 10%, black 19%, black 78%, rgba(0,0,0,0.66) 92%, transparent 100%)",
-          WebkitMaskImage:
-            "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.78) 10%, black 19%, black 78%, rgba(0,0,0,0.66) 92%, transparent 100%)",
-        }}
-      >
-        <div className="absolute inset-0 bg-[conic-gradient(from_219deg_at_50%_42%,transparent_0deg,rgba(242,72,21,0.12)_14deg,rgba(255,152,39,0.22)_28deg,rgba(242,72,21,0.12)_42deg,transparent_56deg)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_46%_at_50%_36%,rgba(255,130,30,0.2)_0%,rgba(242,72,21,0.08)_48%,transparent_76%)] blur-[60px]" />
-      </div>
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_24%,rgba(255,180,77,0.12),transparent_26%),radial-gradient(circle_at_16%_18%,rgba(255,171,82,0.06),transparent_18%),radial-gradient(circle_at_84%_72%,rgba(255,124,31,0.08),transparent_22%)]" />
-      <div className="pointer-events-none absolute inset-x-[-6%] bottom-[-3rem] h-[16rem] bg-[radial-gradient(ellipse_at_center,rgba(255,198,91,0.14)_0%,rgba(255,145,46,0.06)_40%,transparent_72%)] blur-[72px]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,rgba(255,130,30,0.18)_0%,rgba(242,72,21,0.08)_52%,transparent_80%)]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[10rem] bg-[linear-gradient(0deg,rgba(255,180,60,0.10),transparent_100%)]" />
 
       <div className="pointer-events-none absolute left-[-3%] top-[12%] hidden opacity-40 lg:block">
         <Image
